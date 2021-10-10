@@ -1,0 +1,59 @@
+{% extends 'vaccinerecordapp/navbar.html' %} {% block content %} {% load static %}
+<button
+class="btn btn-sm"
+data-bs-toggle="modal"
+data-bs-target="#create-patient"
+style="color: black"
+> Create Patient </button>
+
+<div class="modal fade" id="create-patient">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form action="{% url 'create-patient' %}" method="post">
+            <div class="modal-body" style="color: black">
+                {% csrf_token %}
+                <center>
+                <br />
+                <h2> Create Patient Account
+                </h2>
+                </center>
+
+                <br />
+
+                <div class="row" style="margin-left: 15%; margin-right: 15%">
+                <div class="col">Enter First Name: {{form.first_name}}</div>
+                <div class="col">Enter Last Name: {{form.last_name}}</div>
+                </div>
+                <br />
+                <br />
+                <div class="row" style="margin-left: 15%; margin-right: 15%">
+                <div class="col">Enter Username: {{form.username}}</div>
+                <div class="col">Enter Email: {{form.email}}</div>
+                </div>
+                <br />
+                <br />
+                <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+                <div class="col">Enter Password: {{form.password1}}</div>
+                </div>
+                <br />
+                <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+                <div class="col">Confirm Password: {{form.password2}}</div>
+                </div>
+
+                <div>
+            <button id="submit_button" type="submit" class="btn btn-warning" >Submit</button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% for message in messages %} {% if message.tags == 'success' %}
+
+      {% else %}
+      {{message | striptags}}
+      {% endif %} {% endfor %}
+
+
+{% endblock %}
