@@ -20,8 +20,12 @@
       >
         Sign In
       </button>
-
     </form>
+
+    <p><a href="{% url 'password-reset' %}">Forgot password?</a></p>
+
+
+
     {% for message in messages %} {% if message.tags == 'success' %}
 
       {% else %}

@@ -1,2 +1,17 @@
-{% extends 'vaccinerecordapp/navbar.html' %} {% block content %} {% load static %}
-{%endblock%}
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+<ul class="nav flex-column">
+    <li class="report">
+      <a class="nav-link active" href="#">Report</a>
+    </li>
+    <li class="reminder">
+      <a class="nav-link" href="#">Reminder</a>
+    </li>
+    <li class="staff">
+      <a class="nav-link" href="{% url 'staff' %}">Staff</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Disabled</a>
+    </li>
+  </ul>
+{% endblock %}

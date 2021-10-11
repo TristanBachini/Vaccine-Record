@@ -1,0 +1,51 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+<table>
+  <tr>
+    <th>
+      <ul class="nav flex-column">
+        <li class="report">
+          <a class="nav-link" href="#">Report</a>
+        </li>
+        <li class="reminder">
+          <a class="nav-link" href="#">Reminder</a>
+        </li>
+        <li class="staff">
+          <a class="nav-link active" href="{% url 'staff' %}">Staff</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li>
+      </ul>
+    </th>
+    <th>
+      <ul class="nav flex-column">
+        <li>
+          <button
+        class="btn btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#create-staff"
+        style="color: black"
+        > Create Staff </button>
+        </li>
+        <li>
+          <button
+          class="btn btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#update-staff"
+          style="color: black"
+          > Update Staff </button>
+        </li>  
+      </ul>
+    </th>
+  </tr>
+</table>
+
+  {% for message in messages %} {% if message.tags == 'success' %}
+
+      {% else %}
+      {{message | striptags}}
+      {% endif %} {% endfor %}
+
+
+{% endblock %}
