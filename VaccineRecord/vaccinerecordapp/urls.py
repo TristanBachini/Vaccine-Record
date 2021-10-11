@@ -14,5 +14,5 @@ urlpatterns = [
     path('create-patient/', views.create_patient, name="create-patient"),
     path('tool/', views.tool, name="tool"),
     path('tool/staff', views.staff, name="staff"),
-    #path('tool/create-staff', views.create_staff, name="create-staff"),
+    path('tool/staff/create-staff', views.create_staff, name="create-staff"),
 ]

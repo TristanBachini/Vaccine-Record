@@ -41,6 +41,64 @@
   </tr>
 </table>
 
+<div class="modal fade" id="create-staff">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form action="{% url 'create-staff' %}" method="post">
+          <div class="modal-body" style="color: black">
+              {% csrf_token %}
+              <center>
+              <br />
+              <h2> Create Staff Account
+              </h2>
+              </center>
+              <br />
+
+              <div class="row" style="margin-left: 15%; margin-right: 15%">
+              <div class="col">Enter First Name: {{form1.first_name}}</div>
+              <div class="col">Enter Last Name: {{form1.last_name}}</div>
+              </div>
+              <br />
+              <br />
+              <div class="row" style="margin-left: 15%; margin-right: 15%">
+              <div class="col">Enter Username: {{form1.username}}</div>
+              <div class="col">Enter Email: {{form1.email}}</div>
+              </div>
+              <br />
+              <br />
+              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+              <div class="col">Enter Password: {{form1.password1}}</div>
+              </div>
+              <br />
+              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+              <div class="col">Confirm Password: {{form1.password2}}</div>
+              </div>
+              <br />
+              <br />
+              <div class="row" style="margin-left: 15%; margin-right: 15%">
+              <div class="col">Enter Prefix: {{form2.prefix}}</div>
+              <div class="col">Enter Title: {{form2.title}}</div>
+              </div>
+              <br />
+              <br />
+              <div class="row" style="margin-left: 15%; margin-right: 15%">
+              <div class="col">Enter Prefix: {{form2.contact}}</div>
+              <div class="col">Enter Title: {{form2.type}}</div>
+              </div>
+              <br />
+              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+              <div class="col">Can register: {{form2.can_register}}</div>
+              </div>
+              <div>
+          <button id="submit_button" type="submit" class="btn btn-warning" >Submit</button>
+              </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
   {% for message in messages %} {% if message.tags == 'success' %}
 
       {% else %}

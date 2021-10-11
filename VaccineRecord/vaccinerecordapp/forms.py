@@ -4,7 +4,7 @@ from django.db.models import fields
 from django.forms import ModelForm, TextInput, PasswordInput, CharField, HiddenInput, NumberInput
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from django.forms import widgets
+from django.forms import widgets, ModelForm
 from django.forms.widgets import Select
 from .models import *
 from django.contrib.auth import get_user_model
@@ -26,6 +26,25 @@ class UserForm(UserCreationForm):
             'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username', 'aria-label': 'Username', 'required': True}),
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': True}),
         }
+
+class DoctorForm(forms.ModelForm):
+    class Meta:
+        model = Doctor
+        fields = "__all__"
+
+    # prefix = forms.CharField(widget=forms.TextInput(attrs={
+    #     'prefix': 'form-control',
+    #     'placeholder': 'Prefix'
+    # }))
+    # title = forms.CharField(widget=forms.TextInput(attrs={
+    #     'title': 'form-control',
+    #     'placeholder': 'Title'
+    # }))
+    # contact = forms.CharField(required=True, max_length=11, widget=forms.NumberInput(attrs={
+    #     'class': 'form-control',
+    #     'placeholder': '09xxxxxxxxx'
+    # }))
+    # can_register = forms.BooleanField(required=True,initial=False,label='Can register')
 
 class LoginForm(AuthenticationForm):
     attrs = {'class': 'form-control', 'id': 'floatingInput',
