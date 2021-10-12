@@ -19,6 +19,6 @@ class Doctor(models.Model):
     title = models.CharField(max_length=100)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField()
-    contact = models.BooleanField(default=False)
+    contact = models.CharField(max_length=100)
     type = models.CharField(max_length=5)
     can_register = models.BooleanField(default=False)
