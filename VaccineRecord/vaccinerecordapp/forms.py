@@ -5,7 +5,8 @@ from django.forms import ModelForm, TextInput, PasswordInput, CharField, HiddenI
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.forms import widgets, ModelForm
-from django.forms.widgets import Select
+from django.forms.fields import BooleanField
+from django.forms.widgets import DateInput, Select
 from .models import *
 from django.contrib.auth import get_user_model
 
@@ -26,11 +27,17 @@ class UserForm(UserCreationForm):
             'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username', 'aria-label': 'Username', 'required': True}),
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': True}),
         }
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 class DoctorForm(forms.ModelForm):
     class Meta:
         model = Doctor
         fields = "__all__"
+        widgets = {
+            'user':  HiddenInput(attrs={'type': 'hidden'}),
+            'end_date': DateInput(),
+        }
 
     # prefix = forms.CharField(widget=forms.TextInput(attrs={
     #     'prefix': 'form-control',

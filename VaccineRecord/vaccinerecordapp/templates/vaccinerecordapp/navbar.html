@@ -20,9 +20,11 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'search-create-patient' %}">Patient</a>
               </li>
+              {% if request.user|has_group:"staff" or request.user|has_group:"doctor"%}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'tool' %}">Tool</a>
               </li>
+              {% endif %}
               {% comment %}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

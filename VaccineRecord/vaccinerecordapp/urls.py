@@ -15,4 +15,5 @@ urlpatterns = [
     path('tool/', views.tool, name="tool"),
     path('tool/staff', views.staff, name="staff"),
     path('tool/staff/create-staff', views.create_staff, name="create-staff"),
+    path('dashboard/', views.dashboard, name="dashboard"),
 ]

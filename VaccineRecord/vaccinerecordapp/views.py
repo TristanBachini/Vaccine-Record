@@ -57,7 +57,7 @@ def create_patient(request):
             group = Group.objects.get(name="patient")
             user = User.objects.get(username = form.cleaned_data.get("username"))
             user.groups.add(group) 
-            return redirect('')
+            return redirect('/dashboard')
     else:
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
 
@@ -74,18 +74,25 @@ def create_staff(request):
         if(form1.is_valid()):
             form1.save()
             user = User.objects.get(username = form1.cleaned_data.get("username"))
-            if user is None:
-                print("ah de pota")
-            form2.initial['user'] = user
+            form2 = DoctorForm({'user':user, 'contact':request.POST.get('contact'),'prefix':request.POST.get('prefix'),
+            'title':request.POST.get('title'),'type':request.POST.get('type'),'end_date':request.POST.get('end_date'),
+            'can_register':request.POST.get('can_register')})
             print("yea this worked")
         if(form2.is_valid()):
             form2.save()
             messages.success(request, "Account was created for " +
                              form1.cleaned_data.get("username"))
-            group = Group.objects.get(name="doctor")
-            user = User.objects.get(username = form1.cleaned_data.get("username"))
-            user.groups.add(group) 
-            return redirect('')
+            print(form2.cleaned_data.get("can_register"))
+            if(form2.cleaned_data.get("can_register")==True):
+                group = Group.objects.get(name="staff")
+                user = User.objects.get(username = form1.cleaned_data.get("username"))
+                user.groups.add(group) 
+            else:
+                group = Group.objects.get(name="doctor")
+                user = User.objects.get(username = form1.cleaned_data.get("username"))
+                user.groups.add(group) 
+            
+            return redirect('/dashboard')
         else:
             print(form2.errors)
     else:
