@@ -8,6 +8,23 @@ import datetime
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
+PREFIX = (
+    ('MR', 'Mr.'),
+    ('MRS', 'Mrs.'),
+    ('MS', 'Ms.')
+)
+
+TITLE = (
+    ('MD', 'MD'),
+    ('RN', 'RN')
+)
+
+TYPE = (
+    ('D', 'Doctor'),
+    ('N', 'Nurse'),
+    ('S', 'Secretary')
+)
+
 class Role(models.Model):
   '''
   The Role entries are managed by the system,
@@ -15,10 +32,10 @@ class Role(models.Model):
   '''
 class Doctor(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    prefix = models.CharField(max_length=100)
-    title = models.CharField(max_length=100)
+    prefix = models.CharField(choices=PREFIX, max_length=3)
+    title = models.CharField(choices=TITLE, max_length=2)
     start_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(blank=True, null=True)
     contact = models.CharField(max_length=100)
-    type = models.CharField(max_length=5)
+    type = models.CharField(choices=TYPE, max_length=2)
     can_register = models.BooleanField(default=False)

@@ -3,20 +3,7 @@
 <table>
   <tr>
     <th>
-      <ul class="nav flex-column">
-        <li class="report">
-          <a class="nav-link" href="#">Report</a>
-        </li>
-        <li class="reminder">
-          <a class="nav-link" href="#">Reminder</a>
-        </li>
-        <li class="staff">
-          <a class="nav-link active" href="{% url 'staff' %}">Staff</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-      </ul>
+      {% include 'vaccinerecordapp/staff-navbar.html' %}
     </th>
     <th>
       <ul class="nav flex-column">
@@ -55,43 +42,59 @@
               <br />
 
               <div class="row" style="margin-left: 15%; margin-right: 15%">
-              <div class="col">Enter First Name: {{form1.first_name}}</div>
-              <div class="col">Enter Last Name: {{form1.last_name}}</div>
+              <div class="col">First Name {{form1.first_name}}</div>
+              <div class="col">Last Name {{form1.last_name}}</div>
               </div>
               <br />
               <br />
               <div class="row" style="margin-left: 15%; margin-right: 15%">
-              <div class="col">Enter Username: {{form1.username}}</div>
-              <div class="col">Enter Email: {{form1.email}}</div>
+              <div class="col">Username {{form1.username}}</div>
+              <div class="col">Email {{form1.email}}</div>
               </div>
               <br />
               <br />
               <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-              <div class="col">Enter Password: {{form1.password1}}</div>
+              <div class="col">Password {{form1.password1}}</div>
               </div>
               <br />
               <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-              <div class="col">Confirm Password: {{form1.password2}}</div>
+              <div class="col">Confirm Password {{form1.password2}}</div>
               </div>
               <br />
               <br />
               <div class="row" style="margin-left: 15%; margin-right: 15%">
-              <div class="col">Enter Prefix: {{form2.prefix}}</div>
-              <div class="col">Enter Title: {{form2.title}}</div>
+              <div class="col">Prefix {{form2.prefix}}</div>
+              <div class="col">Title {{form2.title}}</div>
               </div>
               <br />
               <br />
-              <div class="row" style="margin-left: 15%; margin-right: 15%">
-              <div class="col">Enter Contact Number: {{form2.contact}}</div>
-              <div class="col">Enter Type: {{form2.type}}</div>
-              <div class="col">Enter End Date: {{form2.end_date}}</div>
+              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+              <div class="col">Contact Number {{form2.contact}}</div>
               </div>
+              <br />
+              <br />
+              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+              <div class="col">Type {{form2.type}}</div>
+              </div>
+              <br />
+              <br />
+              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+              <div class="col">End Date {{form2.end_date}}</div>
+              </div>
+              <br />
               <br />
               <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
               <div class="col">Can register: {{form2.can_register}}</div>
               </div>
+              <br />
               <div>
-          <button id="submit_button" type="submit" class="btn btn-warning" >Submit</button>
+                {% for message in messages %} {% if message.tags == 'success' %}
+                {% else %}
+                {{message | striptags}}
+                {% endif %} {% endfor %}
+              </div>
+              <div class="row" style="width: 50%; margin-left: 40%; margin-right: 40%">
+              <div class="col"><button id="submit_button" type="submit" class="btn btn-warning" >Submit</button></div>
               </div>
           </div>
       </form>
@@ -99,12 +102,6 @@
   </div>
 </div>
 
-
-  {% for message in messages %} {% if message.tags == 'success' %}
-
-      {% else %}
-      {{message | striptags}}
-      {% endif %} {% endfor %}
 
 
 {% endblock %}

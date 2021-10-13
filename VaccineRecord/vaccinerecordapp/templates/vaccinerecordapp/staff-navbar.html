@@ -1,0 +1,15 @@
+{% load static %} {% load auth_extras %}
+
+<ul class="nav flex-column">
+    <li class="report">
+      <a class="nav-link active" href="#">Report</a>
+    </li>
+    <li class="reminder">
+      <a class="nav-link" href="#">Reminder</a>
+    </li>
+    {% if request.user|has_group:"staff"%}
+    <li class="staff">
+      <a class="nav-link" href="{% url 'staff' %}">Staff</a>
+    </li>
+    {% endif %}
+</ul>

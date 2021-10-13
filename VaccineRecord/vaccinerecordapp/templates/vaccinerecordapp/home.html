@@ -26,19 +26,18 @@
 						<div class="input-group mb-2">
 								<input type="password" name="password" placeholder="Password..." class="form-control" >
 						</div>
-            <div>
-              <p><a href="{% url 'password-reset' %}">Forgot password?</a></p>
-            </div>
-            <div>
-              {% for message in messages %} {% if message.tags == 'success' %}
-              {% else %}
-              {{message | striptags}}
-              {% endif %} {% endfor %}
-            </div>
-    
-							<div class="d-flex justify-content-center mt-3 login_container">
-				 				<input class="btn login_btn" type="submit" value="Login">
-				   			</div>
+						<div>
+						<p><a href="{% url 'password-reset' %}">Forgot password?</a></p>
+						</div>
+						<div>
+							{% for message in messages %} {% if message.tags == 'success' %}
+							{% else %}
+							{{message | striptags}}
+							{% endif %} {% endfor %}
+						</div>
+						<div class="d-flex justify-content-center mt-3 login_container">
+							<input class="btn login_btn" type="submit" value="Login">
+						</div>
 					</form>
 				</div>
 
