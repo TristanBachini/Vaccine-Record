@@ -19,7 +19,7 @@ FLUSH PRIVILEGES;
 
 //Database environments
 DATABASE_ENGINE=django.db.backends.mysql
-DATABASE_VACCINE=db_name 
+DATABASE_VACCINE=db_name
 DATABASE_PASSWORD=password 
 DATABASE_USER=db_username
 
