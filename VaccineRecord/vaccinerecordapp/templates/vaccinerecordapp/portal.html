@@ -1,48 +1,26 @@
-{% extends 'vaccinerecordapp/navbar.html' %} {% block content %} {% load static %}
-<button
-class="btn btn-sm"
-data-bs-toggle="modal"
-data-bs-target="#create-patient"
-style="color: black"
-> Create Patient Account </button>
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+<table>
+    <tr>
+      <th>
+        {% include 'vaccinerecordapp/patient-navbar.html' %}
+      </th>
+      <th>
+        <ul class="nav flex-column">
+          <li>
+            <button
+          class="btn btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#create-patient"
+          style="color: black"
+          > Create Patient Account </button>
+          </li>
+        </ul>
+      </th>
+    </tr>
+  </table>
 
-<table class="table table-striped table-hover">
-  <thead>
-      <tr>
-          <th scope="col">Name</th>
-          <th colspan="2"></th>
-      </tr>
-  </thead>
-  <tbody>
-
-      {% for patient in patients %}
-
-      <tr>
-          <td> <a href="{% url 'patient-profile' patient.id %}" >{{patient.last_name}}, {{patient.first_name}}</td></a>
-
-          <td>
-              <a href="#" class="btn btn-outline-dark">
-                  <i class="fas fa-edit"></i>
-                  Update Patient
-              </a>
-          </td>
-          <td>
-
-              <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#">
-                  <i class="fas fa-trash"></i>
-                  Delete Patient
-              </button>
-
-          </td>
-      </tr>
-
-      {% endfor %}
-
-  </tbody>
-
-</table>
-
-<div class="modal fade" id="create-patient">
+  <div class="modal fade" id="create-patient">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <form action="{% url 'create-patient' %}" method="post">

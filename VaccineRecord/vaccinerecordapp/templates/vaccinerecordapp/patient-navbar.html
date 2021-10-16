@@ -1,0 +1,23 @@
+{% load static %} {% load auth_extras %}
+
+
+<ul class="nav flex-column" style="background-color: thistle;">
+    <li class="profile">
+      <a class="nav-link active" href="#">Profile</a>
+    </li>
+    <li class="report">
+      <a class="nav-link active" href="#">Report</a>
+    </li>
+    <li class="reminder">
+      <a class="nav-link" href="#">Reminder</a>
+    </li>
+    <li class="staff">
+      <a class="nav-link" href="#">Certificate</a>
+    </li>
+    {% if request.user|has_group:"staff"%}
+    <li class="portal">
+      <a class="nav-link" href="{% url 'portal' %}">Portal</a>
+    </li>
+    {% endif %}
+    
+</ul>

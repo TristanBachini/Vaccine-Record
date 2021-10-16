@@ -47,22 +47,65 @@ def home(request):
 def dashboard(request):
     return render(request,'vaccinerecordapp/dashboard.html')
 
-def create_patient(request):
+# def create_patient(request):
+#     if(request.method == "POST"):
+#         form = UserForm(request.POST)
+#         if(form.is_valid()):
+#             form.save()
+#             messages.success(request, "Account was created for " +
+#                              form.cleaned_data.get("username"))
+#             group = Group.objects.get(name="patient")
+#             user = User.objects.get(username = form.cleaned_data.get("username"))
+#             user.groups.add(group) 
+#             return redirect('/dashboard')
+#     else:
+#         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
+
+#     data = {"form":form}
+#     return render(request, 'vaccinerecordapp/search-create-patient.html',data)
+
+def create_patient_record(request):
+    patients = PatientRecord.objects.all
     if(request.method == "POST"):
-        form = UserForm(request.POST)
+        form = PatientRecordForm(request.POST)
         if(form.is_valid()):
             form.save()
-            messages.success(request, "Account was created for " +
-                             form.cleaned_data.get("username"))
-            group = Group.objects.get(name="patient")
-            user = User.objects.get(username = form.cleaned_data.get("username"))
-            user.groups.add(group) 
+            messages.success(request, "Patient was created for " +
+                             form.cleaned_data.get("first_name") + form.cleaned_data.get("last_name"))
             return redirect('/dashboard')
     else:
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
+    data = {"form":form, "patients":patients}
+    return render(request, 'vaccinerecordapp/create-patient-record.html',data)
 
-    data = {"form":form}
-    return render(request, 'vaccinerecordapp/search-create-patient.html',data)
+def create_patient(request):
+    form1 = UserForm()
+    form2 = PatientForm()
+    
+    if(request.method == "POST"):
+        form1 = UserForm(request.POST)
+        form2 = PatientForm(request.POST)
+        if(form1.is_valid()):
+            form1.save()
+            user = User.objects.get(username = form1.cleaned_data.get("username"))
+            lname = User.objects.get(last_name = form1.cleaned_data.get("last_name"))
+            fname = User.objects.get(first_name = form1.cleaned_data.get("first_name"))
+            form2 = PatientForm({'user':user, 'last_name': lname, 'first_name': fname, 'relationship':request.POST.get('relationship')})
+        if(form2.is_valid()):
+            form2.save()
+            messages.success(request, "Account was created for " +
+                             form1.cleaned_data.get("username"))
+            group = Group.objects.get(name="patient")
+            user = User.objects.get(username = form1.cleaned_data.get("username"))
+            user.groups.add(group) 
+            return redirect('/dashboard')
+        else:
+            print(form2.errors)
+    else:
+        messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
+
+    data = {"form1":form1, "form2":form2}
+    return render(request, 'vaccinerecordapp/portal.html',data)
 
 def create_staff(request):
     form1 = UserForm()
@@ -74,7 +117,9 @@ def create_staff(request):
         if(form1.is_valid()):
             form1.save()
             user = User.objects.get(username = form1.cleaned_data.get("username"))
-            form2 = DoctorForm({'user':user, 'contact':request.POST.get('contact'),'prefix':request.POST.get('prefix'),
+            lname = User.objects.get(last_name = form1.cleaned_data.get("last_name"))
+            fname = User.objects.get(first_name = form1.cleaned_data.get("first_name"))
+            form2 = DoctorForm({'user':user, 'last_name':lname, 'first_name':fname, 'contact':request.POST.get('contact'),'prefix':request.POST.get('prefix'),
             'title':request.POST.get('title'),'type':request.POST.get('type'),'end_date':request.POST.get('end_date'),
             'can_register':request.POST.get('can_register')})
             print("yea this worked")
@@ -103,9 +148,24 @@ def create_staff(request):
 
 @login_required(login_url='/')
 def search_create_patient(request):
-    form = UserForm(request.POST)
-    data = {"form":form}
+    form1 = UserForm(request.POST)
+    form2 = PatientForm(request.POST)
+    patients = User.objects.filter(groups__name="Patient")
+    data = {"form1":form1, "form2":form2, "patients":patients}
     return render(request, 'vaccinerecordapp/search-create-patient.html',data)
+
+@login_required(login_url='/')
+def patient_profile(request,pk):
+    form = PatientRecordForm(request.POST)
+    data = {"form":form}
+    return render(request, 'vaccinerecordapp/patient-profile.html',data )
+
+@login_required(login_url='/')
+def create_patient_record(request):
+    form = PatientRecordForm(request.POST)
+    patients = PatientRecord.objects.all()
+    data = {"form":form, "patients":patients}
+    return render(request, 'vaccinerecordapp/create-patient-record.html',data)
 
 @login_required(login_url='/')
 def tool(request): 
@@ -117,6 +177,14 @@ def staff(request):
     form2 = DoctorForm()
     data = {"form1":form1, "form2":form2}
     return render(request, 'vaccinerecordapp/staff.html',data)
+
+@login_required(login_url='/')
+def portal(request): 
+    form1 = UserForm(request.POST)
+    form2 = PatientForm(request.POST)
+    patients = User.objects.filter(groups__name="Patient")
+    data = {"form1":form1, "form2":form2, "patients":patients}
+    return render(request, 'vaccinerecordapp/portal.html',data)
 
 def passwordReset(request): 
     if request.method == "POST":

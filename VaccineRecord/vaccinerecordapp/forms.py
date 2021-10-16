@@ -27,6 +27,9 @@ class UserForm(UserCreationForm):
             'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username', 'aria-label': 'Username', 'required': True}),
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': True}),
         }
+
+        
+
 class DateInput(forms.DateInput):
     input_type = 'date'
 
@@ -38,6 +41,7 @@ class DoctorForm(forms.ModelForm):
             'user':  HiddenInput(attrs={'type': 'hidden'}),
             'end_date': DateInput(),
         }
+
 
     # prefix = forms.CharField(widget=forms.TextInput(attrs={
     #     'prefix': 'form-control',
@@ -53,8 +57,59 @@ class DoctorForm(forms.ModelForm):
     # }))
     # can_register = forms.BooleanField(required=True,initial=False,label='Can register')
 
+class PatientForm(forms.ModelForm):
+    attrs = {'class': 'form-control', 'id':'relationship',
+             'placeholder': 'Relationship', 'required': True}
+    relationship = CharField(widget=TextInput(attrs=attrs))
+    class Meta:
+        model = Patient
+        fields = "__all__"
+        widgets = {
+            'user':  HiddenInput(attrs={'type': 'hidden'}),
+        }
+
+class PatientRecordForm(forms.ModelForm):
+    class Meta:
+            model = PatientRecord
+            fields = "__all__"
+            widgets = {
+                'bday': DateInput(),
+                'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
+                'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': True}),
+                'middle_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Middle name', 'aria-label': 'Middle name', 'required': False}),
+                'suffix': TextInput(attrs={'class': 'form-control', 'placeholder': 'Suffix', 'aria-label': 'Suffix', 'required': False}),
+                'nick_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Nickname', 'aria-label': 'Nickname', 'required': False}),
+                'mobile': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+                'age': TextInput(attrs={'class': 'form-control', 'placeholder': 'Age', 'aria-label': 'Age', 'required': False}),
+                'landline': TextInput(attrs={'class': 'form-control', 'placeholder': 'Landline', 'aria-label': 'Landline', 'required': False}),
+                'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': False}),
+                'home_no': TextInput(attrs={'class': 'form-control', 'placeholder': 'House/Unit No./Street', 'aria-label': 'House/Unit No./Street', 'required': False}),
+                'brgy': TextInput(attrs={'class': 'form-control', 'placeholder': 'Barangay', 'aria-label': 'Barangay', 'required': False}),
+                'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'City', 'aria-label': 'City', 'required': False}),
+                'province': TextInput(attrs={'class': 'form-control', 'placeholder': 'Province', 'aria-label': 'Province', 'required': False}),
+                'region': TextInput(attrs={'class': 'form-control', 'placeholder': 'Region', 'aria-label': 'Region', 'required': False}),
+                'zip_code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Zip Code', 'aria-label': 'Zip Code', 'required': False}),
+                'lname_mom': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': False}),
+                'fname_mom': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': False}),
+                'contact_mom': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+                'email_mom': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': False}),
+                'lname_dad': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': False}),
+                'fname_dad': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': False}),
+                'email_dad': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': False}),
+                'contact_dad': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+                'lname_e1': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': False}),
+                'fname_e1': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': False}),
+                'relation_e1': TextInput(attrs={'class': 'form-control', 'placeholder': 'Relationship', 'aria-label': 'Relationship', 'required': False}),
+                'contact_e1': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+                'lname_e2': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': False}),
+                'fname_e2': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': False}),
+                'relation_e2': TextInput(attrs={'class': 'form-control', 'placeholder': 'Relationship', 'aria-label': 'Relationship', 'required': False}),
+                'contact_e2': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+            }
+
 class LoginForm(AuthenticationForm):
     attrs = {'class': 'form-control', 'id': 'floatingInput',
              'placeholder': 'Enter Password', 'required': True}
     username = forms.CharField(label='Email / Username',widget=TextInput(attrs={'placeholder':'Email'}))
     password = CharField(widget=PasswordInput(attrs=attrs))
+
