@@ -65,14 +65,20 @@ def dashboard(request):
 #     return render(request, 'vaccinerecordapp/search-create-patient.html',data)
 
 def create_patient_record(request):
-    patients = PatientRecord.objects.all
+    form = PatientRecordForm()
+    patients = PatientRecord.objects.all()
+    print("create patient record")
     if(request.method == "POST"):
         form = PatientRecordForm(request.POST)
+        print("pumasok post")
         if(form.is_valid()):
             form.save()
+            print("pumasok is valid")
             messages.success(request, "Patient was created for " +
                              form.cleaned_data.get("first_name") + form.cleaned_data.get("last_name"))
             return redirect('/dashboard')
+        else:
+            print(form.errors)
     else:
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
     data = {"form":form, "patients":patients}
@@ -159,13 +165,6 @@ def patient_profile(request,pk):
     form = PatientRecordForm(request.POST)
     data = {"form":form}
     return render(request, 'vaccinerecordapp/patient-profile.html',data )
-
-@login_required(login_url='/')
-def create_patient_record(request):
-    form = PatientRecordForm(request.POST)
-    patients = PatientRecord.objects.all()
-    data = {"form":form, "patients":patients}
-    return render(request, 'vaccinerecordapp/create-patient-record.html',data)
 
 @login_required(login_url='/')
 def tool(request): 

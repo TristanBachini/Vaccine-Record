@@ -76,12 +76,13 @@ class Patient(models.Model):
         })
 
 class PatientRecord(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=True)
     last_name = models.CharField(max_length=100, null=True)
     first_name = models.CharField(max_length=100, null=True)
     middle_name = models.CharField(max_length=100, null=True)
     suffix = models.CharField(max_length=100, null=True)
     nick_name = models.CharField(max_length=100, null=True)
-    doctor_assigned = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    doctor_assigned = ForeignKey(Doctor, on_delete=models.CASCADE)
     gender = models.CharField(choices=GENDER,max_length=11, null=True)
     bday = models.DateTimeField(blank=True, null=True)
     age = models.IntegerField(null=True)

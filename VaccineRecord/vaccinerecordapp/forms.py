@@ -1,11 +1,12 @@
 from django import forms
 from django.db import models
 from django.db.models import fields
+from django.db.models.query import QuerySet
 from django.forms import ModelForm, TextInput, PasswordInput, CharField, HiddenInput, NumberInput
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.forms import widgets, ModelForm
-from django.forms.fields import BooleanField
+from django.forms.fields import BooleanField, ChoiceField
 from django.forms.widgets import DateInput, Select
 from .models import *
 from django.contrib.auth import get_user_model
@@ -74,11 +75,13 @@ class PatientRecordForm(forms.ModelForm):
             fields = "__all__"
             widgets = {
                 'bday': DateInput(),
+                'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
                 'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
                 'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': True}),
                 'middle_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Middle name', 'aria-label': 'Middle name', 'required': False}),
                 'suffix': TextInput(attrs={'class': 'form-control', 'placeholder': 'Suffix', 'aria-label': 'Suffix', 'required': False}),
                 'nick_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Nickname', 'aria-label': 'Nickname', 'required': False}),
+                'doctor_assigned': Select({'class': 'form-control'}),
                 'mobile': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
                 'age': TextInput(attrs={'class': 'form-control', 'placeholder': 'Age', 'aria-label': 'Age', 'required': False}),
                 'landline': TextInput(attrs={'class': 'form-control', 'placeholder': 'Landline', 'aria-label': 'Landline', 'required': False}),
