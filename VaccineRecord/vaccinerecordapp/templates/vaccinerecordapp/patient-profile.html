@@ -1,14 +1,14 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %}
 
-<p style="background-color:hsl(196, 79%, 94%); padding-left: 1%; padding-top: .5%; padding-bottom: .5%;">
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
   {{ record.first_name|upper }},{{ record.last_name|upper }}  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
 </p>
 
 
     {% include 'vaccinerecordapp/patient-navbar.html' %}
 
-  
+    
     <br><br>
 
     <div class="modal fade" id="create-patient-record">
@@ -157,7 +157,7 @@
           {% else %}
           {{message | striptags}}
           {% endif %} {% endfor %}
-  
+     
           <div class="card border-info" style="margin-left: 8%; margin-right: 8%">
             <h5 class="card-header">Patient Profile</h5>
             <div class="card-body">
@@ -273,6 +273,7 @@
             </div>
           </div>
           <br><br><br><br><br>
+      
 
 
 

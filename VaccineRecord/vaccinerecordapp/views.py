@@ -70,24 +70,26 @@ def create_patient_record(request):
     print("create patient record")
     if(request.method == "POST"):
         print("pumasok post")
-        username=request.POST.get('username')
-        print(username)
-        user=User.objects.get(username=username)
+        username = request.POST.get('username')
+        print('username')        
+        user = User.objects.get(username=username)
+        
         form = PatientRecordForm({'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
-                                'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
-                                'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
-                                'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
-                                'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
-                                'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
-                                'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
-                                'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
-                                'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
-                                'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
-                                'contact_e2':request.POST.get('contact_e2')})
+                                        'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
+                                        'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
+                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                        'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
+                                        'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
+                                        'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
+                                        'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
+                                        'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
+                                        'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
+                                        'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
+                                        'contact_e2':request.POST.get('contact_e2')})
         if(form.is_valid()):
+            print('is valid')
             form.save()
-            print("pumasok is valid")
+            print("nagsave")
             messages.success(request, "Patient was created for " +
                              form.cleaned_data.get("first_name") + form.cleaned_data.get("last_name"))
             return redirect('/dashboard')
@@ -96,7 +98,7 @@ def create_patient_record(request):
     else:
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
     data = {"form":form, "patients":patients}
-    return render(request, 'vaccinerecordapp/create-patient-record.html',data)
+    return render(request, 'vaccinerecordapp/patient-profile.html',data)
 
 def create_patient(request):
     form1 = UserForm()
@@ -118,7 +120,7 @@ def create_patient(request):
             group = Group.objects.get(name="patient")
             user = User.objects.get(username = form1.cleaned_data.get("username"))
             user.groups.add(group) 
-            return redirect('/dashboard')
+            return redirect('/search-create-patient')
         else:
             print(form2.errors)
     else:
@@ -177,9 +179,10 @@ def search_create_patient(request):
 @login_required(login_url='/')
 def patient_profile(request,pk):
     form = PatientRecordForm(request.POST)
-    
-    record = PatientRecord.objects.filter(user=request.user)
-    data = {"form":form, "record":record, }
+    #dapat username gamitin para makuha ung record ni patient dunno how
+    # di dapat get() ung gamitin kasi isa lang yung need. for now lang muna
+    record = PatientRecord.objects.get() 
+    data = {"form":form, "record":record}
     return render(request, 'vaccinerecordapp/patient-profile.html',data )
 
 @login_required(login_url='/')
