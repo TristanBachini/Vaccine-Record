@@ -1,17 +1,14 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %}
 
+<p style="background-color:hsl(196, 79%, 94%); padding-left: 1%; padding-top: .5%; padding-bottom: .5%;">
+  {{ record.first_name|upper }},{{ record.last_name|upper }}  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
+</p>
+
+
     {% include 'vaccinerecordapp/patient-navbar.html' %}
 
-    <br />
-
-    <h3>Patient</h3>
-    <button
-    class="btn btn-sm"
-    data-bs-toggle="modal"
-    data-bs-target="#create-patient-record"
-    style="color: black"
-    > Create Patient Record </button>
+  
     <br><br>
 
     <div class="modal fade" id="create-patient-record">
@@ -29,6 +26,7 @@
                     <div class="row" style="margin-left: 10%; margin-right: 10%">
                     <h5>Name</h5>
                     <br />
+                    <input name='username'>
                     <br />
                     </div>
                     <div class="row" style="margin-left: 10%; margin-right: 10%">
@@ -126,7 +124,7 @@
                     </div>
                     <div class="row" style="margin-left: 10%; margin-right: 10%">
                     <div class="col">First Name: {{form.fname_e1}}</div>
-                    <div class="col">Last Name: {{form.fname_e1}}</div>
+                    <div class="col">Last Name: {{form.lname_e1}}</div>
                     <div class="col">Relation: {{form.relation_e1}}</div>
                     <div class="col">Contact No.: {{form.contact_e1}}</div>
                     </div>
@@ -137,7 +135,7 @@
                     </div>
                     <div class="row" style="margin-left: 10%; margin-right: 10%">
                     <div class="col">First Name: {{form.fname_e2}}</div>
-                    <div class="col">Last Name: {{form.fname_e2}}</div>
+                    <div class="col">Last Name: {{form.lname_e2}}</div>
                     <div class="col">Relation: {{form.relation_e2}}</div>
                     <div class="col">Contact No.: {{form.contact_e2}}</div>
                     </div>
@@ -160,7 +158,121 @@
           {{message | striptags}}
           {% endif %} {% endfor %}
   
-
+          <div class="card border-info" style="margin-left: 8%; margin-right: 8%">
+            <h5 class="card-header">Patient Profile</h5>
+            <div class="card-body">
+              <h5 class="card-title">Name</h5>
+              <br>
+              <div class="row" >
+                <div class="col">First Name: {{ record.first_name|upper }}</div>
+                <div class="col">Middle Name: {{ record.middle_name|upper }} </div>
+                <div class="col">Last Name: {{ record.last_name|upper }}</div>
+                <div class="col">Suffix: {{ record.suffix|upper }}</div>
+              </div>
+              <br>
+              <div class="row" >
+                <div class="col">Nickname: {{ record.nick_name|upper }}</div>
+                <div class="col">Patient Record#: {{ record.id|upper }}</div>
+                <div class="col">Attending Doctor: {{ record.doctor_assigned|upper }}</div>
+                <div class="col"></div>
+              </div>
+              <br>
+              <div class="row" >
+                <div class="col-3" >Gender: {{ record.gender|upper }}</div>
+                <div class="col-4">Date of Birth: {{ record.bday|upper }}</div>
+                <div class="col-3">Age: {{ record.age|upper }}</div>
+                <div class="col-2" ></div>
+              </div>
+              <br>
+              <hr>
+              <br>
+              <h5 class="card-title">Contact Information</h5>
+              <br>
+              <div class="row" >
+                <div class="col">Mobile No.: {{ record.mobile|upper }}</div>
+                <div class="col">Landline: {{ record.landline|upper }}</div>
+                <div class="col">Email: {{ record.email|upper }}</div>
+                <div class="col"></div>
+              </div>
+              <br>
+              <hr>
+              <br>
+              <h5 class="card-title">Address</h5>
+              <br>
+              <div class="row" >
+                <div class="col-4">House/Unit No./Street: {{ record.home_no|upper }}</div>
+                <div class="col-3">Barangay: {{ record.brgy|upper }}</div>
+                <div class="col-3">City: {{ record.city|upper }}</div>
+                <div class="col-2"></div>
+              </div>
+              <br>
+              <div class="row" >
+                <div class="col-4">Province: {{ record.province|upper }}</div>
+                <div class="col-3">Region: {{ record.region|upper }}</div>
+                <div class="col-3">Zip Code: {{ record.zip_code|upper }}</div>
+                <div class="col-2"></div>
+              </div>
+              <br>
+              <hr>
+              <br>
+              <h5 class="card-title">Parents' Information</h5>
+              <br>
+              <div class="row">
+              <h6>Mother</h6>
+              <br>
+              </div>
+              <div class="row" >
+                <div class="col">First Name: {{ record.fname_mom|upper }}</div>
+                <div class="col">Last Name: {{ record.lname_mom|upper }}</div>
+                <div class="col">Contact No.: {{ record.contact_mom|upper }}</div>
+                <div class="col">Email: {{ record.email_mom|upper }}</div>
+              </div>
+              <br>
+              <div class="row" >
+              <h6>Father</h6>
+              <br>
+              </div>
+              <div class="row"  >
+                <div class="col">First Name: {{ record.fname_dad|upper }}</div>
+                <div class="col">Last Name: {{ record.lname_dad|upper }}</div>
+                <div class="col">Contact No.: {{ record.contact_dad|upper }}</div>
+                <div class="col">Email: {{ record.email_dad|upper }}</div>
+              </div>
+              <br>
+              <hr>
+              <br>
+            <h5 class="card-title">Emergency Contact Persons</h5>
+            <br>
+            <div class="row">
+            <h6>Person 1 </h6>
+            <br>
+            </div>
+            <div class="row" >
+              <div class="col">First Name: {{ record.fname_e1|upper }} </div>
+              <div class="col">Last Name: {{ record.lname_e1|upper }} </div>
+              <div class="col">Relation: {{ record.relation_e1|upper }} </div>
+              <div class="col">Contact No.: {{ record.contact_e1|upper }} </div>
+            </div>
+            <br>
+            <div class="row" >
+            <h6>Person 2 </h6>
+            <br>
+            </div>
+            <div class="row" >
+              <div class="col">First Name: {{ record.fname_e2|upper }} </div>
+              <div class="col">Last Name: {{ record.lname_e2|upper }} </div>
+              <div class="col">Relation: {{ record.relation_e2|upper }} </div>
+              <div class="col">Contact No.: {{ record.contact_e2|upper }} </div>
+            </div>
+            <br>
+            <hr>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button class="btn btn-lg btn-info" data-bs-toggle="modal" data-bs-target="#create-patient-record" style="color: black">
+                 Update Profile</button>
+            </div>
+            </div>
+          </div>
+          <br><br><br><br><br>
 
 
 

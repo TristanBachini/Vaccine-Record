@@ -77,7 +77,6 @@ class Patient(models.Model):
 
 class PatientRecord(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=True)
-    username=models.CharField(max_length=100,null=True)
     last_name = models.CharField(max_length=100, null=True)
     first_name = models.CharField(max_length=100, null=True)
     middle_name = models.CharField(max_length=100, null=True)
@@ -108,7 +107,7 @@ class PatientRecord(models.Model):
     fname_e1 = models.CharField(max_length=100)
     relation_e1 = models.CharField(max_length=100)
     contact_e1 = models.CharField(max_length=100)
-    name_e2 = models.CharField(max_length=100)
+    lname_e2 = models.CharField(max_length=100)
     fname_e2 = models.CharField(max_length=100)
     relation_e2 = models.CharField(max_length=100)
     contact_e2 = models.CharField(max_length=100)
