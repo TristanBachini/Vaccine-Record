@@ -19,7 +19,7 @@
                 <center><h2 class="modal-title" id="staticBackdropLabel">Patient Profile</h2></center>
               <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div></center>
-            <form action="{% url 'create-patient-record' %}" method="post">
+            <form action="{% url 'create-record' %}" method="post">
                 <div class="modal-body" style="color: black">
                     {% csrf_token %}
                     <br />

@@ -18,5 +18,6 @@ urlpatterns = [
     path('tool/portal', views.portal, name="portal"),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('create-patient-record/', views.create_patient_record, name="create-patient-record"),
+    path('create-record/', views.create_record, name="create-record"),
     path('patient-profile/<pk>', views.patient_profile, name="patient-profile"),
 ]

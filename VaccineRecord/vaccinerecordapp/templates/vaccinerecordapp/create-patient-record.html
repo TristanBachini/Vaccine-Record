@@ -1,201 +1,287 @@
 {% extends 'vaccinerecordapp/navbar.html' %} {% block content %} {% load static %}
+
+{% include 'vaccinerecordapp/patient-navbar.html' %}
+
 <br />
 
 <div class="container">
 
-    <h3>Patient</h3>
+    <h3>New Patient Record</h3>
     <button
     class="btn btn-sm"
     data-bs-toggle="modal"
     data-bs-target="#create-patient-record"
     style="color: black"
-    > Create Patient Record </button>
+    > Create Record </button>
     <br><br>
 
-    <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Age</th>
-                <th colspan="2"></th>
-            </tr>
-        </thead>
-        <tbody>
+    <br><br>
 
-            {% for patient in patients %}
-
-            <tr>
-                <td>{{patient.last_name}}, {{patient.first_name}}</td>
-                <td>{{patient.age}}</td>
-                <td>
-                    <a href="#" class="btn btn-outline-dark">
-                        <i class="fas fa-edit"></i>
-                        Update Patient
-                    </a>
-                </td>
-                <td>
-
-                    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#">
-                        <i class="fas fa-trash"></i>
-                        Delete Patient
-                    </button>
-
-                </td>
-            </tr>
-
-            {% endfor %}
-
-        </tbody>
-
-    </table>
-
-</div>
-
-
-<div class="modal fade" id="create-patient-record">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content">
-        <center>
-        <div class="modal-header">
-            <center><h2 class="modal-title" id="staticBackdropLabel">Patient Profile</h2></center>
-          <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-        </div></center>
-        <form action="{% url 'create-patient-record' %}" method="post">
-            <div class="modal-body" style="color: black">
-                {% csrf_token %}
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <h5>Name</h5>
-                <br />
-                <br />
+    <div class="modal fade" id="create-patient-record">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+            <center>
+            <div class="modal-header">
+                <center><h2 class="modal-title" id="staticBackdropLabel">Patient Profile</h2></center>
+              <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div></center>
+            <form action="{% url 'create-record' %}" method="post">
+                <div class="modal-body" style="color: black">
+                    {% csrf_token %}
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <h5>Name</h5>
+                    <br />
+                    <input name='username'>
+                    <br />
+                    </div>
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <div class="col">First Name: {{form.first_name}}</div>
+                    <div class="col">Middle Name: {{form.middle_name}}</div>
+                    <div class="col">Last Name: {{form.last_name}}</div>
+                    <div class="col">Suffix: {{form.suffix}}</div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 15%">
+                    <div class="col">Nickname: {{form.nick_name}}</div>
+                    <div class="col">Attending Doctor: {{form.doctor_assigned}}</div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 15%">
+                    <div class="col">Gender: {{form.gender}}</div>
+                    <div class="col">Date of Birth: {{form.bday}}</div>
+                    <div class="col">Age: {{form.age}}</div>
+                    <div class="col"></div>
+                    </div>
+                    <hr style="margin-left:10%; margin-right: 10%">
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <h5> Contact Information </h5>
+                    <br />
+                    <br />
+                    </div>
+                    <div class="row" style="margin-left: 10%; margin-right: 15%">
+                    <div class="col">Mobile No.: {{form.mobile}}</div>
+                    <div class="col">Landline: {{form.landline}}</div>
+                    <div class="col">Email: {{form.email}}</div>
+                    <div class="col"></div>
+                    </div>
+                    <hr style="margin-left:10%; margin-right: 10%">
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <h5> Address</h5>
+                    <br />
+                    <br />
+                    </div>
+                    <div class="row" style="margin-left: 10%; margin-right: 15%">
+                    <div class="col">House/Unit No./Street: {{form.home_no}}</div>
+                    <div class="col">Barangay: {{form.brgy}}</div>
+                    <div class="col">City: {{form.city}}</div>
+                    <div class="col"></div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 15%">
+                    <div class="col">Province: {{form.province}}</div>
+                    <div class="col">Region: {{form.region}}</div>
+                    <div class="col">Zip Code: {{form.zip_code}}</div>
+                    <div class="col"></div>
+                    </div>
+                    <hr style="margin-left:10%; margin-right: 10%">
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <h5>Parents Information</h5>
+                    </div>
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <h6>Mother</h6>
+                    <br/>
+                    </div>
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <div class="col">First Name: {{form.fname_mom}}</div>
+                    <div class="col">Last Name: {{form.lname_mom}}</div>
+                    <div class="col">Contact No.: {{form.contact_mom}}</div>
+                    <div class="col">Email: {{form.email_mom}}</div>
+                    </div>
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <h6>Father</h6>
+                    <br />
+                    </div>
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <div class="col">First Name: {{form.fname_dad}}</div>
+                    <div class="col">Last Name: {{form.lname_dad}}</div>
+                    <div class="col">Contact No.: {{form.contact_dad}}</div>
+                    <div class="col">Email: {{form.email_dad}}</div>
+                    </div>
+                    <hr style=" margin-left: 10%; margin-right: 10%">
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <h5>Emergency Contacts </h5>
+                    </div>
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <h6>Person 1 </h6>
+                    <br />
+                    </div>
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <div class="col">First Name: {{form.fname_e1}}</div>
+                    <div class="col">Last Name: {{form.lname_e1}}</div>
+                    <div class="col">Relation: {{form.relation_e1}}</div>
+                    <div class="col">Contact No.: {{form.contact_e1}}</div>
+                    </div>
+                    <br />
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <h6>Person 2 </h6>
+                    <br />
+                    </div>
+                    <div class="row" style="margin-left: 10%; margin-right: 10%">
+                    <div class="col">First Name: {{form.fname_e2}}</div>
+                    <div class="col">Last Name: {{form.lname_e2}}</div>
+                    <div class="col">Relation: {{form.relation_e2}}</div>
+                    <div class="col">Contact No.: {{form.contact_e2}}</div>
+                    </div>
+                    <br />
+                    <br />
+                    
                 </div>
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <div class="col">username: {{form.username}}</div>
-                <div class="col">First Name: {{form.first_name}}</div>
-                <div class="col">Middle Name: {{form.middle_name}}</div>
-                <div class="col">Last Name: {{form.last_name}}</div>
-                <div class="col">Suffix: {{form.suffix}}</div>
-                </div>
-                <br />
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 15%">
-                <div class="col">Nickname: {{form.nick_name}}</div>
-                <div class="col">Attending Doctor: {{form.doctor_assigned}}</div>
-                <div class="col"></div>
-                <div class="col"></div>
-                </div>
-                <br />
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 15%">
-                <div class="col">Gender: {{form.gender}}</div>
-                <div class="col">Date of Birth: {{form.bday}}</div>
-                <div class="col">Age: {{form.age}}</div>
-                <div class="col"></div>
-                </div>
-                <hr style="margin-left:10%; margin-right: 10%">
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <h5> Contact Information </h5>
-                <br />
-                <br />
-                </div>
-                <div class="row" style="margin-left: 10%; margin-right: 15%">
-                <div class="col">Mobile No.: {{form.mobile}}</div>
-                <div class="col">Landline: {{form.landline}}</div>
-                <div class="col">Email: {{form.email}}</div>
-                <div class="col"></div>
-                </div>
-                <hr style="margin-left:10%; margin-right: 10%">
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <h5> Address</h5>
-                <br />
-                <br />
-                </div>
-                <div class="row" style="margin-left: 10%; margin-right: 15%">
-                <div class="col">House No./Building/Street: {{form.home_no}}</div>
-                <div class="col">Barangay: {{form.brgy}}</div>
-                <div class="col">City: {{form.city}}</div>
-                <div class="col"></div>
-                </div>
-                <br />
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 15%">
-                <div class="col">Province: {{form.province}}</div>
-                <div class="col">Region: {{form.region}}</div>
-                <div class="col">Zip Code: {{form.zip_code}}</div>
-                <div class="col"></div>
-                </div>
-                <hr style="margin-left:10%; margin-right: 10%">
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <h5>Parents Information</h5>
-                </div>
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <h6>Mother</h6>
-                <br/>
-                </div>
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <div class="col">First Name: {{form.fname_mom}}</div>
-                <div class="col">Last Name: {{form.lname_mom}}</div>
-                <div class="col">Contact No.: {{form.contact_mom}}</div>
-                <div class="col">Email: {{form.email_mom}}</div>
-                </div>
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <h6>Father</h6>
-                <br />
-                </div>
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <div class="col">First Name: {{form.fname_dad}}</div>
-                <div class="col">Last Name: {{form.lname_dad}}</div>
-                <div class="col">Contact No.: {{form.contact_dad}}</div>
-                <div class="col">Email: {{form.email_dad}}</div>
-                </div>
-                <hr style=" margin-left: 10%; margin-right: 10%">
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <h5>Emergency Contacts </h5>
-                </div>
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <h6>Person 1 </h6>
-                <br />
-                </div>
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <div class="col">First Name: {{form.fname_e1}}</div>
-                <div class="col">Last Name: {{form.fname_e1}}</div>
-                <div class="col">Relation: {{form.relation_e1}}</div>
-                <div class="col">Contact No.: {{form.contact_e1}}</div>
-                </div>
-                <br />
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <h6>Person 2 </h6>
-                <br />
-                </div>
-                <div class="row" style="margin-left: 10%; margin-right: 10%">
-                <div class="col">First Name: {{form.fname_e2}}</div>
-                <div class="col">Last Name: {{form.fname_e2}}</div>
-                <div class="col">Relation: {{form.relation_e2}}</div>
-                <div class="col">Contact No.: {{form.contact_e2}}</div>
-                </div>
-                <br />
-                <br />
-                
-            </div>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id="submit_button" type="submit" class="btn btn-primary">Create Record</button>
-        </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="submit_button" type="submit" class="btn btn-primary">Create Record</button>
+                  </div>
+            </form>
+          </div>
+        </div>
       </div>
+    
+      {% for message in messages %} {% if message.tags == 'success' %}
+    
+          {% else %}
+          {{message | striptags}}
+          {% endif %} {% endfor %}
+
+
+
+
+
+
+<!-- Display Profile -->
+<div class="card" style="margin-left: 10%; margin-right: 10%">
+    <h5 class="card-header">Patient Profile</h5>
+    <div class="card-body">
+      <h5 class="card-title">Name</h5>
+      <br>
+      <div class="row" >
+        <div class="col">First Name: </div>
+        <div class="col">Middle Name: </div>
+        <div class="col">Last Name:</div>
+        <div class="col">Suffix:</div>
+      </div>
+      <br>
+      <div class="row" >
+        <div class="col">Nickname: </div>
+        <div class="col">Attending Doctor:</div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">Gender:</div>
+        <div class="col">Date of Birth:</div>
+        <div class="col">Age:</div>
+        <div class="col"></div>
+      </div>
+      <br>
+      <hr>
+      <br>
+      <h5 class="card-title">Contact Information</h5>
+      <br>
+      <div class="row">
+        <div class="col">Mobile No.:</div>
+        <div class="col">Landline:</div>
+        <div class="col">Email: </div>
+        <div class="col"></div>
+      </div>
+      <br>
+      <hr>
+      <br>
+      <h5 class="card-title">Address</h5>
+      <br>
+      <div class="row">
+        <div class="col-4">House/Unit No./Street: </div>
+        <div class="col">Barangay: </div>
+        <div class="col">City:  </div>
+        <div class="col"></div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col">Province:</div>
+        <div class="col">Region: </div>
+        <div class="col">Zip Code: </div>
+        <div class="col"></div>
+      </div>
+      <br>
+      <hr>
+      <br>
+      <h5 class="card-title">Parents' Information</h5>
+      <br>
+      <div class="row">
+      <h6>Mother</h6>
+      <br>
+      </div>
+      <div class="row">
+        <div class="col">First Name:</div>
+        <div class="col">Last Name: </div>
+        <div class="col">Contact No.: </div>
+        <div class="col">Email:</div>
+      </div>
+      <br>
+      <div class="row" >
+      <h6>Father</h6>
+      <br>
+      </div>
+      <div class="row" >
+        <div class="col">First Name: </div>
+        <div class="col">Last Name: </div>
+        <div class="col">Contact No.:</div>
+        <div class="col">Email:</div>
+      </div>
+      <br>
+      <hr>
+      <br>
+    <h5 class="card-title">Emergency Contact Persons</h5>
+    <br>
+    <div class="row">
+    <h6>Person 1 </h6>
+    <br>
+    </div>
+    <div class="row">
+      <div class="col">First Name:</div>
+      <div class="col">Last Name:</div>
+      <div class="col">Relation: </div>
+      <div class="col">Contact No.:</div>
+    </div>
+    <br>
+    <div class="row" >
+    <h6>Person 2 </h6>
+    <br>
+    </div>
+    <div class="row">
+      <div class="col">First Name: </div>
+      <div class="col">Last Name:</div>
+      <div class="col">Relation: </div>
+      <div class="col">Contact No.: </div>
+    </div>
+    <br>
+    <hr>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <a href="#" class="btn btn-primary">Update Profile</a>
+    </div>
     </div>
   </div>
-
-  {% for message in messages %} {% if message.tags == 'success' %}
-
-      {% else %}
-      {{message | striptags}}
-      {% endif %} {% endfor %}
+  <br><br><br><br><br>
 
 
 {% endblock %}

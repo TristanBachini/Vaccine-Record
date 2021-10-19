@@ -74,7 +74,8 @@ class PatientRecordForm(forms.ModelForm):
             model = PatientRecord
             fields = "__all__"
             widgets = {
-                'bday': DateInput(),
+                'bday': DateInput({'class': 'form-control'}),
+                'gender': Select({'class': 'form-control'}),
                 'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
                 'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
                 'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': True}),

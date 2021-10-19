@@ -64,7 +64,7 @@ def dashboard(request):
 #     data = {"form":form}
 #     return render(request, 'vaccinerecordapp/search-create-patient.html',data)
 
-def create_patient_record(request):
+def create_record(request):
     form = PatientRecordForm()
     patients = PatientRecord.objects.all()
     print("create patient record")
@@ -92,7 +92,7 @@ def create_patient_record(request):
             print("nagsave")
             messages.success(request, "Patient was created for " +
                              form.cleaned_data.get("first_name") + form.cleaned_data.get("last_name"))
-            return redirect('/dashboard')
+            return redirect('/search-create-patient')
         else:
             print(form.errors)
     else:
@@ -120,7 +120,7 @@ def create_patient(request):
             group = Group.objects.get(name="patient")
             user = User.objects.get(username = form1.cleaned_data.get("username"))
             user.groups.add(group) 
-            return redirect('/search-create-patient')
+            return redirect('/create-patient-record')
         else:
             print(form2.errors)
     else:
@@ -179,11 +179,22 @@ def search_create_patient(request):
 @login_required(login_url='/')
 def patient_profile(request,pk):
     form = PatientRecordForm(request.POST)
-    #dapat username gamitin para makuha ung record ni patient dunno how
-    # di dapat get() ung gamitin kasi isa lang yung need. for now lang muna
-    record = PatientRecord.objects.get() 
+    # record = PatientRecord.objects.get() 
+    # record = User.objects.get(id=User.objects.get(id=pk).id)
+    #gumagana pero does not exist sa iba huhu
+    # record = PatientRecord.objects.get(user=Patient.objects.get(user=User.objects.get(id=pk).id).user)
+    # record = PatientRecord.objects.get(user=PatientRecord.objects.get(user=User.objects.get(id=pk).id).user)
+    username = User.objects.get(id=User.objects.get(id=pk).id)
+    print(username)
+    record = PatientRecord.objects.get(user=PatientRecord.objects.get(user=username).user)
     data = {"form":form, "record":record}
     return render(request, 'vaccinerecordapp/patient-profile.html',data )
+
+@login_required(login_url='/')
+def create_patient_record(request):
+    form = PatientRecordForm(request.POST)
+    data = {"form":form}
+    return render(request,'vaccinerecordapp/create-patient-record.html',data)
 
 @login_required(login_url='/')
 def tool(request): 
