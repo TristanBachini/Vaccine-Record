@@ -2,13 +2,21 @@
  
 <br />
 <br />
-
+<!--
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     
-    <button class="btn btn-sm btn-outline-dark" data-bs-toggle="modal" data-bs-target="#create-patient">
+    <button class="btn btn-sm btn-outline-dark"  data-bs-toggle="modal" data-bs-target="#create-patient">
         <i class="fas fa-folder-plus fa-lg"></i> 
         Create New Account
     </button>
+</div>
+-->
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    
+  <button class="btn btn-sm btn-outline-dark"  href="{% url 'register-patient' %}">
+      <i class="fas fa-folder-plus fa-lg"></i> 
+      Create New Account
+  </button>
 </div>
 
 <table class="table table-striped table-hover">
@@ -80,6 +88,20 @@
                 <br />
                 
             </div>
+            {% if form.errors %} {% for key, value in form.errors.items %}
+            <div
+              class="alert alert-danger alert-dismissable fade show reg-error"
+              role="alert"
+            >
+              <strong>Error!</strong> {{value|striptags}}
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+            </div>
+            {% endfor %} {% endif %}
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
               <button id="submit_button" type="submit" class="btn btn-primary">Create Account</button>
@@ -94,6 +116,7 @@
       {% else %}
       {{message | striptags}}
       {% endif %} {% endfor %}
+      
 
 
 {% endblock %}

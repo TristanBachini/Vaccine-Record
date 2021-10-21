@@ -1,6 +1,6 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %}
-<table>
+<!--<table>
     <tr>
       <th>
         {% include 'vaccinerecordapp/patient-navbar.html' %}
@@ -19,7 +19,8 @@
       </th>
     </tr>
   </table>
-
+-->
+<a class="btn"href="{% url 'register-patient' %}">Create Patient</a>
   <div class="modal fade" id="create-patient">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
