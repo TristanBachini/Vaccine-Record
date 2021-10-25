@@ -1,0 +1,20 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+  {{ user.first_name|upper }} {{ user.last_name|upper }}  |  {{ user.record.age|upper }} | {{ user.record.gender|upper }} | {{ user.record.bday|upper }}
+</p>
+
+    {% include 'vaccinerecordapp/patient-navbar.html' %}
+    
+    <br><br>
+    
+    <div class="row" style="margin-left: 10%; margin-right: 10%">
+        <div class="card">
+            <div class="card-body">
+                Hi! This is from the [Clinic Name/Location] of [Name of Doctor] reminding you of your child’s vaccination schedule this [Date mm/dd/yyy] at [Time 00:00AM/PM]. Your child is due for [vaccine name]. Please reply CONFIRM to finalize your booking appointment. If you need to reschedule, message [contact number]. 	
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -24,7 +24,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               {% if request.user|has_group:"staff"%}
               <li class="nav-item">
-               <a class="nav-link active" aria-current="page" href="{% url 'search-create-patient' %}">
+               <a class="nav-link active" aria-current="page" href="{% url 'search-patient' %}">
                  <i class="fas fa-user"></i>
                  Patient
                 </a> 
@@ -59,6 +59,7 @@
           </div>
         </div>
       </nav>
+
       {% block content %}
 
       {% endblock %}

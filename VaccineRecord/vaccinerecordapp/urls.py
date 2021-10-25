@@ -10,7 +10,6 @@ urlpatterns = [
     path('reset/password-reset/done/', v.PasswordResetDoneView.as_view(template_name='vaccinerecordapp/password-reset-done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', v.PasswordResetConfirmView.as_view(template_name="vaccinerecordapp/password-reset-confirm.html"), name='password_reset_confirm'),
     path('reset/done/', v.PasswordResetCompleteView.as_view(template_name='vaccinerecordapp/password-reset-complete.html'), name='password_reset_complete'),      
-    path('search-create-patient/', views.search_create_patient, name="search-create-patient"),
     path('create-patient/', views.create_patient, name="create-patient"),
     path('tool/', views.tool, name="tool"),
     path('tool/staff', views.staff, name="staff"),
@@ -20,5 +19,8 @@ urlpatterns = [
     path('create-patient-record/', views.create_patient_record, name="create-patient-record"),
     path('create-record/', views.create_record, name="create-record"),
     path('patient-profile/<pk>', views.patient_profile, name="patient-profile"),
-    path('register-patient',views.register_patient, name="register-patient")
-]
+    path('register-patient',views.register_patient, name="register-patient"),
+    path('search-patient/', views.search_patient, name="search-patient"),
+    path('patient-landing', views.patient_landing, name="patient-landing"),
+    path('update-patient-profile/<pk>',views.update_patient_profile, name="update-patient-profile"),
+    ]
