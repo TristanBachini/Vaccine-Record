@@ -12,11 +12,12 @@
 </div>
 -->
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    
-  <button class="btn btn-sm btn-outline-dark"  href="{% url 'register-patient' %}">
-      <i class="fas fa-folder-plus fa-lg"></i> 
-      Create New Account
-  </button>
+  <a href="{% url 'register-patient' %}">
+    <button class="btn btn-sm btn-outline-dark" >
+        <i class="fas fa-folder-plus fa-lg"></i> 
+        Create New Account
+    </button>
+  </a>
 </div>
 
 <table class="table table-striped table-hover">
@@ -46,76 +47,6 @@
   </tbody>
 
 </table>
-
-<div class="modal fade" id="create-patient">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <form action="{% url 'create-patient' %}" method="post">
-            <div class="modal-body" style="color: black">
-                {% csrf_token %}
-                <center>
-                <br />
-                <h2> Create Patient Account
-                </h2>
-                </center>
-                <br />
-
-                <div class="row" style="margin-left: 15%; margin-right: 15%">
-                <div class="col">Enter First Name: {{form1.first_name}}</div>
-                <div class="col">Enter Last Name: {{form1.last_name}}</div>
-                </div>
-                <br />
-                <br />
-                <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-                <div class="col">Enter Relationship: {{form2.relationship}}</div>
-                </div>
-                <br />
-                <br />
-                <div class="row" style="margin-left: 15%; margin-right: 15%">
-                <div class="col">Enter Username: {{form1.username}}</div>
-                <div class="col">Enter Email: {{form1.email}}</div>
-                </div>
-                <br />
-                <br />
-                <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-                <div class="col">Enter Password: {{form1.password1}}</div>
-                </div>
-                <br />
-                <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-                <div class="col">Confirm Password: {{form1.password2}}</div>
-                </div>
-                <br />
-                <br />
-                
-            </div>
-            {% if form.errors %} {% for key, value in form.errors.items %}
-            <div
-              class="alert alert-danger alert-dismissable fade show reg-error"
-              role="alert"
-            >
-              <strong>Error!</strong> {{value|striptags}}
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-                aria-label="Close"
-              ></button>
-            </div>
-            {% endfor %} {% endif %}
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button id="submit_button" type="submit" class="btn btn-primary">Create Account</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  {% for message in messages %} {% if message.tags == 'success' %}
-
-      {% else %}
-      {{message | striptags}}
-      {% endif %} {% endfor %}
       
 
 

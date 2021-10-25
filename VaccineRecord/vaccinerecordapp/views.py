@@ -34,7 +34,11 @@ def home(request):
         if user is not None:
             login(request, user)
             print("should work")
-            return render(request, 'vaccinerecordapp/dashboard.html')
+            form1 = UserForm(request.POST)
+            form2 = PatientForm(request.POST)
+            patients = User.objects.filter(groups__name="Patient")
+            data = {"form1":form1, "form2":form2, "patients":patients}
+            return render(request, 'vaccinerecordapp/search-create-patient.html',data)
         else:
             messages.error(request,"Invalid Email or Password")
     form = LoginForm()
@@ -46,23 +50,6 @@ def home(request):
 @login_required(login_url='/home')
 def dashboard(request):
     return render(request,'vaccinerecordapp/dashboard.html')
-
-# def create_patient(request):
-#     if(request.method == "POST"):
-#         form = UserForm(request.POST)
-#         if(form.is_valid()):
-#             form.save()
-#             messages.success(request, "Account was created for " +
-#                              form.cleaned_data.get("username"))
-#             group = Group.objects.get(name="patient")
-#             user = User.objects.get(username = form.cleaned_data.get("username"))
-#             user.groups.add(group) 
-#             return redirect('/dashboard')
-#     else:
-#         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
-
-#     data = {"form":form}
-#     return render(request, 'vaccinerecordapp/search-create-patient.html',data)
 
 def create_record(request):
     form = PatientRecordForm()
@@ -157,47 +144,24 @@ def register_patient(request):
     if(request.method == "POST"):
         form1 = UserForm(request.POST)
         form2 = PatientForm(request.POST)
-        try:
-            user_exists = User.objects.get(username=request.POST['username'])
-            messages.error(request, "Username is already taken, please choose another.")
-            form1 = UserForm()
-            form2 = PatientForm()
+        if(form1.is_valid()):
+            form1.save()
+            user = User.objects.get(username = form1.cleaned_data.get("username"))
+            print(user)
+            lname = user.last_name
+            fname = user.first_name
+            form2 = PatientForm({'user':user, 'last_name': lname, 'first_name': fname, 'relationship':request.POST.get('relationship')})
+        else:
             data = {"form1":form1, "form2":form2}
-            return render(request, 'vaccinerecordapp/portal.html',data)
-        except User.DoesNotExist:
-            try:
-                email_exists = User.objects.get(email=request.POST['email'])
-                messages.error(request, "This email is already in use. If you forgot your password, kindly click forgot password upon login.")
-                form1 = UserForm()
-                form2 = PatientForm()
-                data = {"form1":form1, "form2":form2}
-                return render(request, 'vaccinerecordapp/portal.html',data)
-            except User.DoesNotExist:
-                if(form1.is_valid()):
-                    if(request.POST['password1']!=request.POST['password2']):
-                        messages.error(request, "The passwords do not match. Please try again.")
-                        form1 = UserForm()
-                        form2 = PatientForm()
-                        data = {"form1":form1, "form2":form2}
-                        return render(request, 'vaccinerecordapp/portal.html',data)
-                    else:
-                        form1.save()
-                        user = User.objects.get(username = form1.cleaned_data.get("username"))
-                        print(user)
-                        lname = user.last_name
-                        fname = user.first_name
-                        form2 = PatientForm({'user':user, 'last_name': lname, 'first_name': fname, 'relationship':request.POST.get('relationship')})
-                else:
-                    data = {"form1":form1, "form2":form2}
-                    return render(request, 'vaccinerecordapp/register-patient.html',data)
-                if(form2.is_valid()):
-                    form2.save()
-                    messages.success(request, "Account was created for " +
-                                    form1.cleaned_data.get("username"))
-                    group = Group.objects.get(name="patient")
-                    user = User.objects.get(username = form1.cleaned_data.get("username"))
-                    user.groups.add(group) 
-                    return redirect('/create-patient-record')
+            return render(request, 'vaccinerecordapp/register-patient.html',data)
+        if(form2.is_valid()):
+            form2.save()
+            messages.success(request, "Account was created for " +
+                            form1.cleaned_data.get("username"))
+            group = Group.objects.get(name="patient")
+            user = User.objects.get(username = form1.cleaned_data.get("username"))
+            user.groups.add(group) 
+            return redirect('/create-patient-record')
 
 
     data = {"form1":form1, "form2":form2}
