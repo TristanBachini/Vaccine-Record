@@ -34,7 +34,6 @@ def home(request):
         user = authenticate(request, password=password, username=username)
         if user is not None:
             login(request, user)
-            print("should work")
             if user.groups.filter(name="Staff") or user.groups.filter(name="Doctor"):
                 form1 = UserForm(request.POST)
                 form2 = PatientForm(request.POST)
@@ -42,7 +41,9 @@ def home(request):
                 data = {"form1":form1, "form2":form2, "patients":patients}
                 return render(request, 'vaccinerecordapp/dashboard.html',data)
             else:
-                return render(request, 'vaccinerecordapp/patient-landing.html')
+                patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
+                data = {'patient':patient}
+                return render(request, 'vaccinerecordapp/patient-landing.html',data)
         else:
             messages.error(request,"Invalid Email or Password")
     form = LoginForm()
@@ -91,16 +92,11 @@ def create_record(request):
     data = {"form":form, "patients":patients}
     return render(request, 'vaccinerecordapp/patient-profile.html',data)
 
-def update_patient_profile(request,pk):
-    patient = PatientRecord.objects.get(id = pk)
-    form = PatientRecordForm(instance = patient)
-    # sa point ng code na to ayaw niya gumana. like di narurun yung part ng code na to kaya kahit iupdate ung info di siya nagbabago.
-    if(request.method=="POST"):
-        form = PatientRecordForm(request.POST, instance=patient)
-        print("pumasok post")
-        username = request.POST.get('username')
-        print('username')        
-        user = User.objects.get(username=username)
+def update_patient_profile(request):
+    patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
+    form = UpdatePatientRecordForm(instance = patient)
+    if(request.method=="POST"):   
+        user = User.objects.get(username=request.user.username)
         form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
                                         'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
                                         'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
@@ -112,10 +108,12 @@ def update_patient_profile(request,pk):
                                         'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
                                         'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
                                         'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
-                                        'contact_e2':request.POST.get('contact_e2')})
+                                        'contact_e2':request.POST.get('contact_e2')}, instance = patient)
         if(form.is_valid()):
             form.save()
-            return redirect("/search-patient")
+            return redirect("/patient-landing")
+        else:
+            print(form.errors)
     data = {"form":form}
     return render(request, "vaccinerecordapp/update-patient-profile.html", data)
 

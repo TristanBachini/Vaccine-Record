@@ -68,6 +68,48 @@ class PatientForm(forms.ModelForm):
         widgets = {
             'user':  HiddenInput(attrs={'type': 'hidden'}),
         }
+class UpdatePatientRecordForm(forms.ModelForm):
+    class Meta:
+            model = PatientRecord
+            fields = "__all__"
+            widgets = {
+                'bday': DateInput({'class': 'form-control'}),
+                'gender': Select({'class': 'form-control'}),
+                'username': HiddenInput(attrs={'type': 'hidden'}),
+                'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
+                'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': True}),
+                'middle_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Middle name', 'aria-label': 'Middle name', 'required': False}),
+                'suffix': TextInput(attrs={'class': 'form-control', 'placeholder': 'Suffix', 'aria-label': 'Suffix', 'required': False}),
+                'nick_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Nickname', 'aria-label': 'Nickname', 'required': False}),
+                'doctor_assigned': HiddenInput(attrs={'type': 'hidden'}),
+                'user': HiddenInput(attrs={'type': 'hidden'}),
+                'mobile': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+                'age': TextInput(attrs={'class': 'form-control', 'placeholder': 'Age', 'aria-label': 'Age', 'required': False}),
+                'landline': TextInput(attrs={'class': 'form-control', 'placeholder': 'Landline', 'aria-label': 'Landline', 'required': False}),
+                'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': False}),
+                'home_no': TextInput(attrs={'class': 'form-control', 'placeholder': 'House/Unit No./Street', 'aria-label': 'House/Unit No./Street', 'required': False}),
+                'brgy': TextInput(attrs={'class': 'form-control', 'placeholder': 'Barangay', 'aria-label': 'Barangay', 'required': False}),
+                'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'City', 'aria-label': 'City', 'required': False}),
+                'province': TextInput(attrs={'class': 'form-control', 'placeholder': 'Province', 'aria-label': 'Province', 'required': False}),
+                'region': TextInput(attrs={'class': 'form-control', 'placeholder': 'Region', 'aria-label': 'Region', 'required': False}),
+                'zip_code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Zip Code', 'aria-label': 'Zip Code', 'required': False}),
+                'lname_mom': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': False}),
+                'fname_mom': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': False}),
+                'contact_mom': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+                'email_mom': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': False}),
+                'lname_dad': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': False}),
+                'fname_dad': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': False}),
+                'email_dad': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': False}),
+                'contact_dad': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+                'lname_e1': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': False}),
+                'fname_e1': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': False}),
+                'relation_e1': TextInput(attrs={'class': 'form-control', 'placeholder': 'Relationship', 'aria-label': 'Relationship', 'required': False}),
+                'contact_e1': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+                'lname_e2': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': False}),
+                'fname_e2': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': False}),
+                'relation_e2': TextInput(attrs={'class': 'form-control', 'placeholder': 'Relationship', 'aria-label': 'Relationship', 'required': False}),
+                'contact_e2': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
+            }
 
 class PatientRecordForm(forms.ModelForm):
     class Meta:

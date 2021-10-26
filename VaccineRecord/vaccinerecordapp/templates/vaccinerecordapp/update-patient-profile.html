@@ -6,22 +6,17 @@
     
     <br><br>
 
-    <form action="{% url 'search-create-patient' %}" method="POST">
+    <form action="{% url 'update-patient-profile' %}" method="POST">
         <div class="modal-body" style="color: black">
             {% csrf_token %}
+            {{form.doctor_assigned}}
+            {{form.user}}
             <center>
             <br />
             <h2> Update Patient Profile
             </h2>
             </center>
             <br />
-
-                    <div class="row" style="margin-left: 10%; margin-right: 10%">
-                    <h5>Name</h5>
-                    <br />
-                   <input name = 'username'>
-                    <br />
-                    </div>
                     <div class="row" style="margin-left: 10%; margin-right: 10%">
                     <div class="col">First Name: {{form.first_name}}</div>
                     <div class="col">Middle Name: {{form.middle_name}}</div>
@@ -32,7 +27,6 @@
                     <br />
                     <div class="row" style="margin-left: 10%; margin-right: 15%">
                     <div class="col">Nickname: {{form.nick_name}}</div>
-                    <div class="col">Attending Doctor: {{form.doctor_assigned}}</div>
                     <div class="col"></div>
                     <div class="col"></div>
                     </div>
