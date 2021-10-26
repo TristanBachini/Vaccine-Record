@@ -2,16 +2,23 @@
 
 <div class="d-flex align-items-start">
 <ul class="nav flex-column " style="background-color:#e3f2fd;;">
+  {% if request.user|has_group:"staff"%}
+    <li class="profile">
+      <a class="nav-link active" href="#">Profile</a>
+    </li>
+    {% endif %}
+    {% if request.user|has_group:"patient"%}
     <li class="profile">
       <a class="nav-link active" href="{% url 'update-patient-profile' %}">Profile</a>
     </li>
-    <li class="report">
+    {% endif %}
+    <li class="appointment">
+      <a class="nav-link" href="#">Appointment</a>
+    </li>
+    <li class="vaccine">
       <a class="nav-link active" href="{% url 'vaccine-record' %}">Vaccine</a>
     </li>
-    <li class="reminder">
-      <a class="nav-link" href="#">Reminder</a>
-    </li>
-    <li class="staff">
+    <li class="certificate">
       <a class="nav-link" href="#">Certificate</a>
     </li>
     {% if request.user|has_group:"staff"%}

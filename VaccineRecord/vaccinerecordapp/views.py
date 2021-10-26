@@ -280,7 +280,12 @@ def staff(request):
 
 @login_required(login_url='/')
 def patient_landing(request):
-    return render(request, 'vaccinerecordapp/patient-landing.html')
+    current_user = request.user
+    if current_user.groups.filter(name = "Patient"):
+        patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
+    data = {'patient':patient}
+    return render(request, 'vaccinerecordapp/patient-landing.html',data)
+    
 
 @login_required(login_url='/')
 def portal(request): 

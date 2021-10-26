@@ -40,23 +40,12 @@ class DoctorForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             'user':  HiddenInput(attrs={'type': 'hidden'}),
-            'end_date': DateInput(),
+            'prefix':  Select(attrs={'class': 'form-control'}),
+            'type':  Select(attrs={'class': 'form-control'}),
+            'title':  Select(attrs={'class': 'form-control'}),
+            'end_date': DateInput(attrs={'class': 'form-control'}),
+            'contact': TextInput(attrs={'class': 'form-control', 'placeholder': 'Contact Number', 'aria-label': 'Contact Number', 'required': True}),
         }
-
-
-    # prefix = forms.CharField(widget=forms.TextInput(attrs={
-    #     'prefix': 'form-control',
-    #     'placeholder': 'Prefix'
-    # }))
-    # title = forms.CharField(widget=forms.TextInput(attrs={
-    #     'title': 'form-control',
-    #     'placeholder': 'Title'
-    # }))
-    # contact = forms.CharField(required=True, max_length=11, widget=forms.NumberInput(attrs={
-    #     'class': 'form-control',
-    #     'placeholder': '09xxxxxxxxx'
-    # }))
-    # can_register = forms.BooleanField(required=True,initial=False,label='Can register')
 
 class PatientForm(forms.ModelForm):
     attrs = {'class': 'form-control', 'id':'relationship',
