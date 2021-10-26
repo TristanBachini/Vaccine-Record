@@ -1,0 +1,419 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+    {{ record.first_name|upper }},{{ record.last_name|upper }}  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
+  </p>
+  
+  
+      {% include 'vaccinerecordapp/patient-navbar.html' %}
+
+
+      <br><br>
+      <center>
+        <br />
+        <h2> Vaccine Information
+        </h2>
+        </center>
+        <br />
+
+        <div class='card card-body'>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Age</th>
+                        <th scope="col">Vaccine</th>
+                        <th scope="col">Dose</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Date Given</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="col" rowspan="2">Birth</td>
+                        <td scope="col">BCG</td>
+                        <td scope="col">1 of 1</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Hepatitis B#1</td>
+                        <td scope="col">1 of 3</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" rowspan="6">2 to 3 months</td>
+                        <td scope="col">Hepatitis B#2</td>
+                        <td scope="col">2 of 3</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">DTaP/DTwP #1</td>
+                        <td scope="col">1 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">IPV/OPV #1</td>
+                        <td scope="col">1 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">HiB #1</td>
+                        <td scope="col">1 of 4</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">PCV #1</td>
+                        <td scope="col"> 1 of 4</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Rotavirus #1</td>
+                        <td scope="col">1 of 2(or 3)</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" rowspan="5">4 to 5 months</td>
+                        <td scope="col">DTaP/DTwP #2</td>
+                        <td scope="col">2 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">IPV/OPV #2</td>
+                        <td scope="col">2 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">HiB #2</td>
+                        <td scope="col">2 of 4</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">PCV #2</td>
+                        <td scope="col">2 of 4</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Rotavirus #2</td>
+                        <td scope="col">2 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" rowspan="7">6 to 7 months</td>
+                        <td scope="col">Hepatitis B #3</td>
+                        <td scope="col">3 of 3</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">DTaP/DTwP #3</td>
+                        <td scope="col">3 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">IPV/OPV #3</td>
+                        <td scope="col">3 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">HiB #3</td>
+                        <td scope="col">3 of 4</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">PCV #3</td>
+                        <td scope="col">3 of 4</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Rotavirus #3</td>
+                        <td scope="col">3 of 3</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col"> Influenza #1</td>
+                        <td scope="col">1 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" rowspan="3">9 months</td>
+                        <td scope="col">Measles</td>
+                        <td scope="col">1 of 1</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col"> Japhanese Encephalitis B#1</td>
+                        <td scope="col">1 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col"> Influenza #2</td>
+                        <td scope="col">2 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" rowspan="7">12 to 15 months</td>
+                        <td scope="col">MMR #1</td>
+                        <td scope="col">1 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Varicella #1</td>
+                        <td scope="col">1 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">DTaP/DTwP Booster #1</td>
+                        <td scope="col">4 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">IPV/OPV Booster #1</td>
+                        <td scope="col">4 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">HiB Booster #1</td>
+                        <td scope="col">4 of 4</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">PCV Booster #1</td>
+                        <td scope="col">4 of 4</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Inactivated Hepatitis A#1</td>
+                        <td scope="col">1 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">18 to 21 months</td>
+                        <td scope="col">Inactivated Hepatitis A#2</td>
+                        <td scope="col">2 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" rowspan="3">24 months</td>
+                        <td scope="col">Meninggococcal vaccine</td>
+                        <td scope="col">1 of 1</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Typhoid</td>
+                        <td scope="col">1 of 1</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col"> Japhanese Encephalitis B#2</td>
+                        <td scope="col">2 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" rowspan="4">4 to 6 years</td>
+                        <td scope="col">DTaP/DTwP Booster #2</td>
+                        <td scope="col">5 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">IPV/OPV Booster #2</td>
+                        <td scope="col">5 of 5</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">MMR #2</td>
+                        <td scope="col">2 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Varicella #2</td>
+                        <td scope="col">2 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" >10 years</td>
+                        <td scope="col">Td/Tdap Booster #3</td>
+                        <td scope="col">Every 10 years</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" rowspan="2" >9 to 14 years</td>
+                        <td scope="col">HPV #1</td>
+                        <td scope="col">1 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">HPV #2</td>
+                        <td scope="col">2 of 2</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col" rowspan="2" >15 and up</td>
+                        <td scope="col">HPV #1</td>
+                        <td scope="col">1 of 3</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">HPV #2</td>
+                        <td scope="col">2 of 3</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">HPV #3</td>
+                        <td scope="col">2 of 3</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Annual</td>
+                        <td scope="col">Influenza</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                    <tr>
+                        <td scope="col">Others/Catch-up</td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                        <td scope="col"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+{%endblock%}

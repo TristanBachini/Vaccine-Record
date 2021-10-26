@@ -261,6 +261,13 @@ def create_patient_record(request):
     return render(request,'vaccinerecordapp/create-patient-record.html',data)
 
 @login_required(login_url='/')
+def vaccine_record(request):
+    #record = PatientRecord.objects.get(id = pk)
+
+    #data = {"record":record}
+    return render(request, 'vaccinerecordapp/vaccine-record.html')
+
+@login_required(login_url='/')
 def tool(request): 
     return render(request, 'vaccinerecordapp/tool.html')
 
