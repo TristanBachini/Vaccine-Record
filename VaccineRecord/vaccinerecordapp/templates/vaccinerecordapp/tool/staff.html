@@ -1,8 +1,9 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/staff.css' %}"/>
 <table>
   <tr>
-    <th>
+    <th id = "notbold">
       {% include 'vaccinerecordapp/staff-navbar.html' %}
     </th>
     <th>

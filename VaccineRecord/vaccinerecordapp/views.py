@@ -234,7 +234,7 @@ def create_staff(request):
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
 
     data = {"form1":form1, "form2":form2}
-    return render(request, 'vaccinerecordapp/staff.html',data)
+    return render(request, 'vaccinerecordapp/tool/staff.html',data)
 
 @login_required(login_url='/')
 def search_patient(request):
@@ -258,7 +258,7 @@ def patient_profile(request,pk):
 def create_patient_record(request):
     form = PatientRecordForm(request.POST)
     data = {"form":form}
-    return render(request,'vaccinerecordapp/create-patient-record.html',data)
+    return render(request,'vaccinerecordapp/account-creation/create-patient-record.html',data)
 
 @login_required(login_url='/')
 def vaccine_record(request):
@@ -269,14 +269,14 @@ def vaccine_record(request):
 
 @login_required(login_url='/')
 def tool(request): 
-    return render(request, 'vaccinerecordapp/tool.html')
+    return render(request, 'vaccinerecordapp/tool/tool.html')
 
 @login_required(login_url='/')
 def staff(request): 
     form1 = UserForm()
     form2 = DoctorForm()
     data = {"form1":form1, "form2":form2}
-    return render(request, 'vaccinerecordapp/staff.html',data)
+    return render(request, 'vaccinerecordapp/tool/staff.html',data)
 
 @login_required(login_url='/')
 def patient_landing(request):
@@ -304,7 +304,7 @@ def passwordReset(request):
                 if associated_users.exists():
                     for user in associated_users:
                         subject = "Password Reset Requested"
-                        email_template_name = "vaccinerecordapp/password_reset_email.txt"
+                        email_template_name = "vaccinerecordapp/reset-password/password_reset_email.txt"
                         c = {
                         "email":user.email,
                         'domain':'127.0.0.1:8000',
@@ -322,4 +322,4 @@ def passwordReset(request):
                         return redirect ("done/")
 
     password_reset_form = PasswordResetForm()
-    return render(request=request, template_name="vaccinerecordapp/password-reset.html", context={"password_reset_form":password_reset_form})
+    return render(request=request, template_name="vaccinerecordapp/reset-password/password-reset.html", context={"password_reset_form":password_reset_form})
