@@ -1,0 +1,43 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+
+    {% include 'vaccinerecordapp/patient-navbar.html' %}
+
+
+    <form action="{% url 'register-patient' %}" method="post">
+        <div class="modal-body" style="color: black">
+            {% csrf_token %}
+            <center>
+            <br />
+            <h2> Set Appointment
+            </h2>
+            </center>
+            <br />
+    
+            <div class="row" style="margin-left: 15%; margin-right: 15%">
+            <div class="col">Enter Patient Name: {{form.patient_name}}</div>
+            </div>
+            <br />
+            <br />
+            <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+            <div class="col">Requested Appointment Date: {{form.date}}</div>
+            </div>
+            <br />
+            <br />
+            <div class="row" style="margin-left: 15%; margin-right: 15%">
+            <div class="col">Select Doctor (Refer to patient record "Attending Doctor"): {{form.doctor}}</div>
+            <div class="col">Select Location: {{form.location}}</div>
+            <div class="col">Select Time: {{form.time}}</div>
+            <div class="col">Reason for Visit: {{form.visit}}</div>
+            </div>
+            <br />
+            <br />
+            </div>
+            <br />
+            <br />
+            
+        </div>
+    </form>
+    
+
+{%endblock%}

@@ -6,7 +6,7 @@ from django.db.models.fields import Field
 from django.db.models.fields.related import ForeignKey
 import datetime
 from django.shortcuts import reverse
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 # Create your models here.
 
 PREFIX = (
@@ -49,7 +49,7 @@ class Doctor(models.Model):
     can_register = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return "Dr. "+self.user.last_name
 
 
 
@@ -114,3 +114,30 @@ class PatientRecord(models.Model):
 
     def __str__(self):
         return self.last_name + "," + self.first_name
+
+class Time(models.Model):
+    time = models.CharField(max_length=100,null=True)
+
+    def __str__(self):
+        return self.time
+class Visit(models.Model):
+    visit = models.CharField(max_length=100,null = True)
+
+    def __str__(self):
+        return self.visit
+
+class Location(models.Model):
+    location = models.CharField(max_length=100,null = True)
+
+    def __str__(self):
+        return self.location
+
+class Appointment(models.Model):
+    user = ForeignKey(User, on_delete=models.CASCADE, null=True)
+    patient_name = models.CharField(max_length=100, blank=True, null=True)
+    status = models.CharField(max_length=100, blank=True, null=True)
+    date = models.DateTimeField(null=True)
+    time = models.ForeignKey(Time,on_delete=models.CASCADE,null=True)
+    visit = models.ForeignKey(Visit,on_delete=models.CASCADE,null=True)
+    location = models.ForeignKey(Location,on_delete=models.CASCADE,null=True)
+    doctor = models.ForeignKey(Doctor,on_delete=models.CASCADE,null=True)

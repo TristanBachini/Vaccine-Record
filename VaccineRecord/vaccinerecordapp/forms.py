@@ -9,6 +9,7 @@ from django.forms import widgets, ModelForm
 from django.forms.fields import BooleanField, ChoiceField
 from django.forms.widgets import DateInput, Select
 from .models import *
+from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
 
 class UserForm(UserCreationForm):
@@ -56,6 +57,21 @@ class PatientForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             'user':  HiddenInput(attrs={'type': 'hidden'}),
+        }
+class AppointmentForm(forms.ModelForm):
+    class Meta:
+        model = Appointment
+        doctor = User.objects.filter(groups__name='doctor')
+        fields = "__all__"
+        widgets = {
+            'user':HiddenInput(attrs={'type': 'hidden'}),
+            'patient_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
+            'status': HiddenInput(attrs={'type': 'hidden'}),
+            'date': DateInput(attrs={'class': 'form-control'}),
+            'time':Select(attrs={'class': 'form-control'}),
+            'doctor':Select(attrs={'class': 'form-control'}),
+            'visit':Select(attrs={'class': 'form-control'}),
+            'location':Select(attrs={'class': 'form-control'})
         }
 class UpdatePatientRecordForm(forms.ModelForm):
     class Meta:

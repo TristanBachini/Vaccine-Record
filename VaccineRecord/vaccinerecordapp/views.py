@@ -207,9 +207,7 @@ def create_staff(request):
         if(form1.is_valid()):
             form1.save()
             user = User.objects.get(username = form1.cleaned_data.get("username"))
-            lname = User.objects.get(last_name = form1.cleaned_data.get("last_name"))
-            fname = User.objects.get(first_name = form1.cleaned_data.get("first_name"))
-            form2 = DoctorForm({'user':user, 'last_name':lname, 'first_name':fname, 'contact':request.POST.get('contact'),'prefix':request.POST.get('prefix'),
+            form2 = DoctorForm({'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'), 'contact':request.POST.get('contact'),'prefix':request.POST.get('prefix'),
             'title':request.POST.get('title'),'type':request.POST.get('type'),'end_date':request.POST.get('end_date'),
             'can_register':request.POST.get('can_register')})
             print("yea this worked")
@@ -243,6 +241,12 @@ def search_patient(request):
     patients = myFilter.qs
     data = {"patients":patients, 'myFilter':myFilter}
     return render(request, 'vaccinerecordapp/search-patient.html',data)
+
+def appointment(request):
+    form = AppointmentForm()
+    data = {'form':form}
+
+    return render(request, 'vaccinerecordapp/appointment.html',data)
 
 @login_required(login_url='/')
 def patient_profile(request,pk):

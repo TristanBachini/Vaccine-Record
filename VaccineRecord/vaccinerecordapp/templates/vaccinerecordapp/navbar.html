@@ -22,7 +22,7 @@
           </button>
           <div class="topnav-right" id="navbarSupportedContent" >
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              {% if request.user|has_group:"staff"%}
+              {% if request.user|has_group:"staff" or request.user|has_group:"doctor" %}
               <li class="nav-item">
                <a class="nav-link active" aria-current="page" href="{% url 'search-patient' %}">
                  <i class="fas fa-user"></i>
