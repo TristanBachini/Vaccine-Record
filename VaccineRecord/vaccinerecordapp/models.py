@@ -78,7 +78,6 @@ class Patient(models.Model):
     def get_absolute_url(self):
         return reverse("patient-profile", kwargs={
             "pk" : self.pk
-        
         })
 
 class PatientRecord(models.Model):

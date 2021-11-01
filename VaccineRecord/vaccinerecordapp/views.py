@@ -1,3 +1,4 @@
+from collections import Counter
 from os import name
 from django.forms.widgets import DateTimeBaseInput
 from .models import *
@@ -253,6 +254,8 @@ def search_patient(request):
 def appointment(request):
     form = AppointmentForm(request.POST)
     user = User.objects.get(username=request.user.username)
+    appointments = Appointment.objects.all();
+    count = appointments.count();
     
     if(request.method == "POST"):
         if user.groups.filter(name='patient').exists():
@@ -291,7 +294,7 @@ def appointment(request):
                 data = {'patient':patient}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
         return redirect("/dashboard")
-    data = {"form":form}
+    data = {"form":form, "appointments": appointments, "count": count}
     return render(request, 'vaccinerecordapp/appointment.html',data)                          
     
 
