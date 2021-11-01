@@ -54,13 +54,12 @@ def home(request):
 
 @login_required(login_url='/home')
 def dashboard(request):
-    confirmed_appointments = Appointment.objects.filter(stat = "C")
-    unconfirmed_appointments = Appointment.objects.filter(stat = "UC")
-    postponed_appointments = Appointment.objects.filter(stat = "P")
+    appointments = Appointment.objects.all();
+    # confirmed_appointments = Appointment.objects.filter(stat = "C")
+    # unconfirmed_appointments = Appointment.objects.filter(stat = "UC")
+    # postponed_appointments = Appointment.objects.filter(stat = "P")
     count = Appointment.objects.all().count()
-    data = {'confirmed': confirmed_appointments,
-            'unconfirmed': unconfirmed_appointments, 
-            'postponed': postponed_appointments,
+    data = {'appointments' : appointments,
             'count': count}
     return render(request,'vaccinerecordapp/dashboard.html', data)
 
@@ -264,7 +263,7 @@ def appointment(request):
             'doctor': request.POST.get('doctor'),
             'visit': request.POST.get('visit'),
             'location': request.POST.get('location'),
-            'stat': 'UC'})
+            'stat': 'Unconfirmed'})
         else:
             form = AppointmentForm({ 'user':user, 
             'patient_username': request.POST.get('patient_username'),

@@ -32,9 +32,9 @@ GENDER = (
 )
 
 STATUS = (
-    ('C', 'Confirmed'),
-    ('UC', 'Unconfirmed'),
-    ('P', 'Postponed')
+    ('Confirmed', 'Confirmed'),
+    ('Unconfirmed', 'Unconfirmed'),
+    ('Postponed', 'Postponed')
 )
 
 class Role(models.Model):
@@ -146,4 +146,4 @@ class Appointment(models.Model):
     visit = models.ForeignKey(Visit,on_delete=models.CASCADE,null=True)
     location = models.ForeignKey(Location,on_delete=models.CASCADE,null=True)
     doctor = models.ForeignKey(Doctor,on_delete=models.CASCADE,null=True)
-    stat = models.CharField(choices=STATUS, max_length=2, default="UC")
+    stat = models.CharField(choices=STATUS, max_length=11)
