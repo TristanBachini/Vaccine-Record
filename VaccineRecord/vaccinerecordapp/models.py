@@ -31,6 +31,12 @@ GENDER = (
     ('FEMALE','Female')
 )
 
+STATUS = (
+    ('C', 'Confirmed'),
+    ('UC', 'Unconfirmed'),
+    ('P', 'Postponed')
+)
+
 class Role(models.Model):
   '''
   The Role entries are managed by the system,
@@ -134,10 +140,10 @@ class Location(models.Model):
 
 class Appointment(models.Model):
     user = ForeignKey(User, on_delete=models.CASCADE, null=True)
-    patient_name = models.CharField(max_length=100, blank=True, null=True)
-    status = models.CharField(max_length=100, blank=True, null=True)
-    date = models.DateTimeField(null=True)
+    patient_username = models.CharField(max_length=100, blank=True, null=True)
+    date = models.DateField(null=True)
     time = models.ForeignKey(Time,on_delete=models.CASCADE,null=True)
     visit = models.ForeignKey(Visit,on_delete=models.CASCADE,null=True)
     location = models.ForeignKey(Location,on_delete=models.CASCADE,null=True)
     doctor = models.ForeignKey(Doctor,on_delete=models.CASCADE,null=True)
+    stat = models.CharField(choices=STATUS, max_length=2, default="UC")

@@ -1,21 +1,17 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
-{% block content %} {% load static %}
+{% block content %} {% load static %} {% load auth_extras %}
 
     {% include 'vaccinerecordapp/patient-navbar.html' %}
 
-
-    <form action="{% url 'register-patient' %}" method="post">
-        <div class="modal-body" style="color: black">
-            {% csrf_token %}
-            <center>
-            <br />
-            <h2> Set Appointment
-            </h2>
-            </center>
-            <br />
-    
+<!-- Set Appointment -->
+<div class="card" style="margin-left: 10%; margin-right: 10%">
+<h5 class="card-header">Set Appointment</h5>
+<div class="card-body">
+  <form action="{% url 'appointment' %}" method="post">
+    {% csrf_token %}
+    <div class="modal-body" style="color: black">
             <div class="row" style="margin-left: 15%; margin-right: 15%">
-            <div class="col">Enter Patient Name: {{form.patient_name}}</div>
+            <div class="col">Enter Patient Username (Refer to patient record "Username"): {{form.patient_username}}</div>
             </div>
             <br />
             <br />
@@ -29,15 +25,16 @@
             <div class="col">Select Location: {{form.location}}</div>
             <div class="col">Select Time: {{form.time}}</div>
             <div class="col">Reason for Visit: {{form.visit}}</div>
-            </div>
-            <br />
-            <br />
-            </div>
-            <br />
-            <br />
-            
+            {% if request.user|has_group:"staff" %}
+                <div class="col">Status: {{form.stat}}</div>
+            {% endif %}
         </div>
-    </form>
-    
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button id="submit_button" type="submit" class="btn btn-primary">Set Appointment</button>
+    </div>
+</form>
+</div>
 
 {%endblock%}

@@ -3,10 +3,110 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}"/>
 </head>
 <body>
-    <div id = "noAppointment">
-        <span><i class ="fas fa-calendar-check fa-3x"></i></span>
-        <h1>No Appointment for Today!</h1>
-    </div>
+    {% if count == 0 %}
+        <div id = "noAppointment">
+            <span><i class ="fas fa-calendar-check fa-3x"></i></span>
+            <h1>No Appointment for Today!</h1>
+        </div>
+    {% else %}
+        <h1>Confirmed Appointments</h1>
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Appointment No#</th>
+                <th scope="col">Patient username</th>
+                <th scope="col">Time of Appointment</th>
+                <th scope="col">Date of Appointment</th>
+                <th scope="col">Doctor Assigned</th>
+                <th scope="col">Type of Visit</th>
+                <th scope="col">Location</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in confirmed %}
+
+        <tr>
+            <td> <a href="#" >{{appointment.id}}</a></td>
+            <td> <a href="#" >{{appointment.patient_username}}</a></td>
+            <td> <a href="#" >{{appointment.time}}</a></td>
+            <td> <a href="#" >{{appointment.date}}</a></td>
+            <td> <a href="#" >{{appointment.doctor}}</a></td>
+            <td> <a href="#" >{{appointment.visit}}</a></td>
+            <td> <a href="#" >{{appointment.location}}</a></td>
+            <td> <a href="#" >{{appointment.stat}}</a></td>
+        </tr>
+
+        {% endfor %}
+        </tbody>
+        </table>
+        <br><br><br>
+        <h1>Unconfirmed Appointments</h1>
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Appointment No#</th>
+                <th scope="col">Patient username</th>
+                <th scope="col">Time of Appointment</th>
+                <th scope="col">Date of Appointment</th>
+                <th scope="col">Doctor Assigned</th>
+                <th scope="col">Type of Visit</th>
+                <th scope="col">Location</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in unconfirmed %}
+
+        <tr>
+            <td> <a href="#" >{{appointment.id}}</a></td>
+            <td> <a href="#" >{{appointment.patient_username}}</a></td>
+            <td> <a href="#" >{{appointment.time}}</a></td>
+            <td> <a href="#" >{{appointment.date}}</a></td>
+            <td> <a href="#" >{{appointment.doctor}}</a></td>
+            <td> <a href="#" >{{appointment.visit}}</a></td>
+            <td> <a href="#" >{{appointment.location}}</a></td>
+            <td> <a href="#" >{{appointment.stat}}</a></td>
+        </tr>
+
+        {% endfor %}
+        </tbody>
+        </table>
+
+        <br><br><br>
+        <h1>Postponed Appointments</h1>
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Appointment No#</th>
+                <th scope="col">Patient username</th>
+                <th scope="col">Time of Appointment</th>
+                <th scope="col">Date of Appointment</th>
+                <th scope="col">Doctor Assigned</th>
+                <th scope="col">Type of Visit</th>
+                <th scope="col">Location</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in postponed %}
+
+        <tr>
+            <td> <a href="#" >{{appointment.id}}</a></td>
+            <td> <a href="#" >{{appointment.patient_username}}</a></td>
+            <td> <a href="#" >{{appointment.time}}</a></td>
+            <td> <a href="#" >{{appointment.date}}</a></td>
+            <td> <a href="#" >{{appointment.doctor}}</a></td>
+            <td> <a href="#" >{{appointment.visit}}</a></td>
+            <td> <a href="#" >{{appointment.location}}</a></td>
+            <td> <a href="#" >{{appointment.stat}}</a></td>
+        </tr>
+
+        {% endfor %}
+        </tbody>
+        </table>
+        
+    {% endif %}
 </body>
 
 
