@@ -8,127 +8,127 @@
 <div class="container-fluid">
   <div class="row">
     <!-- Navbar -->
-    <div class="col ">
+    <div class="col-1">
       {% include 'vaccinerecordapp/patient-navbar.html' %}
     </div>
 
   <!-- Profile -->
-    <div class="col-xl-auto">
-          <div class="card border-info" style="margin-left: 8%; margin-right: 8%">
+    <div class="col-11">
+          <div class="card border-info" style="margin-left: 5%; margin-right: 5%">
             <h5 class="card-header">Patient Profile</h5>
             <div class="card-body">
-              <h5 class="card-title">Name</h5>
-              <br>
-              <div class="row" >
-                <div class="col">Account Username: {{ record.user.username|upper }}</div>
+              <div>
+                <table class="table table-bordered">
+                  <tr>
+                    <td class="table-warning">Account Username:</td>
+                    <td class="table-warning">{{ record.user.username|upper }}</td>
+                    <td class="table-warning" colspan="8"></td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning"><b>NAME</b></td>
+                    <td class="table-warning">Nickname:</td>
+                    <td class="table-light">{{ record.nick_name|upper }}</td>
+                    <td class="table-warning" colspan="2">Attending Doctor:</td>
+                    <td class="table-light" colspan="2">{{ record.doctor_assigned|upper }}</td>
+                    <td class="table-warning" colspan="2">Patient Record #:</td>
+                    <td class="table-warning" colspan="2">{{ record.id }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">First:</td>
+                    <td class="table-light">{{ record.first_name|upper }}</td>
+                    <td class="table-warning">Last:</td>
+                    <td class="table-light" colspan="2">{{ record.last_name|upper }}</td>
+                    <td class="table-warning">Middle:</td>
+                    <td class="table-light" colspan="2">{{ record.middle_name|upper }}</td>
+                    <td class="table-warning">Suffix:</td>
+                    <td class="table-light">{{ record.suffix|upper }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Sex:</td>
+                    <td class="table-light">{{ record.gender|upper }}</td>
+                    <td class="table-warning">Date of Birth:</td>
+                    <td class="table-light" colspan="3">{{ record.bday|upper }}</td>
+                    <td class="table-warning">Age:</td>
+                    <td class="table-light" colspan="3">{{ record.age }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning"><b>CONTACT #</b></td>
+                    <td class="table-warning">Mobile:</td>
+                    <td class="table-light" colspan="2">{{ record.mobile|upper }}</td>
+                    <td class="table-warning">Landline:</td>
+                    <td class="table-light" colspan="2">{{ record.landline|upper }}</td>
+                    <td class="table-warning">Email:</td>
+                    <td class="table-light" colspan="2">{{ record.email|upper }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning"><b>ADDRESS</b></td>
+                    <td class="table-warning">House/Unit No./Street:</td>
+                    <td class="table-light" colspan="4">{{ record.home_no|upper }}</td>
+                    <td class="table-warning">Barangay:</td>
+                    <td class="table-light" colspan="3">{{ record.brgy|upper }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">City:</td>
+                    <td class="table-light">{{ record.city|upper }}</td>
+                    <td class="table-warning">Province:</td>
+                    <td class="table-light" colspan="2">{{ record.province|upper }}</td>
+                    <td class="table-warning">Region:</td>
+                    <td class="table-light" colspan="2">{{ record.region|upper }}</td>
+                    <td class="table-warning">Zip Code:</td>
+                    <td class="table-light">{{ record.zip_code|upper }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning" colspan="10"><b>PARENT INFORMATION</b></td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Mother:</td>
+                    <td class="table-light">{{ record.fname_mom|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.lname_mom|upper }}</td>
+                    <td class="table-warning">Contact #:</td>
+                    <td class="table-light" colspan="2">{{ record.contact_mom|upper }}</td>
+                    <td class="table-warning">Email:</td>
+                    <td class="table-light" colspan="2">{{ record.email_mom }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Father</td>
+                    <td class="table-light">{{ record.fname_dad|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.lname_dad|upper }}</td>
+                    <td class="table-warning">Contact #:</td>
+                    <td class="table-light" colspan="2">{{ record.contact_dad|upper }}</td>
+                    <td class="table-warning">Email:</td>
+                    <td class="table-light" colspan="2">{{ record.email_dad }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning" colspan="2"><b>EMERGENCY CONTACT</b></td>
+                    <td class="table-warning" colspan="8">Same as parent information *insert checkbox* </td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Name:</td>
+                    <td>{{ record.fname_e1|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.lname_e1|upper }}</td>
+                    <td class="table-warning">Relation:</td>
+                    <td class="table-light" colspan="2">{{ record.relation_e1|upper }}</td>
+                    <td class="table-warning">Contact #:</td>
+                    <td class="table-light" colspan="2">{{ record.contact_e1 }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Name:</td>
+                    <td>{{ record.fname_e1|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.lname_e2|upper }}</td>
+                    <td class="table-warning">Relation:</td>
+                    <td class="table-light" colspan="2">{{ record.relation_e2|upper }}</td>
+                    <td class="table-warning">Contact #:</td>
+                    <td class="table-light" colspan="2">{{ record.contact_e2 }}</td>
+                  </tr>
+                </table>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <a href="{% url 'update-patient-profile' %}">
+                    <button class="btn btn-success" id="submit_button" type="submit">
+                      <i class="fas fa-save"></i>
+                      Update
+                      </button></a>
+                </div>
               </div>
-              <div class="row" >
-                <div class="col">First Name: {{ record.first_name|upper }}</div>
-                <div class="col">Middle Name: {{ record.middle_name|upper }} </div>
-                <div class="col">Last Name: {{ record.last_name|upper }}</div>
-                <div class="col">Suffix: {{ record.suffix|upper }}</div>
-              </div>
-              <br>
-              <div class="row" >
-                <div class="col">Nickname: {{ record.nick_name|upper }}</div>
-                <div class="col">Patient Record#: {{ record.id|upper }}</div>
-                <div class="col">Attending Doctor: {{ record.doctor_assigned|upper }}</div>
-                <div class="col"></div>
-              </div>
-              <br>
-              <div class="row" >
-                <div class="col-3" >Gender: {{ record.gender|upper }}</div>
-                <div class="col-4">Date of Birth: {{ record.bday|upper }}</div>
-                <div class="col-3">Age: {{ record.age|upper }}</div>
-                <div class="col-2" ></div>
-              </div>
-              <br>
-              <hr>
-              <br>
-              <h5 class="card-title">Contact Information</h5>
-              <br>
-              <div class="row" >
-                <div class="col">Mobile No.: {{ record.mobile|upper }}</div>
-                <div class="col">Landline: {{ record.landline|upper }}</div>
-                <div class="col">Email: {{ record.email|upper }}</div>
-                <div class="col"></div>
-              </div>
-              <br>
-              <hr>
-              <br>
-              <h5 class="card-title">Address</h5>
-              <br>
-              <div class="row" >
-                <div class="col-4">House/Unit No./Street: {{ record.home_no|upper }}</div>
-                <div class="col-3">Barangay: {{ record.brgy|upper }}</div>
-                <div class="col-3">City: {{ record.city|upper }}</div>
-                <div class="col-2"></div>
-              </div>
-              <br>
-              <div class="row" >
-                <div class="col-4">Province: {{ record.province|upper }}</div>
-                <div class="col-3">Region: {{ record.region|upper }}</div>
-                <div class="col-3">Zip Code: {{ record.zip_code|upper }}</div>
-                <div class="col-2"></div>
-              </div>
-              <br>
-              <hr>
-              <br>
-              <h5 class="card-title">Parents' Information</h5>
-              <br>
-              <div class="row">
-              <h6>Mother</h6>
-              <br>
-              </div>
-              <div class="row" >
-                <div class="col">First Name: {{ record.fname_mom|upper }}</div>
-                <div class="col">Last Name: {{ record.lname_mom|upper }}</div>
-                <div class="col">Contact No.: {{ record.contact_mom|upper }}</div>
-                <div class="col">Email: {{ record.email_mom|upper }}</div>
-              </div>
-              <br>
-              <div class="row" >
-              <h6>Father</h6>
-              <br>
-              </div>
-              <div class="row"  >
-                <div class="col">First Name: {{ record.fname_dad|upper }}</div>
-                <div class="col">Last Name: {{ record.lname_dad|upper }}</div>
-                <div class="col">Contact No.: {{ record.contact_dad|upper }}</div>
-                <div class="col">Email: {{ record.email_dad|upper }}</div>
-              </div>
-              <br>
-              <hr>
-              <br>
-            <h5 class="card-title">Emergency Contact Persons</h5>
-            <br>
-            <div class="row">
-            <h6>Person 1 </h6>
-            <br>
-            </div>
-            <div class="row" >
-              <div class="col">First Name: {{ record.fname_e1|upper }} </div>
-              <div class="col">Last Name: {{ record.lname_e1|upper }} </div>
-              <div class="col">Relation: {{ record.relation_e1|upper }} </div>
-              <div class="col">Contact No.: {{ record.contact_e1|upper }} </div>
-            </div>
-            <br>
-            <div class="row" >
-            <h6>Person 2 </h6>
-            <br>
-            </div>
-            <div class="row" >
-              <div class="col">First Name: {{ record.fname_e2|upper }} </div>
-              <div class="col">Last Name: {{ record.lname_e2|upper }} </div>
-              <div class="col">Relation: {{ record.relation_e2|upper }} </div>
-              <div class="col">Contact No.: {{ record.contact_e2|upper }} </div>
-            </div>
-            <br>
-            <hr>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <a class="btn btn-lg btn-info"  href="{% url 'update-patient-profile' %}" style="color: black">
-                 Update Profile</a>
-            </div>
             </div>
           </div>
     </div>

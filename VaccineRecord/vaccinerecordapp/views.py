@@ -52,7 +52,7 @@ def home(request):
 
 @login_required(login_url='/home')
 def dashboard(request):
-    appointments = Appointment.objects.all();
+    appointments = Appointment.objects.all()
     # confirmed_appointments = Appointment.objects.filter(stat = "C")
     # unconfirmed_appointments = Appointment.objects.filter(stat = "UC")
     # postponed_appointments = Appointment.objects.filter(stat = "P")
@@ -361,8 +361,8 @@ def search_patient(request):
 def appointment(request):
     form = AppointmentForm(request.POST)
     user = User.objects.get(username=request.user.username)
-    appointments = Appointment.objects.all();
-    count = appointments.count();
+    appointments = Appointment.objects.all()
+    count = appointments.count()
     
     if(request.method == "POST"):
         if user.groups.filter(name='patient').exists():

@@ -41,9 +41,9 @@ LOCATION = (
 )
 
 STATUS = (
-    ('Confirmed', 'Confirmed'),
-    ('Unconfirmed', 'Unconfirmed'),
-    ('Postponed', 'Postponed')
+    ('CONFIRMED', 'Confirmed'),
+    ('UNCONFIRMED', 'Unconfirmed'),
+    ('POSTPONED', 'Postponed')
 )
 
 class Role(models.Model):

@@ -1,7 +1,35 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %} {% load auth_extras %}
 
-    {% include 'vaccinerecordapp/patient-navbar.html' %}
+<div class="d-flex align-items-start">
+    <ul class="nav flex-column " style="background-color:#e3f2fd;;">
+      {% if request.user|has_group:"staff"%}
+        <li class="profile">
+          <a class="nav-link active" href="#">Profile</a>
+        </li>
+        {% endif %}
+        {% if request.user|has_group:"patient"%}
+        <li class="profile">
+          <a class="nav-link active" href="{% url 'update-patient-profile' %}">Profile</a>
+        </li>
+        {% endif %}
+        <li class="appointment">
+          <a class="nav-link" href="{% url 'appointment' %}">Appointment</a>
+        </li>
+        <li class="vaccine">
+          <a class="nav-link active" href="#">Vaccine</a>
+        </li>
+        <li class="certificate">
+          <a class="nav-link" href="#">Certificate</a>
+        </li>
+        {% if request.user|has_group:"staff"%}
+        <li class="portal">
+          <a class="nav-link" href="{% url 'portal' %}">Portal</a>
+        </li>
+        {% endif %}
+        
+    </ul>
+</div>
 
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <button
@@ -53,7 +81,7 @@
     {% endif %}
 <!-- Set Appointment -->
 <div class="modal fade" id="appointment">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <form action="{% url 'appointment' %}" method="post">
             <div class="modal-body" style="color: black">
