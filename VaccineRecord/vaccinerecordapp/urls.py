@@ -23,15 +23,8 @@ urlpatterns = [
     path('search-patient/', views.search_patient, name="search-patient"),
     path('patient-landing', views.patient_landing, name="patient-landing"),
     path('update-patient-profile/',views.update_patient_profile, name="update-patient-profile"),
-<<<<<<< HEAD
     path('vaccine-record/', views.vaccine_record, name="vaccine-record"),
     path('display-vaccine/<pk>', views.display_vaccine_record, name="display-vaccine"),
     path('create-vaccine-record/', views.create_vaccine_record, name="create-vaccine-record"),
-=======
-    path('vaccine-record', views.vaccine_record, name="vaccine-record"),
-    path('display-vaccine/<pk>', views.display_vaccine_record, name="display-vaccine"),
-    path('create-vaccine-record/', views.create_vaccine_record, name="create-vaccine-record"),
     path('appointment', views.appointment, name="appointment"),
-
->>>>>>> 6715c94e4ca5d148d7fee80f08bb9a2e5c9092e7
     ]
