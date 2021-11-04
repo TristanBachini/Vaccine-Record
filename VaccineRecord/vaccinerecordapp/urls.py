@@ -7,9 +7,9 @@ urlpatterns = [
     #path('logout', views.logout, name="logout"),
     path('logout/',v.LogoutView.as_view(next_page='/'),name="logout"),
     path('reset/password-reset/', views.passwordReset, name="password-reset"),
-    path('reset/password-reset/done/', v.PasswordResetDoneView.as_view(template_name='vaccinerecordapp/password-reset-done.html'), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', v.PasswordResetConfirmView.as_view(template_name="vaccinerecordapp/password-reset-confirm.html"), name='password_reset_confirm'),
-    path('reset/done/', v.PasswordResetCompleteView.as_view(template_name='vaccinerecordapp/password-reset-complete.html'), name='password_reset_complete'),      
+    path('reset/password-reset/done/', v.PasswordResetDoneView.as_view(template_name='vaccinerecordapp/reset-password/password-reset-done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', v.PasswordResetConfirmView.as_view(template_name="vaccinerecordapp/reset-password/password-reset-confirm.html"), name='password_reset_confirm'),
+    path('reset/done/', v.PasswordResetCompleteView.as_view(template_name='vaccinerecordapp/reset-password/password-reset-complete.html'), name='password_reset_complete'),      
     path('create-patient/', views.create_patient, name="create-patient"),
     path('tool/', views.tool, name="tool"),
     path('tool/staff', views.staff, name="staff"),
@@ -23,4 +23,15 @@ urlpatterns = [
     path('search-patient/', views.search_patient, name="search-patient"),
     path('patient-landing', views.patient_landing, name="patient-landing"),
     path('update-patient-profile/',views.update_patient_profile, name="update-patient-profile"),
+<<<<<<< HEAD
+    path('vaccine-record/', views.vaccine_record, name="vaccine-record"),
+    path('display-vaccine/<pk>', views.display_vaccine_record, name="display-vaccine"),
+    path('create-vaccine-record/', views.create_vaccine_record, name="create-vaccine-record"),
+=======
+    path('vaccine-record', views.vaccine_record, name="vaccine-record"),
+    path('display-vaccine/<pk>', views.display_vaccine_record, name="display-vaccine"),
+    path('create-vaccine-record/', views.create_vaccine_record, name="create-vaccine-record"),
+    path('appointment', views.appointment, name="appointment"),
+
+>>>>>>> 6715c94e4ca5d148d7fee80f08bb9a2e5c9092e7
     ]

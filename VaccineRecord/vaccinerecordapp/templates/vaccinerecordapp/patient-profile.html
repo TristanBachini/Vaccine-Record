@@ -5,9 +5,15 @@
   {{ record.first_name|upper }},{{ record.last_name|upper }}  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
 </p>
 
+<div class="container-fluid">
+  <div class="row">
+    <!-- Navbar -->
+    <div class="col ">
+      {% include 'vaccinerecordapp/patient-navbar.html' %}
+    </div>
 
-    {% include 'vaccinerecordapp/patient-navbar.html' %}
-
+  <!-- Profile -->
+    <div class="col-xl-auto">
           <div class="card border-info" style="margin-left: 8%; margin-right: 8%">
             <h5 class="card-header">Patient Profile</h5>
             <div class="card-body">
@@ -122,9 +128,10 @@
             </div>
             </div>
           </div>
+    </div>
           <br><br><br><br><br>
-      
-
+</div>    
+</div>
 
 
 {% endblock %}

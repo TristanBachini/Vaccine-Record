@@ -40,23 +40,12 @@ class DoctorForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             'user':  HiddenInput(attrs={'type': 'hidden'}),
-            'end_date': DateInput(),
+            'prefix':  Select(attrs={'class': 'form-control'}),
+            'type':  Select(attrs={'class': 'form-control'}),
+            'title':  Select(attrs={'class': 'form-control'}),
+            'end_date': DateInput(attrs={'class': 'form-control'}),
+            'contact': TextInput(attrs={'class': 'form-control', 'placeholder': 'Contact Number', 'aria-label': 'Contact Number', 'required': True}),
         }
-
-
-    # prefix = forms.CharField(widget=forms.TextInput(attrs={
-    #     'prefix': 'form-control',
-    #     'placeholder': 'Prefix'
-    # }))
-    # title = forms.CharField(widget=forms.TextInput(attrs={
-    #     'title': 'form-control',
-    #     'placeholder': 'Title'
-    # }))
-    # contact = forms.CharField(required=True, max_length=11, widget=forms.NumberInput(attrs={
-    #     'class': 'form-control',
-    #     'placeholder': '09xxxxxxxxx'
-    # }))
-    # can_register = forms.BooleanField(required=True,initial=False,label='Can register')
 
 class PatientForm(forms.ModelForm):
     attrs = {'class': 'form-control', 'id':'relationship',
@@ -159,3 +148,238 @@ class LoginForm(AuthenticationForm):
     username = forms.CharField(label='Email / Username',widget=TextInput(attrs={'placeholder':'Email'}))
     password = CharField(widget=PasswordInput(attrs=attrs))
 
+class VaccineForm(forms.ModelForm):
+    class Meta:
+        model = Vaccine
+        fields = "__all__"
+        widgets = {
+            'bcg_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'bcg_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'bcg_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'bcg_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'hepb1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hepb1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hepb1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hepb1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'hepb2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hepb2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hepb2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hepb2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+            
+            'hepb3_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hepb3_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hepb3_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hepb3_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'dtap1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'dtap1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'dtap1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'dtap1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'dtap2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'dtap2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'dtap2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'dtap2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'dtap3_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'dtap3_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'dtap3_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'dtap3_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'dtap4_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'dtap4_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'dtap4_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'dtap4_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'dtap5_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'dtap5_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'dtap5_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'dtap5_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'hib1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hib1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hib1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hib1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'hib2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hib2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hib2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hib2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+        
+            'hib3_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hib3_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hib3_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hib3_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+        
+            'hib4_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hib4_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hib4_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hib4_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'hpv11_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hpv11_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hpv11_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hpv11_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+        
+            'hpv12_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hpv12_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hpv12_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hpv12_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'hpv21_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hpv21_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hpv21_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hpv21_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'hpv22_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hpv22_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hpv22_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hpv22_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+            
+            'hpv23_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hpv23_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hpv23_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hpv23_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'hepa1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hepa1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hepa1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hepa1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'hepa2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'hepa2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'hepa2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'hepa2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'inf1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'inf1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'inf1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'inf1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'inf2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'inf2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'inf2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'inf2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'anf_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'anf_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'anf_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'anf_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'ipv1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'ipv1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'ipv1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'ipv1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'ipv2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'ipv2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'ipv2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'ipv2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'ipv3_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'ipv3_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'ipv3_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'ipv3_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'ipv4_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'ipv4_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'ipv4_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'ipv4_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'ipv5_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'ipv5_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'ipv5_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'ipv5_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'japb1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'japb1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'japb1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'japb1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'japb2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'japb2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'japb2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'japb2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'msl_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'msl_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'msl_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'msl_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'men_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'men_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'men_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'men_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'mmr1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'mmr1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'mmr1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'mmr1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'mmr2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'mmr2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'mmr2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'mmr2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'pcv1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'pcv1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'pcv1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'pcv1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'pcv2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'pcv2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'pcv2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'pcv2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+            
+            'pcv3_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'pcv3_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'pcv3_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'pcv3_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+            
+            'pcv4_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'pcv4_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'pcv4_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'pcv4_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'rota1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'rota1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'rota1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'rota1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'rota2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'rota2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'rota2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'rota2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'rota3_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'rota3_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'rota3_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'rota3_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'td_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'td_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'td_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'td_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'typ_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'typ_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'typ_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'typ_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+            
+            'var1_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'var1_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'var1_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'var1_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+
+            'var2_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
+            'var2_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
+            'var2_loc':  Select(attrs={'class': 'form-control', 'required': False}),
+            'var2_rem':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Remarks', 'required': False}),
+        }
+
+
+
+
+        

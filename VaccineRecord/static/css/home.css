@@ -4,7 +4,7 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  background:white !important;
+  background:#f2f7fa !important;
 }
 .user_card {
   width: 350px;
@@ -28,14 +28,14 @@ html {
 }
 
 #form-title{
-  color: #744C24;
+  color: #1fbcff;
   font-weight: bold;
 }
 
 .login_btn {
   width: 100%;
-  background: #8a8988 !important;
-  color: black !important;
+  background: #1fbcff !important;
+  color: white !important;
 }
 .login_btn:focus {
   box-shadow: none !important;
@@ -61,4 +61,8 @@ html {
   color: #fff;
   padding: 10px;
   margin-top: 10px;
+}
+
+.fa-baby{
+  color: #1fbcff;
 }

@@ -20,7 +20,7 @@ FLUSH PRIVILEGES;
 //Database environments
 DATABASE_ENGINE=django.db.backends.mysql
 DATABASE_VACCINE=db_name
-DATABASE_PASSWORD=password 
+DATABASE_PASSWORD=password
 DATABASE_USER=db_username
 
 //if "Table 'vax_record.auth_user' doesn't exist"
@@ -54,3 +54,6 @@ python manage.py runserver
 //to fix
 //go to http://127.0.0.1:8000/admin/
 //create group named 'patient'
+
+//to collect static everytime may changes sa static files
+//python manage.py collectstatic

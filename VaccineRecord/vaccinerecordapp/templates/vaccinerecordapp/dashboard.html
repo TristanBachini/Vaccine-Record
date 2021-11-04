@@ -1,11 +1,13 @@
 {% extends 'vaccinerecordapp/navbar.html' %} {% block content %} {% load static %}
-
-
-
-<br />
-<br />
-<br />
-<i class="fas fa-calendar-check fa-5x"></i><h1>No Appointment for Today!</h1>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}"/>
+</head>
+<body>
+    <div id = "noAppointment">
+        <span><i class ="fas fa-calendar-check fa-3x"></i></span>
+        <h1>No Appointment for Today!</h1>
+    </div>
+</body>
 
 
 
