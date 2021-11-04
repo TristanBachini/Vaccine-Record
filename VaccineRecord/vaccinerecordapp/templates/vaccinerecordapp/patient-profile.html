@@ -20,6 +20,9 @@
               <h5 class="card-title">Name</h5>
               <br>
               <div class="row" >
+                <div class="col">Account Username: {{ record.user.username|upper }}</div>
+              </div>
+              <div class="row" >
                 <div class="col">First Name: {{ record.first_name|upper }}</div>
                 <div class="col">Middle Name: {{ record.middle_name|upper }} </div>
                 <div class="col">Last Name: {{ record.last_name|upper }}</div>
