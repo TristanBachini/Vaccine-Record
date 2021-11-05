@@ -361,6 +361,7 @@ def search_patient(request):
 def appointment(request):
     form = AppointmentForm(request.POST)
     user = User.objects.get(username=request.user.username)
+   # record = PatientRecord.objects.get(id = pk)
     appointments = Appointment.objects.all()
     count = appointments.count()
     
@@ -401,9 +402,14 @@ def appointment(request):
                 data = {'patient':patient}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
         return redirect("/dashboard")
-    data = {"form":form, "appointments": appointments, "count": count}
+    data = {"form":form, "appointments": appointments, "count": count,}
     return render(request, 'vaccinerecordapp/appointment.html',data)                          
     
+@login_required(login_url='/')
+def certificate(request,pk):
+    record = PatientRecord.objects.get(id=pk)
+    data = {"record":record}
+    return render(request, 'vaccinerecordapp/vaccine-certificate.html',data )
 
 @login_required(login_url='/')
 def patient_profile(request,pk):
@@ -421,12 +427,6 @@ def create_patient_record(request):
     data = {"form":form}
     return render(request,'vaccinerecordapp/account-creation/create-patient-record.html',data)
 
-# @login_required(login_url='/')
-# def vaccine_record(request):
-#     #record = PatientRecord.objects.get(id = pk)
-
-#     #data = {"record":record}
-#     return render(request, 'vaccinerecordapp/vaccine-record.html')
 
 @login_required(login_url='/')
 def tool(request): 

@@ -1,0 +1,47 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+  {{ record.first_name|upper }},{{ record.last_name|upper }}  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
+</p>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Navbar -->
+    <div class="col-1">
+      {% include 'vaccinerecordapp/patient-navbar.html' %}
+    </div>
+
+  <!-- Profile -->
+    <div class="col-11">
+          <div class="card border-info" style="margin-left: 5%; margin-right: 5%">
+            <h5 class="card-header">Date: </h5>
+            <div class="card-body">
+                <br>
+                <div class="row" >
+                  <div class="col">This is to certify that {{ record.first_name }} {{ record.middle_name }} {{ record.last_name }}, 
+                      {{ record.age}}, of {{ record.city }} City has completed the following vaccinations. This certificate is being
+                      issued upon the request of the above mentioned for whatever purpose it may serve, except those of a medico-legal-nature.
+                      <br> <br>
+                      {{ record.doctor_assigned }} 
+                  </div>
+                </div>
+                <br>
+                <hr>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a class="btn btn-lg btn-info"  href="{% url 'home' %}" style="color: black">
+                        Dr Sign</a>
+                    <a class="btn btn-lg btn-info"  href="#" style="color: black">
+                        View / Print</a>
+                  </div>
+              </div>
+            </div>
+          </div>
+    </div>
+          <br><br><br><br><br>
+</div>    
+</div>
+
+
+{% endblock %}
+

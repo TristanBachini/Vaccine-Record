@@ -4,7 +4,7 @@
 <ul class="nav flex-column " style="background-color:#e3f2fd;;">
   {% if request.user|has_group:"staff"%}
     <li class="profile">
-      <a class="nav-link active" href="#">Profile</a>
+      <a class="nav-link active" href="{% url 'patient-profile' record.pk %}">Profile</a>
     </li>
     {% endif %}
     {% if request.user|has_group:"patient"%}
@@ -16,14 +16,14 @@
       <a class="nav-link" href="{% url 'appointment' %}">Appointment</a>
     </li>
     <li class="vaccine">
-      <a class="nav-link active" href="{% url 'display-vaccine' record.id %}">Vaccine</a>
+      <a class="nav-link active" href="{% url 'display-vaccine' record.pk %}">Vaccine</a>
     </li>
     <li class="certificate">
-      <a class="nav-link" href="#">Certificate</a>
+      <a class="nav-link" href="{% url 'certificate' record.id %}">Certificate</a>
     </li>
     {% if request.user|has_group:"staff"%}
     <li class="portal">
-      <a class="nav-link" href="{% url 'portal' %}">Portal</a>
+      <a class="nav-link" href="#">Portal</a>
     </li>
     {% endif %}
     

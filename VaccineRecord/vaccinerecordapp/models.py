@@ -382,3 +382,5 @@ class Appointment(models.Model):
     location = models.ForeignKey(Location,on_delete=models.CASCADE,null=True)
     doctor = models.ForeignKey(Doctor,on_delete=models.CASCADE,null=True)
     stat = models.CharField(choices=STATUS, max_length=11)
+
+   
