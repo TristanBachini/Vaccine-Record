@@ -351,11 +351,20 @@ def vaccine_record(request):
 
 @login_required(login_url='/')
 def search_patient(request):
-    patients = PatientRecord.objects.all()
-    myFilter = RecordFilter(request.GET, queryset=patients)
-    patients = myFilter.qs
-    data = {"patients":patients, 'myFilter':myFilter}
-    return render(request, 'vaccinerecordapp/search-patient.html',data)
+    user = User.objects.get(username=request.user.username)
+    doc = Doctor.objects.get(user = user)
+    if user.groups.filter(name="Doctor"):
+        patients = PatientRecord.objects.filter(doctor_assigned = doc)
+        myFilter = RecordFilter(request.GET, queryset=patients)
+        patients = myFilter.qs
+        data = {"patients":patients, 'myFilter':myFilter}
+        return render(request, 'vaccinerecordapp/search-patient.html',data)
+    else: 
+        patients = PatientRecord.objects.all()
+        myFilter = RecordFilter(request.GET, queryset=patients)
+        patients = myFilter.qs
+        data = {"patients":patients, 'myFilter':myFilter}
+        return render(request, 'vaccinerecordapp/search-patient.html',data)
 
 @login_required(login_url='/')
 def appointment(request):
