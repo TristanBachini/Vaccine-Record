@@ -352,8 +352,9 @@ def vaccine_record(request):
 @login_required(login_url='/')
 def search_patient(request):
     user = User.objects.get(username=request.user.username)
-    doc = Doctor.objects.get(user = user)
+    
     if user.groups.filter(name="Doctor"):
+        doc = Doctor.objects.get(user = user)
         patients = PatientRecord.objects.filter(doctor_assigned = doc)
         myFilter = RecordFilter(request.GET, queryset=patients)
         patients = myFilter.qs
