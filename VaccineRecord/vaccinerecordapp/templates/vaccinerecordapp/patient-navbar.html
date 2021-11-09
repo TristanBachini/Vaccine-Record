@@ -2,18 +2,18 @@
 
 <div class="d-flex align-items-start">
 <ul class="nav flex-column " style="background-color:#e3f2fd;;">
-  {% if request.user|has_group:"staff"%}
+  {% if request.user|has_group:"staff" or request.user|has_group:"doctor"%}
     <li class="profile">
       <a class="nav-link active" href="{% url 'patient-profile' record.pk %}">Profile</a>
     </li>
     {% endif %}
     {% if request.user|has_group:"patient"%}
     <li class="profile">
-      <a class="nav-link active" href="{% url 'update-patient-profile' %}">Profile</a>
+      <a class="nav-link active" href="{% url 'update-patient-profile' record.pk %}">Profile</a>
     </li>
     {% endif %}
     <li class="appointment">
-      <a class="nav-link" href="{% url 'appointment' %}">Appointment</a>
+      <a class="nav-link" href="{% url 'appointment' record.pk %}">Appointment</a>
     </li>
     <li class="vaccine">
       <a class="nav-link active" href="{% url 'display-vaccine' record.pk %}">Vaccine</a>

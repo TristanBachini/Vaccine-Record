@@ -1,35 +1,10 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %} {% load auth_extras %}
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+  {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
+</p>
 
-<div class="d-flex align-items-start">
-  <ul class="nav flex-column " style="background-color:#e3f2fd;;">
-    {% if request.user|has_group:"staff"%}
-      <li class="profile">
-        <a class="nav-link active" href="#">Profile</a>
-      </li>
-      {% endif %}
-      {% if request.user|has_group:"patient"%}
-      <li class="profile">
-        <a class="nav-link active" href="{% url 'update-patient-profile' %}">Profile</a>
-      </li>
-      {% endif %}
-      <li class="appointment">
-        <a class="nav-link" href="{% url 'appointment' ">Appointment</a>
-      </li>
-      <li class="vaccine">
-        <a class="nav-link active" href="#">Vaccine</a>
-      </li>
-      <li class="certificate">
-        <a class="nav-link" href="#">Certificate</a>
-      </li>
-      {% if request.user|has_group:"staff"%}
-      <li class="portal">
-        <a class="nav-link" href="#">Portal</a>
-      </li>
-      {% endif %}
-      
-  </ul>
-  </div>
+{% include 'vaccinerecordapp/patient-navbar.html' %}
 
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <button
@@ -83,12 +58,11 @@
 <div class="modal fade" id="appointment">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
-        <form action="{% url 'appointment' %}" method="post">
+        <form action="{% url 'appointment' record.pk %}" method="post">
             <div class="modal-body" style="color: black">
                 {% csrf_token %}
                 <div class="modal-body" style="color: black">
                         <div class="row" style="margin-left: 15%; margin-right: 15%">
-                        <div class="col">Enter Patient Username (Refer to patient record "Username"): {{form.patient_username}}</div>
                         </div>
                         <br />
                         <br />
@@ -98,13 +72,9 @@
                         <br />
                         <br />
                         <div class="row" style="margin-left: 15%; margin-right: 15%">
-                        <div class="col">Select Doctor (Refer to patient record "Attending Doctor"): {{form.doctor}}</div>
                         <div class="col">Select Location: {{form.location}}</div>
                         <div class="col">Select Time: {{form.time}}</div>
                         <div class="col">Reason for Visit: {{form.visit}}</div>
-                        {% if request.user|has_group:"staff" %}
-                            <div class="col">Status: {{form.stat}}</div>
-                        {% endif %}
                     </div>
                 </div>
                 <div class="row" style="width: 50%; margin-left: 40%; margin-right: 40%">

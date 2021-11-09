@@ -65,7 +65,7 @@ class AppointmentForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             'user':HiddenInput(attrs={'type': 'hidden'}),
-            'patient_username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username', 'aria-label': 'Username', 'required': True}),
+            'patient_username': HiddenInput(attrs={'type': 'hidden'}),
             'status': HiddenInput(attrs={'type': 'hidden'}),
             'date': DateInput(attrs={'class': 'form-control'}),
             'time':Select(attrs={'class': 'form-control'}),

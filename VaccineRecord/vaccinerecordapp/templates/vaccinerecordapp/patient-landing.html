@@ -2,7 +2,7 @@
 {% block content %} {% load static %}
 
 <p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
-  {{ patient.first_name|upper }} {{ patient.last_name|upper }}  |  ({{patient.nick_name|upper}})  |  {{ patient.age|upper }} | {{ patient.gender|upper }} | {{ patient.bday|upper }}
+  {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
 </p>
 
     {% include 'vaccinerecordapp/patient-navbar.html' %}

@@ -14,8 +14,8 @@
     <nav class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #1fbcff">
         <div class="container-fluid">
           <div class = "topnav-left">
-            <a class="navbar-brand" href="{% url 'dashboard' %}"><i class="fas fa-baby"></i></a>
-            <a class="navbar-brand" href="{% url 'dashboard' %}">BaQna</a>
+            <a class="navbar-brand"{% if request.user|has_group:"staff" or request.user|has_group:"doctor" %} href="{% url 'dashboard' %}"{% endif %}><i class="fas fa-baby"></i></a>
+            <a class="navbar-brand"{% if request.user|has_group:"staff" or request.user|has_group:"doctor" %} href="{% url 'dashboard' %}"{% endif %}>BaQna</a>
           </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

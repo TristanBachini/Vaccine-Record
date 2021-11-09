@@ -22,10 +22,10 @@ urlpatterns = [
     path('register-patient',views.register_patient, name="register-patient"),
     path('search-patient/', views.search_patient, name="search-patient"),
     path('patient-landing', views.patient_landing, name="patient-landing"),
-    path('update-patient-profile/',views.update_patient_profile, name="update-patient-profile"),
+    path('update-patient-profile/<pk>',views.update_patient_profile, name="update-patient-profile"),
     path('vaccine-record/', views.vaccine_record, name="vaccine-record"),
     path('display-vaccine/<pk>', views.display_vaccine_record, name="display-vaccine"),
-    path('create-vaccine-record/', views.create_vaccine_record, name="create-vaccine-record"),
-    path('appointment/', views.appointment, name="appointment"),
+    path('create-vaccine-record/<pk>', views.create_vaccine_record, name="create-vaccine-record"),
+    path('appointment/<pk>', views.appointment, name="appointment"),
     path('certificate/<pk>', views.certificate, name="certificate"),
     ]

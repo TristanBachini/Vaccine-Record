@@ -36,11 +36,13 @@ def home(request):
                 form1 = UserForm(request.POST)
                 form2 = PatientForm(request.POST)
                 patients = User.objects.filter(groups__name="Patient")
-                data = {"form1":form1, "form2":form2, "patients":patients}
+                appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id)
+                count = appointments.count()
+                data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
                 return render(request, 'vaccinerecordapp/dashboard.html',data)
             else:
-                patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
-                data = {'patient':patient}
+                record = PatientRecord.objects.get(user = request.user)
+                data = {'record':record}
                 return render(request, 'vaccinerecordapp/patient-landing.html',data)
         else:
             messages.error(request,"Invalid Email or Password")
@@ -53,10 +55,14 @@ def home(request):
 @login_required(login_url='/home')
 def dashboard(request):
     appointments = Appointment.objects.all()
-    # confirmed_appointments = Appointment.objects.filter(stat = "C")
-    # unconfirmed_appointments = Appointment.objects.filter(stat = "UC")
-    # postponed_appointments = Appointment.objects.filter(stat = "P")
-    count = Appointment.objects.all().count()
+    count = appointments.count()
+
+    if request.user.groups.filter(name="Doctor") or request.user.groups.filter(name="Staff"):
+        appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id)
+        count = appointments.count()
+    else:
+        appointments = Appointment.objects.filter(user = request.user)
+        count = appointments.count()
     data = {'appointments' : appointments,
             'count': count}
     return render(request,'vaccinerecordapp/dashboard.html', data)
@@ -97,9 +103,10 @@ def create_record(request):
     data = {"form":form, "patients":patients}
     return render(request, 'vaccinerecordapp/patient-profile.html',data)
 
-def update_patient_profile(request):
+def update_patient_profile(request,pk):
     patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
     form = UpdatePatientRecordForm(instance = patient)
+    record = PatientRecord.objects.get(id = pk)
     if(request.method=="POST"):   
         user = User.objects.get(username=request.user.username)
         form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
@@ -116,10 +123,10 @@ def update_patient_profile(request):
                                         'contact_e2':request.POST.get('contact_e2')}, instance = patient)
         if(form.is_valid()):
             form.save()
-            return redirect("/patient-landing")
-        else:
-            print(form.errors)
-    data = {"form":form}
+            record = PatientRecord.objects.get(id = pk)
+            data = {"record":record}
+            return render(request, "vaccinerecordapp/patient-landing.html",data)
+    data = {"form":form,"record":record}
     return render(request, "vaccinerecordapp/update-patient-profile.html", data)
 
 def create_patient(request):
@@ -251,12 +258,13 @@ def display_vaccine_record(request,pk):
         data = {"record":record, "vaccine":vaccine, "form":form}
         return render(request, 'vaccinerecordapp/display-vaccine.html',data)
     else:
-        return redirect('/create-vaccine-record')
+        return create_vaccine_record(request,pk)
 
 
-def create_vaccine_record(request):
+def create_vaccine_record(request,pk):
     form = VaccineForm(request.POST)
-    data = {"form":form}
+    record = PatientRecord.objects.get(id=pk)
+    data = {"form":form,"record":record}
     return render(request,'vaccinerecordapp/vaccine-record.html',data)
 
 def vaccine_record(request):
@@ -368,51 +376,45 @@ def search_patient(request):
         return render(request, 'vaccinerecordapp/search-patient.html',data)
 
 @login_required(login_url='/')
-def appointment(request):
+def appointment(request,pk):
+    record = PatientRecord.objects.get(id = pk)
     form = AppointmentForm(request.POST)
     user = User.objects.get(username=request.user.username)
-   # record = PatientRecord.objects.get(id = pk)
-    appointments = Appointment.objects.all()
+    appointments = Appointment.objects.filter(user = record.user)
     count = appointments.count()
-    
     if(request.method == "POST"):
         if user.groups.filter(name='patient').exists():
-            form = AppointmentForm({ 'user':user, 
-            'patient_username': request.POST.get('patient_username'),
+            form = AppointmentForm({ 'user':record.user, 
+            'patient_username': record.user.username,
             'date': request.POST.get('date'),
             'time': request.POST.get('time'),
-            'doctor': request.POST.get('doctor'),
+            'doctor': record.doctor_assigned,
             'visit': request.POST.get('visit'),
             'location': request.POST.get('location'),
-            'stat': 'Unconfirmed'})
+            'stat': 'UNCONFIRMED'})
         else:
-            form = AppointmentForm({ 'user':user, 
-            'patient_username': request.POST.get('patient_username'),
+            form = AppointmentForm({ 'user':record.user, 
+            'patient_username': record.user.username,
             'date': request.POST.get('date'),
             'time': request.POST.get('time'),
-            'doctor': request.POST.get('doctor'),
+            'doctor': record.doctor_assigned,
             'visit': request.POST.get('visit'),
             'location': request.POST.get('location'),
-            'stat': request.POST.get('stat')})
+            'stat': 'CONFIRMED'})
 
         if (form.is_valid()):
-            print(request.user.groups.all())
-            print(form)
             form.save()
-            if user.groups.filter(name='patient').exists():
-                form.save()
-                patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
-                data = {'patient':patient}
+            if request.user.groups.filter(name="patient"):
+                record = PatientRecord.objects.get(user = request.user)
+                data = {'record':record}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
         else:
-            print("Form not valid")
-            print(form)
-            if user.groups.filter(name='patient').exists():
+            if request.user.groups.filter(name="patient"):
                 patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
                 data = {'patient':patient}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
         return redirect("/dashboard")
-    data = {"form":form, "appointments": appointments, "count": count,}
+    data = {"form":form, "appointments": appointments, "count": count,"record":record}
     return render(request, 'vaccinerecordapp/appointment.html',data)                          
     
 @login_required(login_url='/')
