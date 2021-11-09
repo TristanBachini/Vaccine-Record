@@ -36,10 +36,14 @@ def home(request):
                 form1 = UserForm(request.POST)
                 form2 = PatientForm(request.POST)
                 patients = User.objects.filter(groups__name="Patient")
-                appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id)
-                count = appointments.count()
-                data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
-                return render(request, 'vaccinerecordapp/dashboard.html',data)
+                if user.groups.filter(name="Doctor"):
+                    appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id)
+                    count = appointments.count()
+                    data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
+                    return render(request, 'vaccinerecordapp/dashboard.html',data)
+                else:
+                    data = {"form1":form1, "form2":form2, "patients":patients}
+                    return render(request, 'vaccinerecordapp/dashboard.html',data)
             else:
                 record = PatientRecord.objects.get(user = request.user)
                 data = {'record':record}
@@ -413,7 +417,7 @@ def appointment(request,pk):
                 patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
                 data = {'patient':patient}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
-        return redirect("/dashboard")
+        return redirect("/appointment")
     data = {"form":form, "appointments": appointments, "count": count,"record":record}
     return render(request, 'vaccinerecordapp/appointment.html',data)                          
     

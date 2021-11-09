@@ -356,6 +356,9 @@ class Vaccine(models.Model):
     var2_loc = models.CharField(choices=LOCATION,max_length=100, blank=True, null=True)
     var2_rem = models.CharField(max_length=100, blank=True, null=True)
 
+    def __str__(self):
+        return self.user.username + " vaccine record"
+
 class Time(models.Model):
     time = models.CharField(max_length=100,null=True)
 
