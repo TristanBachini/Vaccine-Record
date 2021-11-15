@@ -1,11 +1,11 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %}
-
 <p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
-    {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
-  </p>
-  
-  <div class="container-fluid">
+  {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
+</p>
+
+
+<div class="container-fluid">
     <div class="row">
       <!-- Navbar -->
       <div class="col-1">
@@ -15,11 +15,13 @@
         <!-- Profile -->
         <div class="col-11">
              <center><br />
-            <h3>Vaccine Information</h3>
+            <h3> Update Vaccine Information</h3>
             </center>
             <br />
-            <div class='card card-body'style="margin-left: 5%; margin-right: 5%">
-                <form action="{% url 'vaccine-record' %}" method="post">
+            <div class='card border-info'style="margin-left: 5%; margin-right: 5%">
+            <h5 class="card-header">Vaccine Information</h5>
+            <div class='card-body'>
+                <form action="{% url 'update-vaccine' record.pk %}" method="post">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <button class="btn btn-success" id="submit_button" type="submit">
                         <i class="fas fa-save"></i>
@@ -27,11 +29,11 @@
                 </div>
                 <br />
                     {% csrf_token %}
-                        <table class="table table-bordered">
-                            <tr>
-                                <td colspan="2">Account Username: <input name='username'></td>
-                            </tr>
-                        </table>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td colspan="2">Account Username: {{form.user}}</td>
+                        </tr>
+                    </table>
                         <table class="table table-striped table-hover">
                             <thead class="table table-info">
                                 <tr>
@@ -431,8 +433,15 @@
                         </table>
                 </form>        
             </div>
+            </div>
         </div>  
     </div>
 </div>
+    
+      {% for message in messages %} {% if message.tags == 'success' %}
+    
+          {% else %}
+          {{message | striptags}}
+          {% endif %} {% endfor %}
 
 {%endblock%}

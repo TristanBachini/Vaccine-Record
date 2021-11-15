@@ -1,5 +1,5 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
-{% block content %} {% load static %}
+{% block content %} {% load static %} {% load auth_extras %}
 
 <p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
     {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
@@ -8,25 +8,23 @@
 <div class="container-fluid">
     <div class="row">
       <!-- Navbar -->
-      <div class="col-2">
+      <div class="col-1">
         {% include 'vaccinerecordapp/patient-navbar.html' %}
       </div>
   
         <!-- Profile -->
-        <div class="col-10">
-             <center><br />
-            <h3> Vaccine Information</h3>
-            </center>
-            <br />
-            <div class='card card-body'>
-
+        <div class="col-11">
+            <div class="card border-info" style="margin-left: 3%; margin-right: 2%">
+            <h5 class="card-header">Vaccine Information</h5>
+            <div class='card-body'>
+                {% if request.user|has_group:"staff" or request.user|has_group:"doctor" %}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a href="#">
+                    <a href="{% url 'update-vaccine' record.pk %}">
                     <button class="btn btn-success">
                         <i class="far fa-save"></i>
                         Update</button></a>
                 </div>
-                
+                {% endif %}
                 <br />
                 <table class="table  table-hover table-bordered">
                     <thead class="table table-info">
@@ -429,5 +427,7 @@
         </div>
     </div>
 </div>
+<br>
+<br>
 
-{%endblock%}
+{% endblock %}

@@ -1,149 +1,138 @@
 {% extends 'vaccinerecordapp/navbar.html' %} {% block content %} {% load static %}
 
 <br />
-
-<div class="container">
-
-    <h3>New Patient Record</h3>
-    <br><br>
-
-<!-- Create Profile -->
-<div class="card" style="margin-left: 10%; margin-right: 10%">
-    <h5 class="card-header">Patient Profile</h5>
-    <div class="card-body">
-      <form action="{% url 'create-record' %}" method="post">
-        <div class="modal-body" style="color: black">
-            {% csrf_token %}
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <h5>Name</h5>
-            <br />
-            <input name='username'>
-            <br />
-            </div>
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <div class="col">First Name: {{form.first_name}}</div>
-            <div class="col">Middle Name: {{form.middle_name}}</div>
-            <div class="col">Last Name: {{form.last_name}}</div>
-            <div class="col">Suffix: {{form.suffix}}</div>
-            </div>
-            <br />
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 15%">
-            <div class="col">Nickname: {{form.nick_name}}</div>
-            <div class="col">Attending Doctor: {{form.doctor_assigned}}</div>
-            <div class="col"></div>
-            <div class="col"></div>
-            </div>
-            <br />
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 15%">
-            <div class="col">Gender: {{form.gender}}</div>
-            <div class="col">Date of Birth: {{form.bday}}</div>
-            <div class="col">Age: {{form.age}}</div>
-            <div class="col"></div>
-            </div>
-            <hr style="margin-left:10%; margin-right: 10%">
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <h5> Contact Information </h5>
-            <br />
-            <br />
-            </div>
-            <div class="row" style="margin-left: 10%; margin-right: 15%">
-            <div class="col">Mobile No.: {{form.mobile}}</div>
-            <div class="col">Landline: {{form.landline}}</div>
-            <div class="col">Email: {{form.email}}</div>
-            <div class="col"></div>
-            </div>
-            <hr style="margin-left:10%; margin-right: 10%">
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <h5> Address</h5>
-            <br />
-            <br />
-            </div>
-            <div class="row" style="margin-left: 10%; margin-right: 15%">
-            <div class="col">House/Unit No./Street: {{form.home_no}}</div>
-            <div class="col">Barangay: {{form.brgy}}</div>
-            <div class="col">City: {{form.city}}</div>
-            <div class="col"></div>
-            </div>
-            <br />
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 15%">
-            <div class="col">Province: {{form.province}}</div>
-            <div class="col">Region: {{form.region}}</div>
-            <div class="col">Zip Code: {{form.zip_code}}</div>
-            <div class="col"></div>
-            </div>
-            <hr style="margin-left:10%; margin-right: 10%">
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <h5>Parents Information</h5>
-            </div>
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <h6>Mother</h6>
-            <br/>
-            </div>
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <div class="col">First Name: {{form.fname_mom}}</div>
-            <div class="col">Last Name: {{form.lname_mom}}</div>
-            <div class="col">Contact No.: {{form.contact_mom}}</div>
-            <div class="col">Email: {{form.email_mom}}</div>
-            </div>
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <h6>Father</h6>
-            <br />
-            </div>
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <div class="col">First Name: {{form.fname_dad}}</div>
-            <div class="col">Last Name: {{form.lname_dad}}</div>
-            <div class="col">Contact No.: {{form.contact_dad}}</div>
-            <div class="col">Email: {{form.email_dad}}</div>
-            </div>
-            <hr style=" margin-left: 10%; margin-right: 10%">
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <h5>Emergency Contacts </h5>
-            </div>
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <h6>Person 1 </h6>
-            <br />
-            </div>
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <div class="col">First Name: {{form.fname_e1}}</div>
-            <div class="col">Last Name: {{form.lname_e1}}</div>
-            <div class="col">Relation: {{form.relation_e1}}</div>
-            <div class="col">Contact No.: {{form.contact_e1}}</div>
-            </div>
-            <br />
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <h6>Person 2 </h6>
-            <br />
-            </div>
-            <div class="row" style="margin-left: 10%; margin-right: 10%">
-            <div class="col">First Name: {{form.fname_e2}}</div>
-            <div class="col">Last Name: {{form.lname_e2}}</div>
-            <div class="col">Relation: {{form.relation_e2}}</div>
-            <div class="col">Contact No.: {{form.contact_e2}}</div>
-            </div>
-            <br />
-            <br />
-            
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button id="submit_button" type="submit" class="btn btn-primary">Create Record</button>
+<br />
+<div class="container-fluid">
+  <div class="row">
+    <!-- Profile -->
+    <div class="col">
+      <center>
+      <h3>New Patient Record</h3>
+    </center>
+      <br>
+  
+      <!-- Create Profile -->
+      <div class="card" style="margin-left: 5%; margin-right: 5%">
+          <h5 class="card-header">Create Patient Profile</h5>
+          <div class="card-body">
+            <form action="{% url 'create-record' %}" method="post">
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button id="submit_button" type="submit" class="btn btn-success">Create Record</button>
+              </div>
+              <br />
+              {% csrf_token %}
+              <div>
+                <table class="table table-bordered">
+                  <tr>
+                    <td class="table-warning" colspan="2">Account Username:</td>
+                    <td class="table-light"><input name='username'></td>
+                    <td class="table-warning" colspan="7"></td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning"><b>NAME</b></td>
+                    <td class="table-warning">Nickname:</td>
+                    <td class="table-light">{{form.nick_name}}</td>
+                    <td class="table-warning" colspan="2">Attending Doctor:<span style="color: red;">*</span></td>
+                    <td class="table-light" colspan="2">{{ form.doctor_assigned }}</td>
+                    <td class="table-warning" colspan="3"></td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">First:<span style="color: red;">*</span></td>
+                    <td class="table-light">{{form.first_name}}</td>
+                    <td class="table-warning">Last:<span style="color: red;">*</span></td>
+                    <td class="table-light" colspan="2">{{ form.last_name }}</td>
+                    <td class="table-warning">Middle:</td>
+                    <td class="table-light" colspan="2">{{ form.middle_name }}</td>
+                    <td class="table-warning">Suffix:</td>
+                    <td class="table-light">{{ form.suffix }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Sex:<span style="color: red;">*</span></td>
+                    <td class="table-light">{{ form.gender }}</td>
+                    <td class="table-warning">Date of Birth:<span style="color: red;">*</span></td>
+                    <td class="table-light" colspan="3">{{ form.bday }}</td>
+                    <td class="table-warning">Age:<span style="color: red;">*</span></td>
+                    <td class="table-light" colspan="3">{{ form.age }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning"><b>CONTACT #</b></td>
+                    <td class="table-warning">Mobile:</td>
+                    <td class="table-light" colspan="2">{{ form.mobile }}</td>
+                    <td class="table-warning">Landline:</td>
+                    <td class="table-light" colspan="2">{{ form.landline }}</td>
+                    <td class="table-warning">Email:</td>
+                    <td class="table-light" colspan="2">{{ form.email }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning"><b>ADDRESS</b></td>
+                    <td class="table-warning">House/Unit No./Street:</td>
+                    <td class="table-light" colspan="4">{{ form.home_no }}</td>
+                    <td class="table-warning">Barangay:</td>
+                    <td class="table-light" colspan="3">{{ form.brgy }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">City:</td>
+                    <td class="table-light">{{ form.city }}</td>
+                    <td class="table-warning">Province:</td>
+                    <td class="table-light" colspan="2">{{ form.province }}</td>
+                    <td class="table-warning">Region:</td>
+                    <td class="table-light" colspan="2">{{ form.region }}</td>
+                    <td class="table-warning">Zip Code:</td>
+                    <td class="table-light">{{ form.zip_code }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning" colspan="10"><b>PARENT INFORMATION</b></td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Mother:</td>
+                    <td class="table-light">{{ form.fname_mom }}</td>
+                    <td class="table-light" colspan="2">{{ form.lname_mom }}</td>
+                    <td class="table-warning">Contact #:</td>
+                    <td class="table-light" colspan="2">{{ form.contact_mom }}</td>
+                    <td class="table-warning">Email:</td>
+                    <td class="table-light" colspan="2">{{ form.email_mom }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Father</td>
+                    <td class="table-light">{{ form.fname_dad }}</td>
+                    <td class="table-light" colspan="2">{{ form.lname_dad}}</td>
+                    <td class="table-warning">Contact #:</td>
+                    <td class="table-light" colspan="2">{{ form.contact_dad}}</td>
+                    <td class="table-warning">Email:</td>
+                    <td class="table-light" colspan="2">{{ form.email_dad }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning" colspan="2"><b>EMERGENCY CONTACT</b></td>
+                    <td class="table-warning" colspan="8">Same as parent information *insert checkbox* </td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Name:</td>
+                    <td class="table-light">{{ form.fname_e1 }}</td>
+                    <td class="table-light" colspan="2">{{ form.lname_e1 }}</td>
+                    <td class="table-warning">Relation:</td>
+                    <td class="table-light" colspan="2">{{ form.relation_e1 }}</td>
+                    <td class="table-warning">Contact #:</td>
+                    <td class="table-light" colspan="2">{{ form.contact_e1 }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Name:</td>
+                    <td class="table-light">{{ form.fname_e1 }}</td>
+                    <td class="table-light" colspan="2">{{ form.lname_e2 }}</td>
+                    <td class="table-warning">Relation:</td>
+                    <td class="table-light" colspan="2">{{ form.relation_e2 }}</td>
+                    <td class="table-warning">Contact #:</td>
+                    <td class="table-light" colspan="2">{{ form.contact_e2 }}</td>
+                  </tr>
+                </table>
+              </div>
+            </form>
           </div>
-    </form>
+      </div>
     </div>
   </div>
-  <br><br><br><br><br>
-
+</div> 
+<br>
+<br>  
  {% for message in messages %} {% if message.tags == 'success' %}
     
           {% else %}

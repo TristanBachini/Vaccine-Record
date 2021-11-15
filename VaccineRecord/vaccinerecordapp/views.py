@@ -22,6 +22,8 @@ from django.core.mail import send_mail, BadHeaderError
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from .filters import RecordFilter
+from django.views.generic import View
+from django.utils import timezone
 # Create your views here.
 
 def home(request):
@@ -39,12 +41,15 @@ def home(request):
                 if user.groups.filter(name="Doctor"):
                     appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id)
                     count = appointments.count()
+                    print(user)
                     data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
                 else:
+                    print(user)
                     data = {"form1":form1, "form2":form2, "patients":patients}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
             else:
+                print(user)
                 record = PatientRecord.objects.get(user = request.user)
                 data = {'record':record}
                 return render(request, 'vaccinerecordapp/patient-landing.html',data)
@@ -264,7 +269,6 @@ def display_vaccine_record(request,pk):
     else:
         return create_vaccine_record(request,pk)
 
-
 def create_vaccine_record(request,pk):
     form = VaccineForm(request.POST)
     record = PatientRecord.objects.get(id=pk)
@@ -360,6 +364,89 @@ def vaccine_record(request):
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled correctly.")
     data = {"form":form,}
     return render(request, 'vaccinerecordapp/vaccine-record.html',data)
+
+def update_vaccine(request,pk):
+    record = PatientRecord.objects.get(id = pk)
+    vac = PatientRecord.objects.get(id = pk).user
+    vaccine = Vaccine.objects.get(user=vac)
+    form = UpdateVaccineForm(instance = vaccine)
+
+    if(request.method=="POST"):   
+        user = User.objects.get(username=vac)
+        form = VaccineForm({'user':user, 
+                                'bcg_brand':request.POST.get('bcg_brand'),'bcg_date':request.POST.get('bcg_date'),'bcg_loc':request.POST.get('bcg_loc'),'bcg_rem':request.POST.get('bcg_rem'),
+                                
+                                'hepb1_brand':request.POST.get('hepb1_brand'),'hepb1_date':request.POST.get('hepb1_date'),'hepb1_loc':request.POST.get('hepb1_loc'),'hepb1_rem':request.POST.get('hepb1_rem'),
+                                'hepb2_brand':request.POST.get('hepb2_brand'),'hepb2_date':request.POST.get('hepb2_date'),'hepb2_loc':request.POST.get('hepb2_loc'),'hepb2_rem':request.POST.get('hepb2_rem'),
+                                'hepb3_brand':request.POST.get('hepb3_brand'),'hepb3_date':request.POST.get('hepb3_date'),'hepb3_loc':request.POST.get('hepb3_loc'),'hepb3_rem':request.POST.get('hepb3_rem'),
+                                
+                                'dtap1_brand':request.POST.get('dtap1_brand'),'dtap1_date':request.POST.get('dtap1_date'),'dtap1_loc':request.POST.get('dtap1_loc'),'dtap1_rem':request.POST.get('dtap1_rem'),
+                                'dtap2_brand':request.POST.get('dtap2_brand'),'dtap2_date':request.POST.get('dtap2_date'),'dtap2_loc':request.POST.get('dtap2_loc'),'dtap2_rem':request.POST.get('dtap2_rem'),
+                                'dtap3_brand':request.POST.get('dtap3_brand'),'dtap3_date':request.POST.get('dtap3_date'),'dtap3_loc':request.POST.get('dtap3_loc'),'dtap3_rem':request.POST.get('dtap3_rem'),
+                                'dtap4_brand':request.POST.get('dtap4_brand'),'dtap4_date':request.POST.get('dtap4_date'),'dtap4_loc':request.POST.get('dtap4_loc'),'dtap4_rem':request.POST.get('dtap4_rem'),
+                                'dtap5_brand':request.POST.get('dtap5_brand'),'dtap5_date':request.POST.get('dtap5_date'),'dtap5_loc':request.POST.get('dtap5_loc'),'dtap5_rem':request.POST.get('dtap5_rem'),
+
+                                'hib1_brand':request.POST.get('hib1_brand'),'hib1_date':request.POST.get('hib1_date'),'hib1_loc':request.POST.get('hib1_loc'),'hib1_rem':request.POST.get('hib1_rem'),
+                                'hib2_brand':request.POST.get('hib2_brand'),'hib2_date':request.POST.get('hib2_date'),'hib2_loc':request.POST.get('hib2_loc'),'hib2_rem':request.POST.get('hib2_rem'),
+                                'hib3_brand':request.POST.get('hib3_brand'),'hib3_date':request.POST.get('hib3_date'),'hib3_loc':request.POST.get('hib3_loc'),'hib3_rem':request.POST.get('hib3_rem'),
+                                'hib4_brand':request.POST.get('hib4_brand'),'hib4_date':request.POST.get('hib4_date'),'hib4_loc':request.POST.get('hib4_loc'),'hib4_rem':request.POST.get('hib4_rem'),
+
+                                'hpv11_brand':request.POST.get('hpv11_brand'),'hpv11_date':request.POST.get('hpv11_date'),'hpv11_loc':request.POST.get('hpv11_loc'),'hpv11_rem':request.POST.get('hpv11_rem'),
+                                'hpv12_brand':request.POST.get('hpv12_brand'),'hpv12_date':request.POST.get('hpv12_date'),'hpv12_loc':request.POST.get('hpv12_loc'),'hpv12_rem':request.POST.get('hpv12_rem'),
+
+                                'hpv21_brand':request.POST.get('hpv21_brand'),'hpv21_date':request.POST.get('hpv21_date'),'hpv21_loc':request.POST.get('hpv21_loc'),'hpv21_rem':request.POST.get('hpv21_rem'),
+                                'hpv22_brand':request.POST.get('hpv22_brand'),'hpv22_date':request.POST.get('hpv22_date'),'hpv22_loc':request.POST.get('hpv22_loc'),'hpv22_rem':request.POST.get('hpv22_rem'),
+                                'hpv23_brand':request.POST.get('hpv23_brand'),'hpv23_date':request.POST.get('hpv23_date'),'hpv23_loc':request.POST.get('hpv23_loc'),'hpv23_rem':request.POST.get('hpv23_rem'),
+
+                                'hepa1_brand':request.POST.get('hepa1_brand'),'hepa1_date':request.POST.get('hepa1_date'),'hepa1_loc':request.POST.get('hepa1_loc'),'hepa1_rem':request.POST.get('hepa1_rem'),
+                                'hepa2_brand':request.POST.get('hepa2_brand'),'hepa2_date':request.POST.get('hepa2_date'),'hepa2_loc':request.POST.get('hepa2_loc'),'hepa2_rem':request.POST.get('hepa2_rem'),
+
+                                'inf1_brand':request.POST.get('inf1_brand'),'inf1_date':request.POST.get('inf1_date'),'inf1_loc':request.POST.get('inf1_loc'),'inf1_rem':request.POST.get('inf1_rem'),
+                                'inf2_brand':request.POST.get('inf2_brand'),'inf2_date':request.POST.get('inf2_date'),'inf2_loc':request.POST.get('inf2_loc'),'inf2_rem':request.POST.get('inf2_rem'),
+
+                                'anf_brand':request.POST.get('anf_brand'),'anf_date':request.POST.get('anf_date'),'anf_loc':request.POST.get('anf_loc'),'anf_rem':request.POST.get('anf_rem'),
+
+                                'ipv1_brand':request.POST.get('ipv1_brand'),'ipv1_date':request.POST.get('ipv1_date'),'ipv1_loc':request.POST.get('ipv1_loc'),'ipv1_rem':request.POST.get('ipv1_rem'),
+                                'ipv2_brand':request.POST.get('ipv2_brand'),'ipv2_date':request.POST.get('ipv2_date'),'ipv2_loc':request.POST.get('ipv2_loc'),'ipv2_rem':request.POST.get('ipv2_rem'),
+                                'ipv3_brand':request.POST.get('ipv3_brand'),'ipv3_date':request.POST.get('ipv3_date'),'ipv3_loc':request.POST.get('ipv3_loc'),'ipv3_rem':request.POST.get('ipv3_rem'),
+                                'ipv4_brand':request.POST.get('ipv4_brand'),'ipv4_date':request.POST.get('ipv4_date'),'ipv4_loc':request.POST.get('ipv4_loc'),'ipv4_rem':request.POST.get('ipv4_rem'),
+                                'ipv5_brand':request.POST.get('ipv5_brand'),'ipv5_date':request.POST.get('ipv5_date'),'ipv5_loc':request.POST.get('ipv5_loc'),'ipv5_rem':request.POST.get('ipv5_rem'),
+                                
+                                'japb1_brand':request.POST.get('japb1_brand'),'japb1_date':request.POST.get('japb1_date'),'japb1_loc':request.POST.get('japb1_loc'),'japb1_rem':request.POST.get('japb1_rem'),
+                                'japb2_brand':request.POST.get('japb2_brand'),'japb2_date':request.POST.get('japb2_date'),'japb2_loc':request.POST.get('japb2_loc'),'japb2_rem':request.POST.get('japb2_rem'),
+
+                                'msl_brand':request.POST.get('msl_brand'),'msl_date':request.POST.get('msl_date'),'msl_loc':request.POST.get('msl_loc'),'msl_rem':request.POST.get('msl_rem'),
+                                
+                                'men_brand':request.POST.get('men_brand'),'men_date':request.POST.get('men_date'),'men_loc':request.POST.get('men_loc'),'men_rem':request.POST.get('men_rem'),
+
+                                'mmr1_brand':request.POST.get('mmr1_brand'),'mmr1_date':request.POST.get('mmr1_date'),'mmr1_loc':request.POST.get('mmr1_loc'),'mmr1_rem':request.POST.get('mmr1_rem'),
+                                'mmr2_brand':request.POST.get('mmr2_brand'),'mmr2_date':request.POST.get('mmr2_date'),'mmr2_loc':request.POST.get('mmr2_loc'),'mmr2_rem':request.POST.get('mmr2_rem'),
+                                
+                                'pcv1_brand':request.POST.get('pcv1_brand'),'pcv1_date':request.POST.get('pcv1_date'),'pcv1_loc':request.POST.get('pcv1_loc'),'pcv1_rem':request.POST.get('pcv1_rem'),
+                                'pcv2_brand':request.POST.get('pcv2_brand'),'pcv2_date':request.POST.get('pcv2_date'),'pcv2_loc':request.POST.get('pcv2_loc'),'pcv2_rem':request.POST.get('pcv2_rem'),
+                                'pcv3_brand':request.POST.get('pcv3_brand'),'pcv3_date':request.POST.get('pcv3_date'),'pcv3_loc':request.POST.get('pcv3_loc'),'pcv3_rem':request.POST.get('pcv3_rem'),
+                                'pcv4_brand':request.POST.get('pcv4_brand'),'pcv4_date':request.POST.get('pcv4_date'),'pcv4_loc':request.POST.get('pcv4_loc'),'pcv4_rem':request.POST.get('pcv4_rem'),
+                                
+                                'rota1_brand':request.POST.get('rota1_brand'),'rota1_date':request.POST.get('rota1_date'),'rota1_loc':request.POST.get('rota1_loc'),'rota1_rem':request.POST.get('rota1_rem'),
+                                'rota2_brand':request.POST.get('rota2_brand'),'rota2_date':request.POST.get('rota2_date'),'rota2_loc':request.POST.get('rota2_loc'),'rota2_rem':request.POST.get('rota2_rem'),
+                                'rota3_brand':request.POST.get('rota3_brand'),'rota3_date':request.POST.get('rota3_date'),'rota3_loc':request.POST.get('rota3_loc'),'rota3_rem':request.POST.get('rota3_rem'),
+                                
+                                'td_brand':request.POST.get('td_brand'),'td_date':request.POST.get('td_date'),'td_loc':request.POST.get('td_loc'),'td_rem':request.POST.get('td_rem'),
+                                
+                                'typ_brand':request.POST.get('typ_brand'),'typ_date':request.POST.get('typ_date'),'typ_loc':request.POST.get('typ_loc'),'typ_rem':request.POST.get('typ_rem'),
+                                
+                                'var1_brand':request.POST.get('var1_brand'),'var1_date':request.POST.get('var1_date'),'var1_loc':request.POST.get('var1_loc'),'var1_rem':request.POST.get('var1_rem'),
+                                'var2_brand':request.POST.get('var2_brand'),'var2_date':request.POST.get('var2_date'),'var2_loc':request.POST.get('var2_loc'),'var2_rem':request.POST.get('var2_rem'),
+                            
+                                }, instance=vaccine)
+        if(form.is_valid()):
+            form.save()
+            record = PatientRecord.objects.get(id = pk)
+            data = {"record":record}
+            return render(request, "vaccinerecordapp/search-patient.html",data)
+    data = {"form":form,"record":record}
+    return render(request, "vaccinerecordapp/update-vaccine.html", data) 
+
 
 @login_required(login_url='/')
 def search_patient(request):
@@ -500,3 +587,42 @@ def passwordReset(request):
 
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="vaccinerecordapp/reset-password/password-reset.html", context={"password_reset_form":password_reset_form})
+
+# for generating pdf
+from io import BytesIO
+from django.template.loader import get_template
+import os
+
+def fetch_resources(uri, rel):
+    path = os.path.join(uri.replace(settings.STATIC_URL, ""))
+    return path
+
+def render_to_pdf(template_src, context_dict={}):
+    template = get_template(template_src)
+    html  = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)#, link_callback=fetch_resources)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None
+
+class GeneratePDF(View):
+    def get(self, request, pk, *args, **kwargs):
+        try:
+            record = PatientRecord.objects.get(id=pk)
+        except:
+            return HttpResponse("505 Not Found")
+        curr_date = datetime.date.today()
+        data = {
+            'first_name': record.first_name,
+            'middle_name': record.middle_name,
+            'last_name': record.last_name,
+            'age': record.age,
+            'city': record.city,
+            'doctor_assigned': record.doctor_assigned,
+            'date': curr_date,
+        }
+        pdf = render_to_pdf('vaccinerecordapp/certificate-pdf.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+
