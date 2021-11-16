@@ -30,4 +30,6 @@ urlpatterns = [
     path('certificate/<pk>', views.certificate, name="certificate"),
     path('confirm-appointments/', views.confirm_appointments, name="confirm-appointments"),
     path('confirm-appointment/<pk>', views.confirm_appointment, name="confirm-appointment"),
+    path('certificate-pdf/<int:pk>', views.GeneratePDF.as_view(), name="generatepdf"),
+    path('update-vaccine/<pk>', views.update_vaccine, name="update-vaccine"),
     ]
