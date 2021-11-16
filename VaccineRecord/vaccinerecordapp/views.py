@@ -41,6 +41,11 @@ def home(request):
                     count = appointments.count()
                     data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
+                if user.groups.filter(name="Staff"):
+                    appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+                    count = appointments.count()
+                    data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
+                    return render(request, 'vaccinerecordapp/dashboard.html',data)
                 else:
                     data = {"form1":form1, "form2":form2, "patients":patients}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
@@ -417,7 +422,11 @@ def appointment(request,pk):
                 patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
                 data = {'patient':patient}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
-        return redirect("/appointment")
+        
+        appointments = Appointment.objects.filter(user = record.user)
+        count = appointments.count()
+        data = {'appointments':appointments,'count':count,'record':record,'form':form}
+        return render(request, 'vaccinerecordapp/appointment.html',data)
     data = {"form":form, "appointments": appointments, "count": count,"record":record}
     return render(request, 'vaccinerecordapp/appointment.html',data)                          
     
@@ -500,3 +509,20 @@ def passwordReset(request):
 
     password_reset_form = PasswordResetForm()
     return render(request=request, template_name="vaccinerecordapp/reset-password/password-reset.html", context={"password_reset_form":password_reset_form})
+
+@login_required(login_url='/')
+def confirm_appointments(request):
+    appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+    count = appointments.count()
+    data = {'appointments':appointments, 'count':count}
+    return render(request,'vaccinerecordapp/confirm-appointment.html',data)
+
+@login_required(login_url='/')
+def confirm_appointment(request,pk):
+    appointment = Appointment.objects.get(id = pk)
+    appointment.stat = "CONFIRMED"
+    appointment.save()
+    appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+    count = appointments.count()
+    data = {'appointments':appointments, 'count':count}
+    return render(request,'vaccinerecordapp/confirm-appointment.html',data)

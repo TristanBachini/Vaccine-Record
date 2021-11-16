@@ -28,4 +28,6 @@ urlpatterns = [
     path('create-vaccine-record/<pk>', views.create_vaccine_record, name="create-vaccine-record"),
     path('appointment/<pk>', views.appointment, name="appointment"),
     path('certificate/<pk>', views.certificate, name="certificate"),
+    path('confirm-appointments/', views.confirm_appointments, name="confirm-appointments"),
+    path('confirm-appointment/<pk>', views.confirm_appointment, name="confirm-appointment"),
     ]

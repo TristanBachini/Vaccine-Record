@@ -3,15 +3,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}"/>
 </head>
 <body>
-    {% if request.user|has_group:"staff"%}
-    <br>
-    <a class="btn btn-lg btn-info"  href="{% url 'confirm-appointments' %}" style="color: black">Confirm Appointments</a>
-    {% endif %}
     {% if count == 0 %}
-        <div id = "noAppointment">
-            <span><i class ="fas fa-calendar-check fa-3x"></i></span>
-            <h1>No Appointment for Today!</h1>
-        </div>
+    <div id = "noAppointment">
+        <span><i class ="fas fa-calendar-check fa-3x"></i></span>
+        <h1>No Appointments to confirm</h1>
+    </div>
     {% else %}
         <h1>Appointments</h1>
         <table class="table table-striped table-hover">
@@ -25,6 +21,7 @@
                 <th scope="col">Type of Visit</th>
                 <th scope="col">Location</th>
                 <th scope="col">Status</th>
+                <th scope="col">Confirm</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +36,10 @@
             <td> <a>{{appointment.visit}}</a></td>
             <td> <a>{{appointment.location}}</a></td>
             <td> <a href="#" >{{appointment.stat}}</a></td>
+            <td><form action="{% url 'confirm-appointment' appointment.id %}" method="post">
+                {% csrf_token %}
+                <button id="submit_button" type="submit" class="btn btn-primary">Confirm</button>
+            </form></td>
         </tr>
 
         {% endfor %}
