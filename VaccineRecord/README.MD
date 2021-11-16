@@ -57,3 +57,7 @@ python manage.py runserver
 
 //to collect static everytime may changes sa static files
 //python manage.py collectstatic
+
+//gmail credentials
+//email: baqna.team@gmail.com
+//pass:  vbaQna-00

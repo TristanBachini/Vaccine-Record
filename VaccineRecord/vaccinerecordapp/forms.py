@@ -33,6 +33,7 @@ class UserForm(UserCreationForm):
 
 class DateInput(forms.DateInput):
     input_type = 'date'
+    input_formats = settings.DATE_INPUT_FORMATS
 
 class DoctorForm(forms.ModelForm):
     class Meta:
@@ -130,7 +131,7 @@ class PatientRecordForm(forms.ModelForm):
                 'nick_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Nickname', 'aria-label': 'Nickname', 'required': False}),
                 'doctor_assigned': Select({'class': 'form-control'}),
                 'mobile': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
-                'age': TextInput(attrs={'class': 'form-control', 'placeholder': 'Age', 'aria-label': 'Age', 'required': False}),
+                'age': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Age', 'aria-label': 'Age', 'required': False}),
                 'landline': TextInput(attrs={'class': 'form-control', 'placeholder': 'Landline', 'aria-label': 'Landline', 'required': False}),
                 'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email', 'aria-label': 'Email', 'required': False}),
                 'home_no': TextInput(attrs={'class': 'form-control', 'placeholder': 'House/Unit No./Street', 'aria-label': 'House/Unit No./Street', 'required': False}),
@@ -399,6 +400,8 @@ class UpdateVaccineForm(forms.ModelForm):
         model = Vaccine
         fields = "__all__"
         widgets = {
+            'user':  HiddenInput(attrs={'type': 'hidden'}),
+
             'bcg_brand':  TextInput(attrs={'class': 'form-control', 'placeholder': 'Brand', 'required': False}),
             'bcg_date':  DateInput(attrs={'class': 'form-control', 'required': False}),
             'bcg_loc':  Select(attrs={'class': 'form-control', 'required': False}),

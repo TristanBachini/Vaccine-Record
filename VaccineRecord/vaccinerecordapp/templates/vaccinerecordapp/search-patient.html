@@ -9,11 +9,22 @@
 <!-- search filters-->
 <div class="row">
 	<div class="col-sm-4">
-		<div class="card card-body" style="width: 18rem;">
+		<div class="card card-body" style="width: 20rem;">
 			<h3 class="card-title">Search Patient</h3>
 			<br />
 			<form method="get">
-				{{myFilter.form.as_p}}
+				<div class="mb-3"><label for="floatingInput1">Record No.:</label>
+				<input class="form-control form-control-sm" id="floatingInput1" type="number" placeholder="Record No." aria-label=".form-control-sm example" name="id">
+				</div>
+				<div class="mb-3"><label for="floatingInput2">Date of Birth:</label>
+				<input class="form-control form-control-sm" id="floatingInput2" type="text" placeholder="mm/dd/yyyy" aria-label=".form-control-sm example" name="bday">
+				</div>
+				<div class="mb-3"><label for="floatingInput3">First Name:</label>
+				<input class="form-control form-control-sm" id="floatingInput3" type="text" placeholder="First Name" aria-label=".form-control-sm example" name="first_name">
+				</div>
+				<div class="mb-3"><label for="floatingInput4">Last Name:</label>
+				<input class="form-control form-control-sm" id="floatingInput4" type="text" placeholder="Last Name" aria-label=".form-control-sm example" name="last_name">
+				</div>
 		    <button class="btn btn-primary" type="submit">
 				<i class="fas fa-search"></i>
 				Search</button>
@@ -52,7 +63,7 @@
 						<td> <a href="{% url 'patient-profile' patient.id %}" >{{patient.id}}</a></td>
 						<td> <a href="{% url 'patient-profile' patient.id %}" >{{patient.first_name}}</a></td>
 						<td> <a href="{% url 'patient-profile' patient.id %}" >{{patient.last_name}}</a></td>
-						<td> <a href="{% url 'patient-profile' patient.id %}" >{{patient.bday}}</a></td>
+						<td> <a href="{% url 'patient-profile' patient.id %}" >{{patient.bday|date:"m/d/Y"}}</a></td>
 					</tr>
 					{% endfor %}
 
