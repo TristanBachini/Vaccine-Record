@@ -468,6 +468,7 @@ def search_patient(request):
         return render(request, 'vaccinerecordapp/search-patient.html',data)
     else: 
         patients = PatientRecord.objects.all()
+        notExist = ""
         myFilter = RecordFilter(request.GET, queryset=patients)
         patients = myFilter.qs
         if patients.count()==0:
