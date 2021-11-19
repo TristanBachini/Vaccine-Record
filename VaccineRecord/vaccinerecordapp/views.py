@@ -459,16 +459,21 @@ def search_patient(request):
     
     if user.groups.filter(name="Doctor"):
         doc = Doctor.objects.get(user = user)
+        notExist = ""
         patients = PatientRecord.objects.filter(doctor_assigned = doc)
         myFilter = RecordFilter(request.GET, queryset=patients)
         patients = myFilter.qs
-        data = {"patients":patients, 'myFilter':myFilter}
+        if patients.count()==0:
+            notExist = "The patient does not exist."
+        data = {"patients":patients, 'myFilter':myFilter,'notExist':notExist}
         return render(request, 'vaccinerecordapp/search-patient.html',data)
     else: 
         patients = PatientRecord.objects.all()
         myFilter = RecordFilter(request.GET, queryset=patients)
         patients = myFilter.qs
-        data = {"patients":patients, 'myFilter':myFilter}
+        if patients.count()==0:
+            notExist = "The patient does not exist."
+        data = {"patients":patients, 'myFilter':myFilter,'notExist':notExist}
         return render(request, 'vaccinerecordapp/search-patient.html',data)
 
 @login_required(login_url='/')
@@ -613,6 +618,16 @@ def confirm_appointment(request,pk):
     count = appointments.count()
     data = {'appointments':appointments, 'count':count}
     return render(request,'vaccinerecordapp/confirm-appointment.html',data)
+
+@login_required(login_url='/')
+def reject_appointment(request,pk):
+    appointment = Appointment.objects.get(id = pk)
+    appointment.delete()
+    appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+    count = appointments.count()
+    data = {'appointments':appointments, 'count':count}
+    return render(request,'vaccinerecordapp/confirm-appointment.html',data)
+
 # for generating pdf
 from io import BytesIO
 from django.template.loader import get_template

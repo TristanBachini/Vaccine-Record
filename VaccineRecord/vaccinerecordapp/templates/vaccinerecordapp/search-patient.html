@@ -29,6 +29,7 @@
 		<!-- search results -->
 		<div class="card card-body">
 			<h5 class="card-title">Results
+				
 				<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 					<a href="{% url 'register-patient' %}">
 					<button class="btn btn-sm btn-outline-dark" >
@@ -39,15 +40,19 @@
 				</div>
 			</h5>
 			<table class="table table-primary table-striped table-bordered table-sm table-hover">
+				
 					<tr>
 						<th>Record #</th>
 						<th>First Name</th>
 						<th>Last Name</th>
 						<th>Date of Birth</th>
 					</tr>
+					{% if notExist != "" %}
+					<h3>{{notExist}}</h3>
+					{% endif %}
 
 					{% for patient in patients %}
-
+					
 					<tr>
 						<td> <a href="{% url 'patient-profile' patient.id %}" >{{patient.id}}</a></td>
 						<td> <a href="{% url 'patient-profile' patient.id %}" >{{patient.first_name}}</a></td>
