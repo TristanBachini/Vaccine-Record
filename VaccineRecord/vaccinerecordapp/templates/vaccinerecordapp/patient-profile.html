@@ -47,7 +47,7 @@
                     <td class="table-warning">Sex:</td>
                     <td class="table-light">{{ record.gender|upper }}</td>
                     <td class="table-warning">Date of Birth:</td>
-                    <td class="table-light" colspan="3">{{ record.bday|upper }}</td>
+                    <td class="table-light" colspan="3">{{ record.bday|date:"m/d/Y" }}</td>
                     <td class="table-warning">Age:</td>
                     <td class="table-light" colspan="3">{{ record.age }}</td>
                   </tr>

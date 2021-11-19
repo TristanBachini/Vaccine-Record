@@ -32,9 +32,9 @@
                     <td class="table-warning" colspan="2">{{ record.id }}</td>
                   </tr>
                   <tr>
-                    <td class="table-warning">First:</td>
+                    <td class="table-warning">First:<span style="color: red;">*</span></td>
                     <td class="table-light">{{form.first_name}}</td>
-                    <td class="table-warning">Last:</td>
+                    <td class="table-warning">Last:<span style="color: red;">*</span></td>
                     <td class="table-light" colspan="2">{{ form.last_name }}</td>
                     <td class="table-warning">Middle:</td>
                     <td class="table-light" colspan="2">{{ form.middle_name }}</td>
@@ -42,11 +42,11 @@
                     <td class="table-light">{{ form.suffix }}</td>
                   </tr>
                   <tr>
-                    <td class="table-warning">Sex:</td>
+                    <td class="table-warning">Sex:<span style="color: red;">*</span></td>
                     <td class="table-light">{{ form.gender }}</td>
-                    <td class="table-warning">Date of Birth:</td>
+                    <td class="table-warning">Date of Birth:<span style="color: red;">*</span></td>
                     <td class="table-light" colspan="3">{{ form.bday }}</td>
-                    <td class="table-warning">Age:</td>
+                    <td class="table-warning">Age:<span style="color: red;">*</span></td>
                     <td class="table-light" colspan="3">{{ form.age }}</td>
                   </tr>
                   <tr>

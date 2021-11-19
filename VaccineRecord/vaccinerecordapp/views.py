@@ -452,7 +452,6 @@ def update_vaccine(request,pk):
     data = {"form":form,"record":record}
     return render(request, "vaccinerecordapp/update-vaccine.html", data) 
 
-
 @login_required(login_url='/')
 def search_patient(request):
     user = User.objects.get(username=request.user.username)

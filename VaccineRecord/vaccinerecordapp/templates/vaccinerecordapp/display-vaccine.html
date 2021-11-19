@@ -44,7 +44,7 @@
                             <td scope="col">BCG</td>
                             <td scope="col">1 of 1</td>
                             <td scope="col">{{ vaccine.bcg_brand }}</td>
-                            <td scope="col">{{ vaccine.bcg_date }}</td>
+                            <td scope="col">{{ vaccine.bcg_date|date:"m/d/Y" }}</td>
                             <td scope="col">{{ vaccine.bcg_loc }}</td>
                             <td scope="col">{{ vaccine.bcg_rem }}</td>
                         </tr>
@@ -52,7 +52,7 @@
                             <td scope="col">Hepatitis B#1</td>
                             <td scope="col">1 of 3</td>
                             <td scope="col">{{ vaccine.hepb1_brand }}</td>
-                            <td scope="col">{{ vaccine.hepb1_date }}</td>
+                            <td scope="col">{{ vaccine.hepb1_date|date:"m/d/Y" }}</td>
                             <td scope="col">{{ vaccine.hepb1_loc }}</td>
                             <td scope="col">{{ vaccine.hepb1_rem }}</td>
                         </tr>
@@ -61,7 +61,7 @@
                             <td scope="col">Hepatitis B#2</td>
                             <td scope="col">2 of 3</td>
                             <td scope="col">{{ vaccine.hepb2_brand}}</td>
-                            <td scope="col">{{ vaccine.hepb2_date}}</td>
+                            <td scope="col">{{ vaccine.hepb2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hepb2_loc}}</td>
                             <td scope="col">{{ vaccine.hepb2_rem}}</td>
                         </tr>
@@ -69,7 +69,7 @@
                             <td scope="col">DTaP/DTwP #1</td>
                             <td scope="col">1 of 5</td>
                             <td scope="col">{{ vaccine.dtap1_brand}}</td>
-                            <td scope="col">{{ vaccine.dtap1_date}}</td>
+                            <td scope="col">{{ vaccine.dtap1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.dtap1_loc}}</td>
                             <td scope="col">{{ vaccine.dtap1_rem}}</td>
                         </tr>
@@ -77,7 +77,7 @@
                             <td scope="col">IPV/OPV #1</td>
                             <td scope="col">1 of 5</td>
                             <td scope="col">{{ vaccine.ipv1_brand}}</td>
-                            <td scope="col">{{ vaccine.ipv1_date}}</td>
+                            <td scope="col">{{ vaccine.ipv1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.ipv1_loc}}</td>
                             <td scope="col">{{ vaccine.ipv1_rem}}</td>
                         </tr>
@@ -85,7 +85,7 @@
                             <td scope="col">HiB #1</td>
                             <td scope="col">1 of 4</td>
                             <td scope="col">{{ vaccine.hib1_brand}}</td>
-                            <td scope="col">{{ vaccine.hib1_date}}</td>
+                            <td scope="col">{{ vaccine.hib1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hib1_loc}}</td>
                             <td scope="col">{{ vaccine.hib1_rem}}</td>
                         </tr>
@@ -93,7 +93,7 @@
                             <td scope="col">PCV #1</td>
                             <td scope="col"> 1 of 4</td>
                             <td scope="col">{{ vaccine.pcv1_brand}}</td>
-                            <td scope="col">{{ vaccine.pcv1_date}}</td>
+                            <td scope="col">{{ vaccine.pcv1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.pcv1_loc}}</td>
                             <td scope="col">{{ vaccine.pcv1_rem}}</td>
                         </tr>
@@ -101,7 +101,7 @@
                             <td scope="col">Rotavirus #1</td>
                             <td scope="col">1 of 2(or 3)</td>
                             <td scope="col">{{ vaccine.rota1_brand}}</td>
-                            <td scope="col">{{ vaccine.rota1_date}}</td>
+                            <td scope="col">{{ vaccine.rota1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.rota1_loc}}</td>
                             <td scope="col">{{ vaccine.rota1_rem}}</td>
                         </tr>
@@ -110,7 +110,7 @@
                             <td scope="col">DTaP/DTwP #2</td>
                             <td scope="col">2 of 5</td>
                             <td scope="col">{{ vaccine.dtap2_brand}}</td>
-                            <td scope="col">{{ vaccine.dtap2_date}}</td>
+                            <td scope="col">{{ vaccine.dtap2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.dtap2_loc}}</td>
                             <td scope="col">{{ vaccine.dtap2_rem}}</td>
                         </tr>
@@ -118,7 +118,7 @@
                             <td scope="col">IPV/OPV #2</td>
                             <td scope="col">2 of 5</td>
                             <td scope="col">{{ vaccine.ipv2_brand}}</td>
-                            <td scope="col">{{ vaccine.ipv2_date}}</td>
+                            <td scope="col">{{ vaccine.ipv2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.ipv2_loc}}</td>
                             <td scope="col">{{ vaccine.ipv2_rem}}</td>
                         </tr>
@@ -126,7 +126,7 @@
                             <td scope="col">HiB #2</td>
                             <td scope="col">2 of 4</td>
                             <td scope="col">{{ vaccine.hib2_brand}}</td>
-                            <td scope="col">{{ vaccine.hib2_date}}</td>
+                            <td scope="col">{{ vaccine.hib2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hib2_loc}}</td>
                             <td scope="col">{{ vaccine.hib2_rem}}</td>
                         </tr>
@@ -134,7 +134,7 @@
                             <td scope="col">PCV #2</td>
                             <td scope="col">2 of 4</td>
                             <td scope="col">{{ vaccine.pcv2_brand}}</td>
-                            <td scope="col">{{ vaccine.pcv2_date}}</td>
+                            <td scope="col">{{ vaccine.pcv2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.pcv2_loc}}</td>
                             <td scope="col">{{ vaccine.pcv2_rem}}</td>
                         </tr>
@@ -142,7 +142,7 @@
                             <td scope="col">Rotavirus #2</td>
                             <td scope="col">2 of 2</td>
                             <td scope="col">{{ vaccine.rota2_brand}}</td>
-                            <td scope="col">{{ vaccine.rota2_date}}</td>
+                            <td scope="col">{{ vaccine.rota2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.rota2_loc}}</td>
                             <td scope="col">{{ vaccine.rota2_rem}}</td>
                         </tr>
@@ -151,7 +151,7 @@
                             <td scope="col">Hepatitis B #3</td>
                             <td scope="col">3 of 3</td>
                             <td scope="col">{{ vaccine.hepb3_brand}}</td>
-                            <td scope="col">{{ vaccine.hepb3_date}}</td>
+                            <td scope="col">{{ vaccine.hepb3_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hepb3_loc}}</td>
                             <td scope="col">{{ vaccine.hepb3_rem}}</td>
                         </tr>
@@ -159,7 +159,7 @@
                             <td scope="col">DTaP/DTwP #3</td>
                             <td scope="col">3 of 5</td>
                             <td scope="col">{{ vaccine.dtap3_brand}}</td>
-                            <td scope="col">{{ vaccine.dtap3_date}}</td>
+                            <td scope="col">{{ vaccine.dtap3_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.dtap3_loc}}</td>
                             <td scope="col">{{ vaccine.dtap3_rem}}</td>
                         </tr>
@@ -167,7 +167,7 @@
                             <td scope="col">IPV/OPV #3</td>
                             <td scope="col">3 of 5</td>
                             <td scope="col">{{ vaccine.ipv3_brand}}</td>
-                            <td scope="col">{{ vaccine.ipv3_date}}</td>
+                            <td scope="col">{{ vaccine.ipv3_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.ipv3_loc}}</td>
                             <td scope="col">{{ vaccine.ipv3_rem}}</td>
                         </tr>
@@ -175,7 +175,7 @@
                             <td scope="col">HiB #3</td>
                             <td scope="col">3 of 4</td>
                             <td scope="col">{{ vaccine.hib3_brand}}</td>
-                            <td scope="col">{{ vaccine.hib3_date}}</td>
+                            <td scope="col">{{ vaccine.hib3_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hib3_loc}}</td>
                             <td scope="col">{{ vaccine.hib3_rem}}</td>
                         </tr>
@@ -183,7 +183,7 @@
                             <td scope="col">PCV #3</td>
                             <td scope="col">3 of 4</td>
                             <td scope="col">{{ vaccine.pcv3_brand}}</td>
-                            <td scope="col">{{ vaccine.pcv3_date}}</td>
+                            <td scope="col">{{ vaccine.pcv3_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.pcv3_loc}}</td>
                             <td scope="col">{{ vaccine.pcv3_rem}}</td>
                         </tr>
@@ -191,7 +191,7 @@
                             <td scope="col">Rotavirus #3</td>
                             <td scope="col">3 of 3</td>
                             <td scope="col">{{ vaccine.rota3_brand}}</td>
-                            <td scope="col">{{ vaccine.rota3_date}}</td>
+                            <td scope="col">{{ vaccine.rota3_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.rota3_loc}}</td>
                             <td scope="col">{{ vaccine.rota3_rem}}</td>
                         </tr>
@@ -199,7 +199,7 @@
                             <td scope="col"> Influenza #1</td>
                             <td scope="col">1 of 2</td>
                             <td scope="col">{{ vaccine.inf1_brand}}</td>
-                            <td scope="col">{{ vaccine.inf1_date}}</td>
+                            <td scope="col">{{ vaccine.inf1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.inf1_loc}}</td>
                             <td scope="col">{{ vaccine.inf1_rem}}</td>
                         </tr>
@@ -208,7 +208,7 @@
                             <td scope="col">Measles</td>
                             <td scope="col">1 of 1</td>
                             <td scope="col">{{ vaccine.msl_brand}}</td>
-                            <td scope="col">{{ vaccine.msl_date}}</td>
+                            <td scope="col">{{ vaccine.msl_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.msl_loc}}</td>
                             <td scope="col">{{ vaccine.msl_rem}}</td>
                         </tr>
@@ -216,7 +216,7 @@
                             <td scope="col"> Japhanese Encephalitis B#1</td>
                             <td scope="col">1 of 2</td>
                             <td scope="col">{{ vaccine.japb1_brand}}</td>
-                            <td scope="col">{{ vaccine.japb1_date}}</td>
+                            <td scope="col">{{ vaccine.japb1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.japb1_loc}}</td>
                             <td scope="col">{{ vaccine.japb1_rem}}</td>
                         </tr>
@@ -224,7 +224,7 @@
                             <td scope="col"> Influenza #2</td>
                             <td scope="col">2 of 2</td>
                             <td scope="col">{{ vaccine.inf2_brand}}</td>
-                            <td scope="col">{{ vaccine.inf2_date}}</td>
+                            <td scope="col">{{ vaccine.inf2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.inf2_loc}}</td>
                             <td scope="col">{{ vaccine.inf2_rem}}</td>
                         </tr>
@@ -233,7 +233,7 @@
                             <td scope="col">MMR #1</td>
                             <td scope="col">1 of 2</td>
                             <td scope="col">{{ vaccine.mmr1_brand}}</td>
-                            <td scope="col">{{ vaccine.mmr1_date}}</td>
+                            <td scope="col">{{ vaccine.mmr1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.mmr1_loc}}</td>
                             <td scope="col">{{ vaccine.mmr1_rem}}</td>
                         </tr>
@@ -241,7 +241,7 @@
                             <td scope="col">Varicella #1</td>
                             <td scope="col">1 of 2</td>
                             <td scope="col">{{ vaccine.var1_brand}}</td>
-                            <td scope="col">{{ vaccine.var1_date}}</td>
+                            <td scope="col">{{ vaccine.var1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.var1_loc}}</td>
                             <td scope="col">{{ vaccine.var1_rem}}</td>
                         </tr>
@@ -249,7 +249,7 @@
                             <td scope="col">DTaP/DTwP Booster #1</td>
                             <td scope="col">4 of 5</td>
                             <td scope="col">{{ vaccine.dtap4_brand}}</td>
-                            <td scope="col">{{ vaccine.dtap4_date}}</td>
+                            <td scope="col">{{ vaccine.dtap4_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.dtap4_loc}}</td>
                             <td scope="col">{{ vaccine.dtap4_rem}}</td>
                         </tr>
@@ -257,7 +257,7 @@
                             <td scope="col">IPV/OPV Booster #1</td>
                             <td scope="col">4 of 5</td>
                             <td scope="col">{{ vaccine.ipv4_brand}}</td>
-                            <td scope="col">{{ vaccine.ipv4_date}}</td>
+                            <td scope="col">{{ vaccine.ipv4_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.ipv4_loc}}</td>
                             <td scope="col">{{ vaccine.ipv4_rem}}</td>
                         </tr>
@@ -265,7 +265,7 @@
                             <td scope="col">HiB Booster #1</td>
                             <td scope="col">4 of 4</td>
                             <td scope="col">{{ vaccine.hib4_brand}}</td>
-                            <td scope="col">{{ vaccine.hib4_date}}</td>
+                            <td scope="col">{{ vaccine.hib4_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hib4_loc}}</td>
                             <td scope="col">{{ vaccine.hib4_rem}}</td>
                         </tr>
@@ -273,7 +273,7 @@
                             <td scope="col">PCV Booster #1</td>
                             <td scope="col">4 of 4</td>
                             <td scope="col">{{ vaccine.pcv4_brand}}</td>
-                            <td scope="col">{{ vaccine.pcv4_date}}</td>
+                            <td scope="col">{{ vaccine.pcv4_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.pcv4_loc}}</td>
                             <td scope="col">{{ vaccine.pcv4_rem}}</td>
                         </tr>
@@ -281,7 +281,7 @@
                             <td scope="col">Inactivated Hepatitis A#1</td>
                             <td scope="col">1 of 2</td>
                             <td scope="col">{{ vaccine.hepa1_brand}}</td>
-                            <td scope="col">{{ vaccine.hepa1_date}}</td>
+                            <td scope="col">{{ vaccine.hepa1_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hepa1_loc}}</td>
                             <td scope="col">{{ vaccine.hepa1_rem}}</td>
                         </tr>
@@ -290,7 +290,7 @@
                             <td scope="col">Inactivated Hepatitis A#2</td>
                             <td scope="col">2 of 2</td>
                             <td scope="col">{{ vaccine.hepa2_brand}}</td>
-                            <td scope="col">{{ vaccine.hepa2_date}}</td>
+                            <td scope="col">{{ vaccine.hepa2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hepa2_loc}}</td>
                             <td scope="col">{{ vaccine.hepa2_rem}}</td>
                         </tr>
@@ -299,7 +299,7 @@
                             <td scope="col">Meninggococcal vaccine</td>
                             <td scope="col">1 of 1</td>
                             <td scope="col">{{ vaccine.men_brand}}</td>
-                            <td scope="col">{{ vaccine.men_date}}</td>
+                            <td scope="col">{{ vaccine.men_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.men_loc}}</td>
                             <td scope="col">{{ vaccine.men_rem}}</td>
                         </tr>
@@ -307,7 +307,7 @@
                             <td scope="col">Typhoid</td>
                             <td scope="col">1 of 1</td>
                             <td scope="col">{{ vaccine.typ_brand}}</td>
-                            <td scope="col">{{ vaccine.typ_date}}</td>
+                            <td scope="col">{{ vaccine.typ_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.typ_loc}}</td>
                             <td scope="col">{{ vaccine.typ_rem}}</td>
                         </tr>
@@ -315,7 +315,7 @@
                             <td scope="col"> Japhanese Encephalitis B#2</td>
                             <td scope="col">2 of 2</td>
                             <td scope="col">{{ vaccine.japb2_brand}}</td>
-                            <td scope="col">{{ vaccine.japb2_date}}</td>
+                            <td scope="col">{{ vaccine.japb2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.japb2_loc}}</td>
                             <td scope="col">{{ vaccine.japb2_rem}}</td>
                         </tr>
@@ -324,7 +324,7 @@
                             <td scope="col">DTaP/DTwP Booster #2</td>
                             <td scope="col">5 of 5</td>
                             <td scope="col">{{ vaccine.dtap5_brand}}</td>
-                            <td scope="col">{{ vaccine.dtap5_date}}</td>
+                            <td scope="col">{{ vaccine.dtap5_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.dtap5_loc}}</td>
                             <td scope="col">{{ vaccine.dtap5_rem}}</td>
                         </tr>
@@ -332,7 +332,7 @@
                             <td scope="col">IPV/OPV Booster #2</td>
                             <td scope="col">5 of 5</td>
                             <td scope="col">{{ vaccine.ipv5_brand}}</td>
-                            <td scope="col">{{ vaccine.ipv5_date}}</td>
+                            <td scope="col">{{ vaccine.ipv5_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.ipv5_loc}}</td>
                             <td scope="col">{{ vaccine.ipv5_rem}}</td>
                         </tr>
@@ -340,7 +340,7 @@
                             <td scope="col">MMR #2</td>
                             <td scope="col">2 of 2</td>
                             <td scope="col">{{ vaccine.mmr2_brand}}</td>
-                            <td scope="col">{{ vaccine.mmr2_date}}</td>
+                            <td scope="col">{{ vaccine.mmr2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.mmr2_loc}}</td>
                             <td scope="col">{{ vaccine.mmr2_rem}}</td>
                         </tr>
@@ -348,7 +348,7 @@
                             <td scope="col">Varicella #2</td>
                             <td scope="col">2 of 2</td>
                             <td scope="col">{{ vaccine.var2_brand}}</td>
-                            <td scope="col">{{ vaccine.var2_date}}</td>
+                            <td scope="col">{{ vaccine.var2_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.var2_loc}}</td>
                             <td scope="col">{{ vaccine.var2_rem}}</td>
                         </tr>
@@ -357,7 +357,7 @@
                             <td scope="col">Td/Tdap Booster #3</td>
                             <td scope="col">Every 10 years</td>
                             <td scope="col">{{ vaccine.td_brand}}</td>
-                            <td scope="col">{{ vaccine.td_date}}</td>
+                            <td scope="col">{{ vaccine.td_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.td_loc}}</td>
                             <td scope="col">{{ vaccine.td_rem}}</td>
                         </tr>
@@ -366,7 +366,7 @@
                             <td scope="col">HPV #1</td>
                             <td scope="col">1 of 2</td>
                             <td scope="col">{{ vaccine.hpv11_brand}}</td>
-                            <td scope="col">{{ vaccine.hpv11_date}}</td>
+                            <td scope="col">{{ vaccine.hpv11_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hpv11_loc}}</td>
                             <td scope="col">{{ vaccine.hpv11_rem}}</td>
                         </tr>
@@ -374,7 +374,7 @@
                             <td scope="col">HPV #2</td>
                             <td scope="col">2 of 2</td>
                             <td scope="col">{{ vaccine.hpv12_brand}}</td>
-                            <td scope="col">{{ vaccine.hpv12_date}}</td>
+                            <td scope="col">{{ vaccine.hpv12_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hpv12_loc}}</td>
                             <td scope="col">{{ vaccine.hpv12_rem}}</td>
                         </tr>
@@ -383,7 +383,7 @@
                             <td scope="col">HPV #1</td>
                             <td scope="col">1 of 3</td>
                             <td scope="col">{{ vaccine.hpv21_brand}}</td>
-                            <td scope="col">{{ vaccine.hpv21_date}}</td>
+                            <td scope="col">{{ vaccine.hpv21_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hpv21_loc}}</td>
                             <td scope="col">{{ vaccine.hpv21_rem}}</td>
                         </tr>
@@ -391,7 +391,7 @@
                             <td scope="col">HPV #2</td>
                             <td scope="col">2 of 3</td>
                             <td scope="col">{{ vaccine.hpv22_brand}}</td>
-                            <td scope="col">{{ vaccine.hpv22_date}}</td>
+                            <td scope="col">{{ vaccine.hpv22_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hpv22_loc}}</td>
                             <td scope="col">{{ vaccine.hpv22_rem}}</td>
                         </tr>
@@ -399,7 +399,7 @@
                             <td scope="col">HPV #3</td>
                             <td scope="col">2 of 3</td>
                             <td scope="col">{{ vaccine.hpv23_brand}}</td>
-                            <td scope="col">{{ vaccine.hpv23_date}}</td>
+                            <td scope="col">{{ vaccine.hpv23_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.hpv23_loc}}</td>
                             <td scope="col">{{ vaccine.hpv23_rem}}</td>
                         </tr>
@@ -408,7 +408,7 @@
                             <td scope="col">Influenza</td>
                             <td scope="col"></td>
                             <td scope="col">{{ vaccine.anf_brand}}</td>
-                            <td scope="col">{{ vaccine.anf_date}}</td>
+                            <td scope="col">{{ vaccine.anf_date|date:"m/d/Y"}}</td>
                             <td scope="col">{{ vaccine.anf_loc}}</td>
                             <td scope="col">{{ vaccine.anf_rem}}</td>
                         </tr>
