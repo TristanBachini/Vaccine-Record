@@ -1,0 +1,95 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %} {% load auth_extras %}
+
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+    Update Staff
+  </p>
+
+
+<div class="container-fluid">
+<!-- staff navbar -->
+<div class="row">
+    <div class="col-1">
+        {% include 'vaccinerecordapp/staff-navbar.html' %}
+    </div>
+
+<!-- search filters-->
+	<div class="col-3">
+        <br />
+        <br />
+        
+		<div class="card card-body" style="width: 20rem;">
+			<h3 class="card-title"><center><i class="fas fa-user-md fa-lg"></i> Search Staff</center></h3>
+			<br />
+			<form method="get">
+				<div class="mb-3"><label for="floatingInput1">First Name:</label>
+				<input class="form-control form-control-sm" id="floatingInput1" type="text" placeholder="First Name" aria-label=".form-control-sm example" name="first_name">
+				</div>
+				<div class="mb-3"><label for="floatingInput2">Last Name:</label>
+				<input class="form-control form-control-sm" id="floatingInput2" type="text" placeholder="Last Name" aria-label=".form-control-sm example" name="last_name">
+				</div>
+				<div class="mb-3"><label for="floatingInput3">Title:</label>
+				<input class="form-control form-control-sm" id="floatingInput3" type="text" placeholder="Title" aria-label=".form-control-sm example" name="title">
+				</div>
+				<div class="mb-3"><label for="floatingInput4">Username:</label>
+				<input class="form-control form-control-sm" id="floatingInput4" type="text" placeholder="Username" aria-label=".form-control-sm example" name="username">
+				</div>
+		    <button class="btn btn-primary" type="submit">
+				<i class="fas fa-search"></i>
+				Search</button>
+		  </form>
+
+		</div>
+	</div>
+	
+	<!-- create button -->
+	<div class="col-8">
+        <br />
+        <br />
+        
+		<!-- search results -->
+		<div class="card card-body">
+			<h5 class="card-title">Results
+			</h5>
+			<table class="table table-primary table-striped table-bordered table-sm table-hover ">
+				
+					<tr class=" align-middle">
+						<th>Title</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Username</th>
+					</tr>
+					<!-- {% if notExist != "" %}
+					<h3>{{notExist}}</h3>
+					{% endif %} -->
+
+					{% for staff in staffs %}
+					
+					<tr>
+						<td>{{staff.title}}</td>
+						<td>{{staff.first_name}}</td>
+						<td>{{staff.last_name}}</td>
+						<td>{{staff.user.username}}</td>
+					</tr>
+					{% endfor %}
+
+			</table>
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+						<a href="{% url 'update-staff' %}"
+						<button class="btn btn-danger">
+							<i class="fas fa-times"></i>
+							Clear Search</button></a>
+					</div>
+
+			
+		</div>
+		
+	</div>
+
+</div>
+
+</div>
+      
+
+
+{% endblock %}

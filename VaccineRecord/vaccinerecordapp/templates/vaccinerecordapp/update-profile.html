@@ -1,40 +1,35 @@
-{% extends 'vaccinerecordapp/navbar.html' %} {% block content %} {% load static %}
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+  {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  |  {{ record.age|upper }} | {{ record.gender|upper }} | {{ record.bday|upper }}
+</p>
 
-<br />
-<br />
 <div class="container-fluid">
   <div class="row">
-    <!-- Profile -->
-    <div class="col">
-      <center>
-      <h3>New Patient Record</h3>
-    </center>
-      <br>
-  
-      <!-- Create Profile -->
-      <div class="card" style="margin-left: 5%; margin-right: 5%">
-          <h5 class="card-header">Create Patient Profile</h5>
-          <div class="card-body">
-            <form action="{% url 'create-record' %}" method="post">
-              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button id="submit_button" type="submit" class="btn btn-success">Create Record</button>
-              </div>
-              <br />
+    <!-- Navbar -->
+    <div class="col-1">
+      {% include 'vaccinerecordapp/patient-navbar.html' %}
+    </div>
+
+  <!-- Profile -->
+    <div class="col-11">
+          <div class="card border-info" style="margin-left: 3%; margin-right: 2%">
+            <h5 class="card-header">Patient Profile</h5>
+            <div class="card-body">
+              <form action="{% url 'update-profile' record.pk %}" method="POST">
               {% csrf_token %}
+              {{form.doctor_assigned}}
+              {{form.user}}
               <div>
-                <table class="table table-bordered align-middle">
-                  <tr>
-                    <td class="table-warning" colspan="2">Account Username:</td>
-                    <td class="table-light"><input class="form-control" placeholder="Username" name='username'></td>
-                    <td class="table-warning" colspan="7"></td>
-                  </tr>
+                <table class="table table-bordered">
                   <tr>
                     <td class="table-warning"><b>NAME</b></td>
                     <td class="table-warning">Nickname:</td>
                     <td class="table-light">{{form.nick_name}}</td>
-                    <td class="table-warning" colspan="2">Attending Doctor:<span style="color: red;">*</span></td>
-                    <td class="table-light" colspan="2">{{ form.doctor_assigned }}</td>
-                    <td class="table-warning" colspan="3"></td>
+                    <td class="table-warning" colspan="2">Attending Doctor:</td>
+                    <td class="table-light" colspan="2">{{ record.doctor_assigned|upper }}</td>
+                    <td class="table-warning" colspan="2">Patient Record #:</td>
+                    <td class="table-warning" colspan="2">{{ record.id }}</td>
                   </tr>
                   <tr>
                     <td class="table-warning">First:<span style="color: red;">*</span></td>
@@ -103,13 +98,7 @@
                   </tr>
                   <tr>
                     <td class="table-warning" colspan="2"><b>EMERGENCY CONTACT</b></td>
-                    <td class="table-warning" colspan="8">
-                      <div class="form-check">
-                        <label class="form-check-label" for="flexCheckDefault">
-                          Same as parent information</label>
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                      </div>
-                    </td>
+                    <td class="table-warning" colspan="8">Same as parent information *insert checkbox* </td>
                   </tr>
                   <tr>
                     <td class="table-warning">Name:</td>
@@ -131,18 +120,21 @@
                   </tr>
                 </table>
               </div>
-            </form>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button id="submit_button" type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
+              </div>
+              </form>
+              </div>
+            </div>
           </div>
-      </div>
     </div>
-  </div>
-</div> 
-<br>
-<br>  
- {% for message in messages %} {% if message.tags == 'success' %}
+          <br><br><br><br><br>
+</div>    
+  
+      {% for message in messages %} {% if message.tags == 'success' %}
     
           {% else %}
           {{message | striptags}}
           {% endif %} {% endfor %}
 
-{% endblock %}
+{%endblock%}

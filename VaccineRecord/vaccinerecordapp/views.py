@@ -143,6 +143,33 @@ def update_patient_profile(request,pk):
     data = {"form":form,"record":record}
     return render(request, "vaccinerecordapp/update-patient-profile.html", data)
 
+def update_profile(request,pk):
+    patient = PatientRecord.objects.get(id = pk).user
+    profile = PatientRecord.objects.get(user=patient)
+    form = UpdatePatientRecordForm(instance = profile)
+    record = PatientRecord.objects.get(id = pk)
+    if(request.method=="POST"):   
+        user = User.objects.get(username=patient)
+        form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
+                                        'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
+                                        'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
+                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                        'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
+                                        'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
+                                        'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
+                                        'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
+                                        'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
+                                        'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
+                                        'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
+                                        'contact_e2':request.POST.get('contact_e2')}, instance = profile)
+        if(form.is_valid()):
+            form.save()
+            record = PatientRecord.objects.get(id = pk)
+            data = {"record":record}
+            return render(request, "vaccinerecordapp/search-patient.html",data)
+    data = {"form":form,"record":record}
+    return render(request, "vaccinerecordapp/update-profile.html", data)
+
 def create_patient(request):
     form1 = UserForm()
     form2 = PatientForm()
@@ -665,4 +692,20 @@ class GeneratePDF(View):
         pdf = render_to_pdf('vaccinerecordapp/certificate-pdf.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 
+@login_required(login_url='/')
+def report(request):
+    return render(request,'vaccinerecordapp/tool/report.html')
+
+@login_required(login_url='/')
+def update_staff(request):
+    user = User.objects.get(username=request.user.username)
+    
+    staffs = Doctor.objects.all
+    notExist = ""
+    # myFilter = RecordFilter(request.GET, queryset=patients)
+    # patients = myFilter.qs
+    # if patients.count()==0:
+        # notExist = "The patient does not exist."
+    data = {"staffs":staffs}  
+    return render(request,'vaccinerecordapp/tool/update-staff.html',data)
 

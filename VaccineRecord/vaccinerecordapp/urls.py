@@ -32,4 +32,7 @@ urlpatterns = [
     path('confirm-appointment/<pk>', views.confirm_appointment, name="confirm-appointment"),
     path('certificate-pdf/<int:pk>', views.GeneratePDF.as_view(), name="generatepdf"),
     path('update-vaccine/<pk>', views.update_vaccine, name="update-vaccine"),
+    path('update-profile/<pk>', views.update_profile, name="update-profile"),
+    path('tool/report/', views.report, name="report"),
+    path('tool/staff/update-staff', views.update_staff, name="update-staff"),
     ]
