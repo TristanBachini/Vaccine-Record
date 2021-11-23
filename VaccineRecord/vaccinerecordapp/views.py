@@ -81,16 +81,11 @@ def dashboard(request):
             'count': count}
     return render(request,'vaccinerecordapp/dashboard.html', data)
 
-def create_record(request):
+def create_record(request,username):
     form = PatientRecordForm()
     patients = PatientRecord.objects.all()
-    print("create patient record")
-    if(request.method == "POST"):
-        print("pumasok post")
-        username = request.POST.get('username')
-        print('username')        
+    if(request.method == "POST"):  
         user = User.objects.get(username=username)
-        
         form = PatientRecordForm({'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
                                         'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
                                         'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
@@ -114,8 +109,8 @@ def create_record(request):
             print(form.errors)
     else:
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
-    data = {"form":form, "patients":patients}
-    return render(request, 'vaccinerecordapp/patient-profile.html',data)
+    data = {"form":form, "patients":patients,"username":username}
+    return render(request, 'vaccinerecordapp/account-creation/create-patient-record.html',data)
 
 def update_patient_profile(request,pk):
     patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
@@ -214,7 +209,8 @@ def create_patient(request):
                     group = Group.objects.get(name="patient")
                     user = User.objects.get(username = form1.cleaned_data.get("username"))
                     user.groups.add(group) 
-                    return redirect('/create-patient-record')
+                    username = form1.cleaned_data.get("username")
+                    return create_record(request,username)
 
 
     data = {"form1":form1, "form2":form2}
@@ -244,7 +240,8 @@ def register_patient(request):
             group = Group.objects.get(name="patient")
             user = User.objects.get(username = form1.cleaned_data.get("username"))
             user.groups.add(group) 
-            return redirect('/create-patient-record')
+            username = form1.cleaned_data.get("username")
+            return create_record(request,username)
 
 
     data = {"form1":form1, "form2":form2}

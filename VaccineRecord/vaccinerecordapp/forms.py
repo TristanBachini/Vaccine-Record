@@ -43,7 +43,7 @@ class DoctorForm(forms.ModelForm):
             'user':  HiddenInput(attrs={'type': 'hidden'}),
             'prefix':  Select(attrs={'class': 'form-control'}),
             'type':  Select(attrs={'class': 'form-control'}),
-            'title':  Select(attrs={'class': 'form-control'}),
+            'title':  Select(attrs={'class': 'form-control','required': False}),
             'end_date': DateInput(attrs={'class': 'form-control'}),
             'contact': TextInput(attrs={'class': 'form-control', 'placeholder': 'Contact Number', 'aria-label': 'Contact Number', 'required': True}),
         }
@@ -123,7 +123,7 @@ class PatientRecordForm(forms.ModelForm):
             widgets = {
                 'bday': DateInput({'class': 'form-control'}),
                 'gender': Select({'class': 'form-control'}),
-                'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
+                'username': HiddenInput(attrs={'type': 'hidden'}),
                 'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
                 'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': True}),
                 'middle_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Middle name', 'aria-label': 'Middle name', 'required': False}),

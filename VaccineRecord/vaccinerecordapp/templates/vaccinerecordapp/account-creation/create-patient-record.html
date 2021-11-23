@@ -15,7 +15,7 @@
       <div class="card" style="margin-left: 5%; margin-right: 5%">
           <h5 class="card-header">Create Patient Profile</h5>
           <div class="card-body">
-            <form action="{% url 'create-record' %}" method="post">
+            <form action="{% url 'create-record' username %}" method="post">
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button id="submit_button" type="submit" class="btn btn-success">Create Record</button>
               </div>
@@ -23,11 +23,6 @@
               {% csrf_token %}
               <div>
                 <table class="table table-bordered align-middle">
-                  <tr>
-                    <td class="table-warning" colspan="2">Account Username:</td>
-                    <td class="table-light"><input class="form-control" placeholder="Username" name='username'></td>
-                    <td class="table-warning" colspan="7"></td>
-                  </tr>
                   <tr>
                     <td class="table-warning"><b>NAME</b></td>
                     <td class="table-warning">Nickname:</td>
