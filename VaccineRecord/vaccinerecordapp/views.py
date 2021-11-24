@@ -774,13 +774,9 @@ def reminder(request):
             remind.append(patient)
             break
         #hpv11
-        # if((datetime.date.today()-patient.bday).days > 180):
-        #     remind.append(patient)
-        #     break
-        # #hpv12
-        # if((datetime.date.today()-patient.bday).days > 180):
-        #     remind.append(patient)
-        #     break
+
+        #hpv12
+
         #hpv21
 
         #hpv22
@@ -804,9 +800,15 @@ def reminder(request):
             remind.append(patient)
             break
         #annual flu
-        # if((datetime.date.today()-patient.bday).days > 180):
-        #     remind.append(patient)
-        #     break
+        if(vaccine.anf_date is None):
+            if((datetime.date.today()-patient.bday).days > 360):
+                remind.append(patient)
+                break
+        else:
+            if((datetime.date.today()-vaccine.anf_date).days > 360):
+                date = (datetime.date.today()-vaccine.anf_date).days
+                vaccine.anf_date = date
+                break
         #ipv/opv1
         if((datetime.date.today()-patient.bday).days > 42):
             remind.append(patient)
@@ -842,6 +844,7 @@ def reminder(request):
             remind.append(patient)
             break
         #meninggo vax
+
 
         #mmr1
         if((datetime.date.today()-patient.bday).days > 360):
@@ -885,7 +888,15 @@ def reminder(request):
             remind.append(patient)
             break
         #typ
-
+        if(vaccine.typ_date is None):
+            if((datetime.date.today()-patient.bday).days > 720):
+                remind.append(patient)
+                break
+        else:
+            if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
+                date = (datetime.date.today()-vaccine.typ_date).days
+                vaccine.typ_date = date
+                break
         #var1
         if((datetime.date.today()-patient.bday).days > 360):
             remind.append(patient)
