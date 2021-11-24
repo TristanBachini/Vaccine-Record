@@ -881,7 +881,9 @@ def reminder(request):
             remind.append(patient)
             break
         #td
-
+        if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
+            remind.append(patient)
+            break
         #typ
 
         #var1
@@ -889,7 +891,10 @@ def reminder(request):
             remind.append(patient)
             break
         #var2
-
+        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+            ((datetime.date.today()-vaccine.var_date).days > 90)):
+            remind.append(patient)
+            break
 
     print(remind)
     return render(request, 'vaccinerecordapp/tool/reminder.html')
