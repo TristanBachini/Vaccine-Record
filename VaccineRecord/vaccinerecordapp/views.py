@@ -204,6 +204,10 @@ def create_patient(request):
                         form2 = PatientForm({'user':user, 'last_name': lname, 'first_name': fname, 'relationship':request.POST.get('relationship')})
                 if(form2.is_valid()):
                     form2.save()
+                    vaccineform = VaccineForm()
+                    if(vaccineform.is_valid()):
+                        print("valid naman sha")
+                        vaccineform.save()
                     messages.success(request, "Account was created for " +
                                     form1.cleaned_data.get("username"))
                     group = Group.objects.get(name="patient")
@@ -235,6 +239,9 @@ def register_patient(request):
             return render(request, 'vaccinerecordapp/register-patient.html',data)
         if(form2.is_valid()):
             form2.save()
+            vaccineform = VaccineForm({'user':User.objects.get(username = form1.cleaned_data.get("username"))})
+            if vaccineform.is_valid():
+                vaccineform.save()
             messages.success(request, "Account was created for " +
                             form1.cleaned_data.get("username"))
             group = Group.objects.get(name="patient")
@@ -705,4 +712,57 @@ def update_staff(request):
         # notExist = "The patient does not exist."
     data = {"staffs":staffs}  
     return render(request,'vaccinerecordapp/tool/update-staff.html',data)
+
+@login_required(login_url='/')
+def reminder(request):
+    vaccines = Vaccine.objects.all()
+    patients = PatientRecord.objects.all()
+    remind = []
+    for patient in patients:
+        vaccine = Vaccine.objects.get(user = patient.user)
+        if(vaccine.bcg_date is None):
+            remind.append(patient)
+            break
+        #dtap1
+        if((datetime.date.today()-patient.bday).days > 42):
+            remind.append(patient)
+            break
+        #dtap2
+        if(vaccine.dtap1_date is not None):
+            if((datetime.date.today()-vaccine.dtap1_date).days > 28): 
+                remind.append(patient)
+                break
+        #dtap3
+        if(vaccine.dtap2_date is not None):
+            if((datetime.date.today()-vaccine.dtap2_date).days > 28): 
+                remind.append(patient)
+                break
+        #dtap booster 1
+        if((datetime.date.today()-patient.bday).days > 350):
+            remind.append(patient)
+            break
+        #dtap booster 2
+        if((datetime.date.today()-patient.bday).days > 1400):
+            remind.append(patient)
+            break
+        #hepb1
+        if(vaccine.hepb1_date is None):
+            remind.append(patient)
+            break
+        #hepb2
+        if((datetime.date.today()-patient.bday).days > 30):
+            remind.append(patient)
+            break
+        #hepb3
+        if((datetime.date.today()-patient.bday).days > 180):
+            remind.append(patient)
+            break
+        
+
+
+
+
+            
+    print(remind)
+    return render(request, 'vaccinerecordapp/tool/reminder.html')
 
