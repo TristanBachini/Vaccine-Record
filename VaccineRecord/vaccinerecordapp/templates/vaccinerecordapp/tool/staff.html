@@ -1,37 +1,20 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/staff.css' %}"/>
-<table>
-  <tr>
-    <th id = "notbold">
-      {% include 'vaccinerecordapp/staff-navbar.html' %}
-    </th>
-    <th>
-      <ul class="nav flex-column">
-        <li>
-          <button
-        class="btn btn-sm"
-        data-bs-toggle="modal"
-        data-bs-target="#create-staff"
-        style="color: black"
-        > Create Staff </button>
-        </li>
-        <li><a href="{% url 'update-staff' %}">
-          <button
-          class="btn btn-sm"
-          data-bs-toggle="modal"
-          data-bs-target="#update-staff"
-          style="color: black"
-          > Update Staff </button></a>
-        </li>  
-      </ul>
-    </th>
-  </tr>
-</table>
 
-<div class="modal fade" id="create-staff">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+        Create a New Staff
+</p>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Navbar -->
+    <div class="col-1">
+      {% include 'vaccinerecordapp/staff-navbar.html' %}
+    </div>
+
+    <div class="col-11">
       <form action="{% url 'create-staff' %}" method="post">
           <div class="modal-body" style="color: black">
               {% csrf_token %}
@@ -41,67 +24,55 @@
               </h2>
               </center>
               <br />
-
-              <div class="row" style="margin-left: 15%; margin-right: 15%">
-              <div class="col">First Name {{form1.first_name}}</div>
-              <div class="col">Last Name {{form1.last_name}}</div>
-              </div>
-              <br />
-              <br />
-              <div class="row" style="margin-left: 15%; margin-right: 15%">
-              <div class="col">Username {{form1.username}}</div>
-              <div class="col">Email {{form1.email}}</div>
-              </div>
-              <br />
-              <br />
-              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-              <div class="col">Password {{form1.password1}}</div>
-              </div>
-              <br />
-              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-              <div class="col">Confirm Password {{form1.password2}}</div>
-              </div>
-              <br />
-              <br />
-              <div class="row" style="margin-left: 15%; margin-right: 15%">
-              <div class="col">Prefix {{form2.prefix}}</div>
-              <div class="col">Title {{form2.title}}</div>
-              </div>
-              <br />
-              <br />
-              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-              <div class="col">Contact Number {{form2.contact}}</div>
-              </div>
-              <br />
-              <br />
-              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-              <div class="col">Type {{form2.type}}</div>
-              </div>
-              <br />
-              <br />
-              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-              <div class="col">End Date {{form2.end_date}}</div>
-              </div>
-              <br />
-              <br />
-              <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-              <div class="col">Can register: {{form2.can_register}}</div>
-              </div>
-              <br />
+                  <div style="width: 70%; margin-left: 15%; margin-right: 15%">
+                    <table class="table table-borderless table-md">
+                        <tr>
+                          <td>First Name {{form1.first_name}}</td>
+                          <td>Last Name {{form1.last_name}}</td>
+                        </tr>
+                        <tr>
+                          <td>Username {{form1.username}}</td>
+                          <td>Email {{form1.email}}</td>
+                        </tr>
+                        <tr>
+                          <td>Password {{form1.password1}}</td>
+                        </tr>
+                        <tr>
+                          <td>Confirm Password {{form1.password2}}</td>
+                        </tr>
+                        <tr>
+                          <td>Prefix {{form2.prefix}}</td>
+                          <td>Title {{form2.title}}</td>
+                        </tr>
+                        <tr>
+                          <td>Contact Number {{form2.contact}}</td>
+                          <td>Type {{form2.type}}</td>
+                        </tr>
+                        <tr>
+                          <td>End Date {{form2.end_date}}</td>
+                          <td class="align-middle">Can Register {{form2.can_register}}</td>
+                        </tr>
+                      </table>
+                  </div>
               <div>
                 {% for message in messages %} {% if message.tags == 'success' %}
                 {% else %}
                 {{message | striptags}}
                 {% endif %} {% endfor %}
               </div>
-              <div class="row" style="width: 50%; margin-left: 40%; margin-right: 40%">
-              <div class="col"><button id="submit_button" type="submit" class="btn btn-warning" >Submit</button></div>
+              <div class="modal-footer">
+                <a href="{% url 'tool'%}"><button type="button" class="btn btn-secondary">Cancel</button></a>
+                <button id="submit_button" type="submit" class="btn btn-primary">Create Account</button>
               </div>
+              
           </div>
       </form>
-    </div>
-  </div>
 </div>
+</div>
+</div>
+<br />
+<br />
+<br />
 
 
 

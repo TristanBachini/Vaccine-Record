@@ -1,7 +1,7 @@
 {% load static %} {% load auth_extras %}
 
 
-<ul class="nav flex-column">
+<ul class="nav flex-column" style="background-color:#e3f2fd;">
     <li class="report">
       <a class="nav-link active" href="{% url 'report' %}">Report</a>
     </li>
@@ -10,7 +10,11 @@
     </li>
     {% if request.user|has_group:"staff"%}
     <li class="staff">
-      <a class="nav-link" href="{% url 'staff' %}">Staff</a>
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Staff</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{% url 'staff' %}">Create Staff</a></li>
+        <li><a class="dropdown-item" href="{% url 'update-staff' %}">Update Staff</a></li>
+      </ul>
     </li>
     {% endif %}
 </ul>

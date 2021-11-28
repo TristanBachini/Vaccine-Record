@@ -1,4 +1,202 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %} {% load auth_extras %}
-{% include 'vaccinerecordapp/staff-navbar.html' %}
+
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+    Due Vaccines By Group
+  </p>
+  
+  <div class="container-fluid">
+      <div class="row">
+        <!-- Navbar -->
+        <div class="col-1">
+          {% include 'vaccinerecordapp/staff-navbar.html' %}
+        </div>
+          <br><br>
+      
+      <div class="col-11">
+          <div class="card border-info" style="margin-left: 5%; margin-right: 5%">
+              <div class="card-body">
+                <div>
+                    <br>
+                    <form method="get">
+                      <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-3">
+                          <label for="from">From:</label>
+                          <input type="text" class="form-control" id="from" placeholder="mm/dd/yyyy" aria-label="mm/dd/yyyy">
+                        </div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-3">
+                          <label for="to">To:</label>
+                          <input type="text" class="form-control" id="to" placeholder="mm/dd/yyyy" aria-label="mm/dd/yyyy">
+                        </div>
+                        <div class="col-sm-2"></div>
+                      </div>
+                    </form>
+                <br><br>
+                </div>
+                <div>
+                    <table class="table table-bordered table-sm border-dark text-center">
+                      <tr>
+                        <td colspan="2"></td>
+                        <td class="table-secondary border-dark text-center " colspan="2">w/ Appointments</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td class="table-secondary border-dark"><b>Vaccine</b></td>
+                        <td class="table-secondary border-dark"><b>No. of Patients</b></td>
+                        <td class="table-secondary border-dark"><b>Confirmed</b></td>
+                        <td class="table-secondary border-dark"><b>Not Confirmed</b></td>
+                        <td class="table-secondary border-dark"><b>No Appointments</b></td>
+                      </tr>
+                      <tr>
+                        <td>BCG</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Hepatitis B</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>DTaP/DTwP</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>OPV/IPV</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Hib</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>PCV</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Rotavirus</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Measles</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>MMR</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Varicella</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Influenza</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Jap Encephalitis B</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Hepatitis A</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Meningococcal</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Typhoid</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Tdap</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>HPV</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                      <tr>
+                        <td>Others</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                      </tr>
+                    </table>
+                    </div>
+              </div>
+          </div>
+      </div>
+    </div>
+          <br><br><br><br><br>
+  </div>    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {% endblock %}
