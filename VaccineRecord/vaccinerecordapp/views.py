@@ -204,6 +204,10 @@ def create_patient(request):
                         form2 = PatientForm({'user':user, 'last_name': lname, 'first_name': fname, 'relationship':request.POST.get('relationship')})
                 if(form2.is_valid()):
                     form2.save()
+                    vaccineform = VaccineForm()
+                    if(vaccineform.is_valid()):
+                        print("valid naman sha")
+                        vaccineform.save()
                     messages.success(request, "Account was created for " +
                                     form1.cleaned_data.get("username"))
                     group = Group.objects.get(name="patient")
@@ -235,6 +239,9 @@ def register_patient(request):
             return render(request, 'vaccinerecordapp/register-patient.html',data)
         if(form2.is_valid()):
             form2.save()
+            vaccineform = VaccineForm({'user':User.objects.get(username = form1.cleaned_data.get("username"))})
+            if vaccineform.is_valid():
+                vaccineform.save()
             messages.success(request, "Account was created for " +
                             form1.cleaned_data.get("username"))
             group = Group.objects.get(name="patient")
@@ -705,4 +712,203 @@ def update_staff(request):
         # notExist = "The patient does not exist."
     data = {"staffs":staffs}  
     return render(request,'vaccinerecordapp/tool/update-staff.html',data)
+
+@login_required(login_url='/')
+def reminder(request):
+    vaccines = Vaccine.objects.all()
+    patients = PatientRecord.objects.all()
+    remind = []
+    for patient in patients:
+        #Do this!!! age computation, https://stackoverflow.com/questions/38792126/how-to-use-dateutil-relativedelta-in-python-3-x 
+        #age = relativedelta(datetime.date.today(),patient.bday))
+        vaccine = Vaccine.objects.get(user = patient.user)
+        if(vaccine.bcg_date is None):
+            remind.append(patient)
+            continue
+        #dtap1
+        if((datetime.date.today()-patient.bday).days > 42):
+            remind.append(patient)
+            continue
+        #dtap2
+        if(vaccine.dtap1_date is not None):
+            if((datetime.date.today()-vaccine.dtap1_date).days > 28): 
+                remind.append(patient)
+                continue
+        #dtap3
+        if(vaccine.dtap2_date is not None):
+            if((datetime.date.today()-vaccine.dtap2_date).days > 28): 
+                remind.append(patient)
+                continue
+        #dtap booster 1
+        if((datetime.date.today()-patient.bday).days > 350):
+            remind.append(patient)
+            continue
+        #dtap booster 2
+        if((datetime.date.today()-patient.bday).days > 1400):
+            remind.append(patient)
+            continue
+        #hepb1
+        if(vaccine.hepb1_date is None):
+            remind.append(patient)
+            continue
+        #hepb2
+        if((datetime.date.today()-patient.bday).days > 30):
+            remind.append(patient)
+            break
+        #hepb3
+        if((datetime.date.today()-patient.bday).days > 180):
+            remind.append(patient)
+            continue
+        #hib1
+        if((datetime.date.today()-vaccine.hepb3_date).days > 42):
+            remind.append(patient)
+            continue
+        #hib2
+        if((datetime.date.today()-vaccine.hib1_date).days > 28):
+            remind.append(patient)
+            continue
+        #hib3
+        if((datetime.date.today()-vaccine.hib2_date).days > 28):
+            remind.append(patient)
+            continue
+        #hib booster1
+        if((datetime.date.today()-vaccine.hib3_date).days > 180):
+            remind.append(patient)
+            continue
+        #hpv11
+
+        #hpv12
+
+        #hpv21
+
+        #hpv22
+
+        #hpv3
+
+        #inactivehepa1
+        if((datetime.date.today()-patient.bday).days > 360):
+            remind.append(patient)
+            continue
+        #inactivehepa2
+        if((datetime.date.today()-vaccine.hepa1_date).days > 180):
+            remind.append(patient)
+            continue
+        #inf1
+        if((datetime.date.today()-patient.bday).days > 180):
+            remind.append(patient)
+            continue
+        #inf2
+        if((datetime.date.today()-vaccine.inf1_date).days > 28):
+            remind.append(patient)
+            continue
+        #annual flu
+        if(vaccine.anf_date is None):
+            if((datetime.date.today()-patient.bday).days > 360):
+                remind.append(patient)
+                continue
+        else:
+            if((datetime.date.today()-vaccine.anf_date).days > 360):
+                date = (datetime.date.today()-vaccine.anf_date).days
+                vaccine.anf_date = date
+                continue
+        #ipv/opv1
+        if((datetime.date.today()-patient.bday).days > 42):
+            remind.append(patient)
+            continue
+        #ipv/opv2
+        if((datetime.date.today()-patient.ipv1_date).days > 28):
+            remind.append(patient)
+            continue
+        #ipv/opv3
+        if((datetime.date.today()-patient.ipv2_date).days > 28):
+            remind.append(patient)
+            continue
+        #ipv/opv booster 1
+        if((datetime.date.today()-patient.bday).days > 360):
+            remind.append(patient)
+            continue
+        #ipv/opv booster 2
+        if((datetime.date.today()-patient.bday).days > 1440):
+            remind.append(patient)
+            continue
+        #japencb1
+        if((datetime.date.today()-patient.bday).days > 270):
+            remind.append(patient)
+            continue
+        #japencb2
+        if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
+            remind.append(patient)
+            continue
+        #msl
+            #note: sakop two cases either way ; needs fixing
+        if(((datetime.date.today()-patient.bday).days > 180) | 
+            ((datetime.date.today()-patient.bday).days > 270)):
+            remind.append(patient)
+            continue
+        #meninggo vax
+
+
+        #mmr1
+        if((datetime.date.today()-patient.bday).days > 360):
+            remind.append(patient)
+            continue
+        #mmr2
+        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+            ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
+            remind.append(patient)
+            continue
+        #pcv1
+        if(1440 < (datetime.date.today()-patient.bday).days > 42):
+            remind.append(patient)
+            continue
+        #pcv2
+        if((datetime.date.today()-vaccine.pcv1_date).days > 28):
+            remind.append(patient)
+            continue
+        #pcv3
+        if((datetime.date.today()-vaccine.pcv2_date).days > 28):
+            remind.append(patient)
+            continue
+        #pcv booster1
+        if((datetime.date.today()-patient.pcv3_date).days > 180):
+            remind.append(patient)
+            continue
+        #rota1
+        if((datetime.date.today()-patient.bday).days > 42):
+            remind.append(patient)
+            continue
+        #rota2
+        if((datetime.date.today()-vaccine.rota3_date).days > 28):
+            remind.append(patient)
+            continue
+        #rota3
+        if((datetime.date.today()-vaccine.rota2_date).days > 28):
+            remind.append(patient)
+            continue
+        #td
+        if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
+            remind.append(patient)
+            continue
+        #typ
+        if(vaccine.typ_date is None):
+            if((datetime.date.today()-patient.bday).days > 720):
+                remind.append(patient)
+                continue
+        else:
+            if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
+                date = (datetime.date.today()-vaccine.typ_date).days
+                vaccine.typ_date = date
+                continue
+        #var1
+        if((datetime.date.today()-patient.bday).days > 360):
+            remind.append(patient)
+            continue
+        #var2
+        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+            ((datetime.date.today()-vaccine.var_date).days > 90)):
+            remind.append(patient)
+            continue
+
+    print(remind)
+    return render(request, 'vaccinerecordapp/tool/reminder.html')
 

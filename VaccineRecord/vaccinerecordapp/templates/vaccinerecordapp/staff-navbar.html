@@ -6,7 +6,7 @@
       <a class="nav-link active" href="{% url 'report' %}">Report</a>
     </li>
     <li class="reminder">
-      <a class="nav-link" href="#">Reminder</a>
+      <a class="nav-link" href="{% url 'reminder' %}">Reminder</a>
     </li>
     {% if request.user|has_group:"staff"%}
     <li class="staff">
