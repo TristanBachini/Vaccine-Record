@@ -578,7 +578,510 @@ def create_patient_record(request):
 
 @login_required(login_url='/')
 def tool(request): 
-    return render(request, 'vaccinerecordapp/tool/tool.html')
+    vaccines = Vaccine.objects.all()
+    patients = PatientRecord.objects.all()
+    app = Appointment.objects.all()
+    bcg_con = 0 
+    bcg_not = 0
+    bcg_no = 0
+    bcg_total = bcg_no + bcg_con + bcg_not
+
+    hepb_con = 0 
+    hepb_not = 0
+    hepb_no = 0
+    hepb_total = hepb_no + hepb_con + hepb_not
+
+    dtap_con = 0 
+    dtap_not = 0
+    dtap_no = 0
+    dtap_total = dtap_no + dtap_con + dtap_not
+
+    opv_con = 0 
+    opv_not = 0
+    opv_no = 0
+    opv_total = opv_no + opv_con + opv_not
+
+    hib_con = 0 
+    hib_not = 0
+    hib_no = 0
+    hib_total = hib_no + hib_con + hib_not
+
+    pcv_con = 0 
+    pcv_not = 0
+    pcv_no = 0
+    pcv_total = pcv_no + pcv_con + pcv_not
+
+    rota_con = 0 
+    rota_not = 0
+    rota_no = 0
+    rota_total = rota_no + rota_con + rota_not
+
+    msl_con = 0 
+    msl_not = 0
+    msl_no = 0
+    msl_total = msl_no + msl_con + msl_not
+
+    mmr_con = 0 
+    mmr_not = 0
+    mmr_no = 0
+    mmr_total = mmr_no + mmr_con + mmr_not
+
+    var_con = 0 
+    var_not = 0
+    var_no = 0
+    var_total = var_no + var_con + var_not
+
+    inf_con = 0 
+    inf_not = 0
+    inf_no = 0
+    inf_total = inf_no + inf_con + inf_not
+
+    jap_con = 0 
+    jap_not = 0
+    jap_no = 0
+    jap_total = jap_no + jap_con + jap_not
+
+    hepaa_con = 0 
+    hepaa_not = 0
+    hepaa_no = 0
+    hepaa_total = hepaa_no + hepaa_con + hepaa_not
+
+    mcc_con = 0 
+    mcc_not = 0
+    mcc_no = 0
+    mcc_total = mcc_no + mcc_con + mcc_not
+
+    typ_con = 0 
+    typ_not = 0
+    typ_no = 0
+    typ_total = typ_no + typ_con + typ_not
+    
+    tdap_con = 0 
+    tdap_not = 0
+    tdap_no = 0
+    tdap_total = tdap_no + tdap_con + tdap_not
+
+    hpv_con = 0 
+    hpv_not = 0
+    hpv_no = 0
+    hpv_total = hpv_no + hpv_con + hpv_not
+
+    flu_con = 0 
+    flu_not = 0
+    flu_no = 0
+    flu_total = flu_no + flu_con + flu_not
+
+    for patient in patients:
+        #Do this!!! age computation, https://stackoverflow.com/questions/38792126/how-to-use-dateutil-relativedelta-in-python-3-x 
+        #age = relativedelta(datetime.date.today(),patient.bday))
+        vaccine = Vaccine.objects.get(user = patient.user)
+        app = Appointment.objects.get(user = patient.user)
+        if(vaccine.bcg_date is None):
+            if (app.stat == "Confirmed"):
+                bcg_con += 1
+            elif (app.stat == "Unconfirmed"):
+                bcg_not += 1
+            else:
+                bcg_no += 1
+            continue
+        #dtap1
+        if((datetime.date.today()-patient.bday).days > 42):
+            if (app.stat == "Confirmed"):
+                dtap_con += 1
+            elif (app.stat == "Unconfirmed"):
+                dtap_not += 1
+            else:
+                dtap_no += 1
+            continue
+        #dtap2
+        if(vaccine.dtap1_date is not None):
+            if((datetime.date.today()-vaccine.dtap1_date).days > 28): 
+                if (app.stat == "Confirmed"):
+                    dtap_con += 1
+                elif (app.stat == "Unconfirmed"):
+                    dtap_not += 1
+                else:
+                    dtap_no += 1
+                continue
+        #dtap3
+        if(vaccine.dtap2_date is not None):
+            if((datetime.date.today()-vaccine.dtap2_date).days > 28): 
+                if (app.stat == "Confirmed"):
+                    dtap_con += 1
+                elif (app.stat == "Unconfirmed"):
+                    dtap_not += 1
+                else:
+                    dtap_no += 1
+                continue
+        #dtap booster 1
+        if((datetime.date.today()-patient.bday).days > 350):
+            if (app.stat == "Confirmed"):
+                    dtap_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    dtap_not += 1
+            else:
+                    dtap_no += 1
+            continue
+        #dtap booster 2
+        if((datetime.date.today()-patient.bday).days > 1400):
+            if (app.stat == "Confirmed"):
+                    dtap_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    dtap_not += 1
+            else:
+                    dtap_no += 1
+            continue
+        #hepb1
+        if(vaccine.hepb1_date is None):
+            if (app.stat == "Confirmed"):
+                hepb_con += 1
+            elif (app.stat == "Unconfirmed"):
+                hepb_not += 1
+            else:
+                hepb_no += 1
+            continue
+        #hepb2
+        if((datetime.date.today()-patient.bday).days > 30):
+            if (app.stat == "Confirmed"):
+                hepb_con += 1
+            elif (app.stat == "Unconfirmed"):
+                hepb_not += 1
+            else:
+                hepb_no += 1
+            break
+        #hepb3
+        if((datetime.date.today()-patient.bday).days > 180):
+            if (app.stat == "Confirmed"):
+                hepb_con += 1
+            elif (app.stat == "Unconfirmed"):
+                hepb_not += 1
+            else:
+                hepb_no += 1
+            continue
+        #hib1
+        if((datetime.date.today()-vaccine.hepb3_date).days > 42):
+            if (app.stat == "Confirmed"):
+                hib_con += 1
+            elif (app.stat == "Unconfirmed"):
+                hib_not += 1
+            else:
+                hib_no += 1
+            continue
+        #hib2
+        if((datetime.date.today()-vaccine.hib1_date).days > 28):
+            if (app.stat == "Confirmed"):
+                hib_con += 1
+            elif (app.stat == "Unconfirmed"):
+                hib_not += 1
+            else:
+                hib_no += 1
+            continue
+        #hib3
+        if((datetime.date.today()-vaccine.hib2_date).days > 28):
+            if (app.stat == "Confirmed"):
+                hib_con += 1
+            elif (app.stat == "Unconfirmed"):
+                hib_not += 1
+            else:
+                hib_no += 1
+            continue
+        #hib booster1
+        if((datetime.date.today()-vaccine.hib3_date).days > 180):
+            if (app.stat == "Confirmed"):
+                hib_con += 1
+            elif (app.stat == "Unconfirmed"):
+                hib_not += 1
+            else:
+                hib_no += 1
+            continue
+        #hpv11
+
+        #hpv12
+
+        #hpv21
+
+        #hpv22
+
+        #hpv3
+
+        #inactivehepa1
+        if((datetime.date.today()-patient.bday).days > 360):
+            if (app.stat == "Confirmed"):
+                hepaa_con += 1
+            elif (app.stat == "Unconfirmed"):
+                hepaa_not += 1
+            else:
+                hepaa_no += 1
+            continue
+        #inactivehepa2
+        if((datetime.date.today()-vaccine.hepa1_date).days > 180):
+            if (app.stat == "Confirmed"):
+                hepaa_con += 1
+            elif (app.stat == "Unconfirmed"):
+                hepaa_not += 1
+            else:
+                hepaa_no += 1
+            continue
+        #inf1
+        if((datetime.date.today()-patient.bday).days > 180):
+            if (app.stat == "Confirmed"):
+                inf_con += 1
+            elif (app.stat == "Unconfirmed"):
+                inf_not += 1
+            else:
+                inf_no += 1
+            continue
+        #inf2
+        if((datetime.date.today()-vaccine.inf1_date).days > 28):
+            if (app.stat == "Confirmed"):
+                inf_con += 1
+            elif (app.stat == "Unconfirmed"):
+                inf_not += 1
+            else:
+                inf_no += 1
+            continue
+        #annual flu
+        if(vaccine.anf_date is None):
+            if((datetime.date.today()-patient.bday).days > 360):
+                if (app.stat == "Confirmed"):
+                    flu_con += 1
+                elif (app.stat == "Unconfirmed"):
+                    flu_not += 1
+                else:
+                    flu_no += 1
+                continue
+        else:
+            if((datetime.date.today()-vaccine.anf_date).days > 360):
+                date = (datetime.date.today()-vaccine.anf_date).days
+                if (app.stat == "Confirmed"):
+                    flu_con += 1
+                elif (app.stat == "Unconfirmed"):
+                    flu_not += 1
+                else:
+                    flu_no += 1
+                continue
+        #ipv/opv1
+        if((datetime.date.today()-patient.bday).days > 42):
+            if (app.stat == "Confirmed"):
+                    opv_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    opv_not += 1
+            else:
+                    opv_no += 1
+            continue
+        #ipv/opv2
+        if((datetime.date.today()-patient.ipv1_date).days > 28):
+            if (app.stat == "Confirmed"):
+                    opv_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    opv_not += 1
+            else:
+                    opv_no += 1
+            continue
+        #ipv/opv3
+        if((datetime.date.today()-patient.ipv2_date).days > 28):
+            if (app.stat == "Confirmed"):
+                    opv_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    opv_not += 1
+            else:
+                    opv_no += 1
+            continue
+        #ipv/opv booster 1
+        if((datetime.date.today()-patient.bday).days > 360):
+            if (app.stat == "Confirmed"):
+                    opv_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    opv_not += 1
+            else:
+                    opv_no += 1
+            continue
+        #ipv/opv booster 2
+        if((datetime.date.today()-patient.bday).days > 1440):
+            if (app.stat == "Confirmed"):
+                    opv_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    opv_not += 1
+            else:
+                    opv_no += 1
+            continue
+        #japencb1
+        if((datetime.date.today()-patient.bday).days > 270):
+            if (app.stat == "Confirmed"):
+                    jap_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    jap_not += 1
+            else:
+                    jap_no += 1
+            continue
+        #japencb2
+        if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
+            if (app.stat == "Confirmed"):
+                    jap_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    jap_not += 1
+            else:
+                    jap_no += 1
+            continue
+        #msl
+            #note: sakop two cases either way ; needs fixing
+        if(((datetime.date.today()-patient.bday).days > 180) | 
+            ((datetime.date.today()-patient.bday).days > 270)):
+            if (app.stat == "Confirmed"):
+                    msl_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    msl_not += 1
+            else:
+                    msl_no += 1
+            continue
+        #meninggo vax
+
+
+        #mmr1
+        if((datetime.date.today()-patient.bday).days > 360):
+            if (app.stat == "Confirmed"):
+                    mmr_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    mmr_not += 1
+            else:
+                    mmr_no += 1
+            continue
+        #mmr2
+        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+            ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
+            if (app.stat == "Confirmed"):
+                    mmr_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    mmr_not += 1
+            else:
+                    mmr_no += 1
+            continue
+        #pcv1
+        if(1440 < (datetime.date.today()-patient.bday).days > 42):
+            if (app.stat == "Confirmed"):
+                    pcv_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    pcv_not += 1
+            else:
+                    pcv_no += 1
+            continue
+        #pcv2
+        if((datetime.date.today()-vaccine.pcv1_date).days > 28):
+            if (app.stat == "Confirmed"):
+                    pcv_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    pcv_not += 1
+            else:
+                    pcv_no += 1
+            continue
+        #pcv3
+        if((datetime.date.today()-vaccine.pcv2_date).days > 28):
+            if (app.stat == "Confirmed"):
+                    pcv_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    pcv_not += 1
+            else:
+                    pcv_no += 1
+            continue
+        #pcv booster1
+        if((datetime.date.today()-patient.pcv3_date).days > 180):
+            if (app.stat == "Confirmed"):
+                    pcv_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    pcv_not += 1
+            else:
+                    pcv_no += 1
+            continue
+        #rota1
+        if((datetime.date.today()-patient.bday).days > 42):
+            if (app.stat == "Confirmed"):
+                    rota_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    rota_not += 1
+            else:
+                    rota_no += 1
+            continue
+        #rota2
+        if((datetime.date.today()-vaccine.rota3_date).days > 28):
+            if (app.stat == "Confirmed"):
+                    rota_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    rota_not += 1
+            else:
+                    rota_no += 1
+            continue
+        #rota3
+        if((datetime.date.today()-vaccine.rota2_date).days > 28):
+            if (app.stat == "Confirmed"):
+                    rota_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    rota_not += 1
+            else:
+                    rota_no += 1
+            continue
+        #td
+        if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
+            if (app.stat == "Confirmed"):
+                    tdap_con += 1
+            elif (app.stat == "Unconfirmed"):
+                    tdap_not += 1
+            else:
+                    tdap_no += 1
+            continue
+        #typ
+        if(vaccine.typ_date is None):
+            if((datetime.date.today()-patient.bday).days > 720):
+                if (app.stat == "Confirmed"):
+                        typ_con += 1
+                elif (app.stat == "Unconfirmed"):
+                        typ_not += 1
+                else:
+                        typ_no += 1
+                continue
+        else:
+            if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
+                date = (datetime.date.today()-vaccine.typ_date).days
+                vaccine.typ_date = date
+                continue
+        #var1
+        if((datetime.date.today()-patient.bday).days > 360):
+            if (app.stat == "Confirmed"):
+                        var_con += 1
+            elif (app.stat == "Unconfirmed"):
+                        var_not += 1
+            else:
+                        var_no += 1
+            continue
+        #var2
+        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+            ((datetime.date.today()-vaccine.var_date).days > 90)):
+            if (app.stat == "Confirmed"):
+                        var_con += 1
+            elif (app.stat == "Unconfirmed"):
+                        var_not += 1
+            else:
+                        var_no += 1
+            continue
+    print(bcg_total)
+    data = {"bcg_con":bcg_con,"bcg_no":bcg_no, "bcg_not":bcg_not,"bcg_total":bcg_total, 
+            "hepb_con":hepb_con,"hepb_no":hepb_no, "hepb_not":hepb_not,"hepb_total":hepb_total,
+            "dtap_con":dtap_con,"dtap_no":dtap_no, "dtap_not":dtap_not,"dtap_total":dtap_total,
+            "opv_con":opv_con,"opv_no":opv_no, "opv_not":opv_not,"opv_total":opv_total,
+            "hib_con":hib_con,"hib_no":hib_no, "hib_not":hib_not,"hib_total":hib_total,
+            "pcv_con":pcv_con,"pcv_no":pcv_no, "pcv_not":pcv_not,"pcv_total":pcv_total,
+            "rota_con":rota_con,"rota_no":rota_no, "rota_not":rota_not,"rota_total":rota_total,
+            "msl_con":msl_con,"msl_no":msl_no, "msl_not":msl_not,"msl_total":msl_total,
+            "mmr_con":mmr_con,"mmr_not":mmr_not, "mmr_no":mmr_no,"mmr_total":mmr_total,
+            "var_con":var_con,"var_not":var_not, "var_no":var_no,"var_total":var_total,
+            "inf_con":inf_con,"inf_no":inf_no, "inf_not":inf_not,"inf_total":inf_total,
+            "jap_con":jap_con,"jap_no":jap_no, "hepaa_not":hepaa_not,"jap_total":jap_total,
+            "hepaa_con":hepaa_con,"hepaa_no":hepaa_no, "msl_not":msl_not,"hepaa_total":hepaa_total,
+            "mcc_con":mcc_con,"mcc_not":mcc_not, "mcc_no":mcc_no,"mcc_total":mcc_total,
+            "typ_con":typ_con,"typ_not":typ_not, "typ_no":typ_no,"typ_total":typ_total,
+            "tdap_con":tdap_con,"tdap_not":tdap_not, "tdap_no":tdap_no,"tdap_total":tdap_total,
+            "hpv_con":hpv_con,"hpv_not":hpv_not, "hpv_no":hpv_no,"hpv_total":hpv_total,
+            "flu_con":flu_con,"flu_not":flu_not, "flu_no":flu_no,"flu_total":flu_total}
+    return render(request, 'vaccinerecordapp/tool/tool.html', data)
 
 @login_required(login_url='/')
 def staff(request): 
