@@ -155,13 +155,12 @@ footer {
 
 <body>
   <header class="clearfix">
-    <img src="{% static 'images/cert-header.PNG' %}">
-    <br> <br>
     <h1>Vaccine Certificate</h1>
-    <div id="company" class="clearfix">
-      <div>{{ date }}</div>
-    </div>
     <div id="project">
+      <div style="font-weight: bold;">Disclaimer: This copy of vaccine certificate is for viewing purposes only and is not yet official
+            unless signed by your assigned doctor.   
+      </div>
+    <br>
       <div>To whom this may concern, </div>
     <br>
         <div class="row" >
@@ -188,8 +187,8 @@ footer {
           <tbody>
             <tr class="light-border">
                 <th scope="row" id="left-align">BCG</th>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.bcg_brand }}</td>
+                <td>{{ vaccine.bcg_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
@@ -197,62 +196,62 @@ footer {
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Hepatitis B</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.hepb1_brand }}</td>
+                <td>{{ vaccine.hepb1_date }}</td>
+                <td>{{ vaccine.hepb2_date }}</td>
+                <td>{{ vaccine.hepb3_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">DTaP/DTwP</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.dtap1_brand }}</td>
+                <td>{{ vaccine.dtap1_date }}</td>
+                <td>{{ vaccine.dtap2_date }}</td>
+                <td>{{ vaccine.dtap3_date }}</td>
+                <td>{{ vaccine.dtap4_date }}</td>
+                <td>{{ vaccine.dtap5_date }}</td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">OPV/IPV</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.ipv1_brand }}</td>
+                <td>{{ vaccine.ipv1_date }}</td>
+                <td>{{ vaccine.ipv2_date }}</td>
+                <td>{{ vaccine.ipv3_date }}</td>
+                <td>{{ vaccine.ipv4_date }}</td>
+                <td>{{ vaccine.ipv5_date }}</td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Hib</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.hib1_brand }}</td>
+                <td>{{ vaccine.hib1_date }}</td>
+                <td>{{ vaccine.hib2_date }}</td>
+                <td>{{ vaccine.hib3_date }}</td>
+                <td>{{ vaccine.hib4_date }}</td>
                 <td></td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">PCV</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.pcv1_brand }}</td>
+                <td>{{ vaccine.pcv1_date }}</td>
+                <td>{{ vaccine.pcv2_date }}</td>
+                <td>{{ vaccine.pcv3_date }}</td>
+                <td>{{ vaccine.pcv4_date }}</td>
                 <td class="table-secondary"></td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Rotavirus</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.rota1_brand }}</td>
+                <td>{{ vaccine.rota1_date }}</td>
+                <td>{{ vaccine.rota2_date }}</td>
+                <td>{{ vaccine.rota3_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Measles</th>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.msl_brand }}</td>
+                <td>{{ vaccine.msl_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
@@ -260,53 +259,53 @@ footer {
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">MMR</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.mmr1_brand }}</td>
+                <td>{{ vaccine.mmr1_date }}</td>
+                <td>{{ vaccine.mmr2_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Varicella</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.var1_brand }}</td>
+                <td>{{ vaccine.var1_date }}</td>
+                <td>{{ vaccine.var2_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Influenza</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.inf1_brand }}</td>
+                <td>{{ vaccine.inf1_date }}</td>
+                <td>{{ vaccine.inf2_date }}</td>
                 <td></td>
                 <td></td>
                 <td></td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Jap Encephalitis B</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.japb1_brand }}</td>
+                <td>{{ vaccine.japb1_date }}</td>
+                <td>{{ vaccine.japb2_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Hepatitis A</th>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.hepa1_brand }}</td>
+                <td>{{ vaccine.hepa1_date }}</td>
+                <td>{{ vaccine.hepa2_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
               </tr>
               <tr class="light-border">
-                <th scope="row" id="left-align">Meningcoccal</th>
-                <td></td>
-                <td></td>
+                <th scope="row" id="left-align">Meningococcal</th>
+                <td>{{ vaccine.men_brand }}</td>
+                <td>{{ vaccine.men_date }}</td>
                 <td></td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
@@ -314,8 +313,8 @@ footer {
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Typhoid</th>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.typ_brand }}</td>
+                <td>{{ vaccine.typ_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
@@ -323,8 +322,8 @@ footer {
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">Tdap</th>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.td_brand }}</td>
+                <td>{{ vaccine.td_date }}</td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
                 <td class="table-secondary"></td>
@@ -332,12 +331,12 @@ footer {
               </tr>
               <tr class="light-border">
                 <th scope="row" id="left-align">HPV</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ vaccine.hpv11_brand }}</td>
+                <td>{{ vaccine.hpv11_date }}</td>
+                <td>{{ vaccine.hpv12_date }}</td>
+                <td>{{ vaccine.hpv21_date }}</td>
+                <td>{{ vaccine.hpv22_date }}</td>
+                <td>{{ vaccine.hpv23_date }}</td>
               </tr>
           </tbody>
       </table>

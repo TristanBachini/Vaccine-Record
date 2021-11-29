@@ -598,16 +598,6 @@ def appointment(request,pk):
         return render(request, 'vaccinerecordapp/appointment.html',data)
     data = {"form":form, "appointments": appointments, "count": count,"record":record,'days':days,'months':months,'years':years}
     return render(request, 'vaccinerecordapp/appointment.html',data)                          
-    
-@login_required(login_url='/')
-def certificate(request,pk):
-    record = PatientRecord.objects.get(id=pk)
-    age = relativedelta(datetime.date.today(),record.bday)
-    days = age.days
-    months = age.months
-    years = age.years
-    data = {"record":record,'days':days,'months':months,'years':years}
-    return render(request, 'vaccinerecordapp/vaccine-certificate.html',data )
 
 @login_required(login_url='/')
 def patient_profile(request,pk):
@@ -713,6 +703,29 @@ def reject_appointment(request,pk):
     data = {'appointments':appointments, 'count':count}
     return render(request,'vaccinerecordapp/confirm-appointment.html',data)
 
+# certificate tab
+
+@login_required(login_url='/')
+def certificate_md(request,pk):
+    record = PatientRecord.objects.get(id=pk)
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
+    curr_date = datetime.date.today()
+    data = {"record":record,'days':days,'months':months,'years':years, 'date':curr_date}
+    return render(request, 'vaccinerecordapp/vaccine-certificate-md.html',data )
+
+@login_required(login_url='/')
+def certificate_pt(request,pk):
+    record = PatientRecord.objects.get(id=pk)
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
+    data = {"record":record,'days':days,'months':months,'years':years,}
+    return render(request, 'vaccinerecordapp/vaccine-certificate-pt.html',data )
+
 # for generating pdf
 from io import BytesIO
 from django.template.loader import get_template
@@ -731,10 +744,11 @@ def render_to_pdf(template_src, context_dict={}):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
 
-class GeneratePDF(View):
+class GeneratePDF_MD(View):
     def get(self, request, pk, *args, **kwargs):
         try:
             record = PatientRecord.objects.get(id=pk)
+            vaccine = Vaccine.objects.get(id=pk)
             age = relativedelta(datetime.date.today(),record.bday)
             days = age.days
             months = age.months
@@ -750,8 +764,32 @@ class GeneratePDF(View):
             'city': record.city,
             'doctor_assigned': record.doctor_assigned,
             'date': curr_date,
+            'vaccine':vaccine,
         }
-        pdf = render_to_pdf('vaccinerecordapp/certificate-pdf.html', data)
+        pdf = render_to_pdf('vaccinerecordapp/certificate-pdf-md.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+class GeneratePDF_PT(View):
+    def get(self, request, pk, *args, **kwargs):
+        try:
+            record = PatientRecord.objects.get(id=pk)
+            vaccine = Vaccine.objects.get(id=pk)
+            age = relativedelta(datetime.date.today(),record.bday)
+            days = age.days
+            months = age.months
+            years = age.years
+        except:
+            return HttpResponse("505 Not Found")
+        data = {
+            'first_name': record.first_name,
+            'middle_name': record.middle_name,
+            'last_name': record.last_name,
+            'age': f"{years} years, {months} months, {days} days",
+            'city': record.city,
+            'doctor_assigned': record.doctor_assigned,
+            'vaccine':vaccine,
+        }
+        pdf = render_to_pdf('vaccinerecordapp/certificate-pdf-pt.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 
 @login_required(login_url='/')

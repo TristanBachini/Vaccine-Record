@@ -15,7 +15,7 @@
   <!-- Profile -->
     <div class="col-11">
           <div class="card border-info" style="margin-left: 5%; margin-right: 5%">
-            <h5 class="card-header">Date: </h5>
+            <h5 class="card-header">Vaccine Certificate</h5>
             <div class="card-body">
                 <br>
                 <div class="row" >
@@ -29,9 +29,7 @@
                 <br>
                 <hr>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a class="btn btn-lg btn-info"  href="{% url 'home' %}" style="color: black">
-                        Dr Sign</a>
-                    <a class="btn btn-lg btn-info"  href="{% url 'generatepdf' record.id %}" style="color: black">
+                    <a class="btn btn-lg btn-info"  href="{% url 'generatepdf-pt' record.id %}" target="_blank" style="color: black">
                         View / Print</a>
                   </div>
               </div>

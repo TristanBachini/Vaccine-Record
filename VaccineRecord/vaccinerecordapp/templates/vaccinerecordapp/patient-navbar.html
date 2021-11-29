@@ -2,7 +2,7 @@
 
 <div class="d-flex align-items-start">
 <ul class="nav flex-column " style="background-color:#e3f2fd;;">
-  {% if request.user|has_group:"staff" or request.user|has_group:"doctor"%}
+    {% if request.user|has_group:"staff" or request.user|has_group:"doctor"%}
     <li class="profile">
       <a class="nav-link active" href="{% url 'patient-profile' record.pk %}">Profile</a>
     </li>
@@ -18,9 +18,16 @@
     <li class="vaccine">
       <a class="nav-link active" href="{% url 'display-vaccine' record.pk %}">Vaccine</a>
     </li>
+    {% if request.user|has_group:"staff" or request.user|has_group:"doctor"%}
     <li class="certificate">
-      <a class="nav-link" href="{% url 'certificate' record.id %}">Certificate</a>
+      <a class="nav-link" href="{% url 'certificate-md' record.id %}">Certificate</a>
     </li>
+    {% endif %}
+    {% if request.user|has_group:"patient"%}
+    <li class="certificate">
+      <a class="nav-link" href="{% url 'certificate-pt' record.id %}">Certificate</a>
+    </li>
+    {% endif %}
     {% if request.user|has_group:"staff"%}
     <li class="portal">
       <a class="nav-link" href="#">Portal</a>
