@@ -64,7 +64,7 @@ class Doctor(models.Model):
     can_register = models.BooleanField(default=False)
 
     def __str__(self):
-        return "Dr. "+self.user.last_name
+        return "Dr. "+self.user.first_name+" "+self.user.last_name
 
 class Patient(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

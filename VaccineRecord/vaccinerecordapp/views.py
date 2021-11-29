@@ -1273,7 +1273,9 @@ class GeneratePDF_MD(View):
     def get(self, request, pk, *args, **kwargs):
         try:
             record = PatientRecord.objects.get(id=pk)
-            vaccine = Vaccine.objects.get(id=pk)
+            patients = PatientRecord.objects.all()
+            for patient in patients:
+                vaccine = Vaccine.objects.get(user = patient.user)
             age = relativedelta(datetime.date.today(),record.bday)
             days = age.days
             months = age.months
@@ -1289,6 +1291,8 @@ class GeneratePDF_MD(View):
             'city': record.city,
             'doctor_assigned': record.doctor_assigned,
             'date': curr_date,
+            'patients': patients,
+            'patient': patient,
             'vaccine':vaccine,
         }
         pdf = render_to_pdf('vaccinerecordapp/certificate-pdf-md.html', data)
@@ -1298,7 +1302,11 @@ class GeneratePDF_PT(View):
     def get(self, request, pk, *args, **kwargs):
         try:
             record = PatientRecord.objects.get(id=pk)
-            vaccine = Vaccine.objects.get(id=pk)
+            patients = PatientRecord.objects.all()
+            for patient in patients:
+                vaccine = Vaccine.objects.get(user = patient.user)
+            username = PatientRecord.objects.get(id=pk).user
+            vaccine = Vaccine.objects.get(user = username)
             age = relativedelta(datetime.date.today(),record.bday)
             days = age.days
             months = age.months
@@ -1312,6 +1320,9 @@ class GeneratePDF_PT(View):
             'age': f"{years} years, {months} months, {days} days",
             'city': record.city,
             'doctor_assigned': record.doctor_assigned,
+            'username': username,
+            'patients': patients,
+            'patient': patient,
             'vaccine':vaccine,
         }
         pdf = render_to_pdf('vaccinerecordapp/certificate-pdf-pt.html', data)
