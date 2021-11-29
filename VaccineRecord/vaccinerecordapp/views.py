@@ -24,6 +24,7 @@ from xhtml2pdf import pisa
 from .filters import RecordFilter
 from django.views.generic import View
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 # Create your views here.
 
 def home(request):
@@ -50,13 +51,15 @@ def home(request):
                     data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
                 else:
-                    print(user)
                     data = {"form1":form1, "form2":form2, "patients":patients}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
             else:
-                print(user)
                 record = PatientRecord.objects.get(user = request.user)
-                data = {'record':record}
+                age = relativedelta(datetime.date.today(),record.bday)
+                days = age.days
+                months = age.months
+                years = age.years
+                data = {'record':record,'days':days,'months':months,'years':years}
                 return render(request, 'vaccinerecordapp/patient-landing.html',data)
         else:
             messages.error(request,"Invalid Email or Password")
@@ -116,6 +119,10 @@ def update_patient_profile(request,pk):
     patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
     form = UpdatePatientRecordForm(instance = patient)
     record = PatientRecord.objects.get(id = pk)
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
     if(request.method=="POST"):   
         user = User.objects.get(username=request.user.username)
         form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
@@ -133,9 +140,14 @@ def update_patient_profile(request,pk):
         if(form.is_valid()):
             form.save()
             record = PatientRecord.objects.get(id = pk)
-            data = {"record":record}
+            age = relativedelta(datetime.date.today(),record.bday)
+            days = age.days
+            months = age.months
+            years = age.years
+            data = {'record':record,'days':days,'months':months,'years':years}
             return render(request, "vaccinerecordapp/patient-landing.html",data)
-    data = {"form":form,"record":record}
+    
+    data = {'record':record,'days':days,'months':months,'years':years,'form':form}
     return render(request, "vaccinerecordapp/update-patient-profile.html", data)
 
 def update_profile(request,pk):
@@ -160,9 +172,18 @@ def update_profile(request,pk):
         if(form.is_valid()):
             form.save()
             record = PatientRecord.objects.get(id = pk)
-            data = {"record":record}
+            age = relativedelta(datetime.date.today(),record.bday)
+            days = age.days
+            months = age.months
+            years = age.years
+            data = {'record':record,'days':days,'months':months,'years':years}
             return render(request, "vaccinerecordapp/search-patient.html",data)
-    data = {"form":form,"record":record}
+    record = PatientRecord.objects.get(id = pk)
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
+    data = {'record':record,'days':days,'months':months,'years':years,'form':form}
     return render(request, "vaccinerecordapp/update-profile.html", data)
 
 def create_patient(request):
@@ -300,7 +321,11 @@ def display_vaccine_record(request,pk):
     print(vac)
     if Vaccine.objects.filter(user=vac).exists():
         vaccine = Vaccine.objects.get(user=vac)
-        data = {"record":record, "vaccine":vaccine, "form":form}
+        age = relativedelta(datetime.date.today(),record.bday)
+        days = age.days
+        months = age.months
+        years = age.years
+        data = {"record":record, "vaccine":vaccine, "form":form,'days':days,'months':months,'years':years}
         return render(request, 'vaccinerecordapp/display-vaccine.html',data)
     else:
         return create_vaccine_record(request,pk)
@@ -308,7 +333,11 @@ def display_vaccine_record(request,pk):
 def create_vaccine_record(request,pk):
     form = VaccineForm(request.POST)
     record = PatientRecord.objects.get(id=pk)
-    data = {"form":form,"record":record}
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
+    data = {"record":record, "form":form,'days':days,'months':months,'years':years}
     return render(request,'vaccinerecordapp/vaccine-record.html',data)
 
 def vaccine_record(request):
@@ -406,6 +435,10 @@ def update_vaccine(request,pk):
     vac = PatientRecord.objects.get(id = pk).user
     vaccine = Vaccine.objects.get(user=vac)
     form = UpdateVaccineForm(instance = vaccine)
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
 
     if(request.method=="POST"):   
         user = User.objects.get(username=vac)
@@ -478,9 +511,10 @@ def update_vaccine(request,pk):
         if(form.is_valid()):
             form.save()
             record = PatientRecord.objects.get(id = pk)
-            data = {"record":record}
+            data = {"record":record,'days':days,'months':months,'years':years}
             return render(request, "vaccinerecordapp/search-patient.html",data)
-    data = {"form":form,"record":record}
+
+    data = {"record":record, "form":form,'days':days,'months':months,'years':years}
     return render(request, "vaccinerecordapp/update-vaccine.html", data) 
 
 @login_required(login_url='/')
@@ -510,6 +544,10 @@ def search_patient(request):
 @login_required(login_url='/')
 def appointment(request,pk):
     record = PatientRecord.objects.get(id = pk)
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
     form = AppointmentForm(request.POST)
     user = User.objects.get(username=request.user.username)
     appointments = Appointment.objects.filter(user = record.user)
@@ -538,35 +576,51 @@ def appointment(request,pk):
             form.save()
             if request.user.groups.filter(name="patient"):
                 record = PatientRecord.objects.get(user = request.user)
-                data = {'record':record}
+                age = relativedelta(datetime.date.today(),record.bday)
+                days = age.days
+                months = age.months
+                years = age.years
+                data = {"record":record,'days':days,'months':months,'years':years}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
         else:
             if request.user.groups.filter(name="patient"):
-                patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
-                data = {'patient':patient}
+                record = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
+                age = relativedelta(datetime.date.today(),record.bday)
+                days = age.days
+                months = age.months
+                years = age.years
+                data = {"record":record,'days':days,'months':months,'years':years}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
         
         appointments = Appointment.objects.filter(user = record.user)
         count = appointments.count()
-        data = {'appointments':appointments,'count':count,'record':record,'form':form}
+        data = {'appointments':appointments,'count':count,'record':record,'form':form,'days':days,'months':months,'years':years}
         return render(request, 'vaccinerecordapp/appointment.html',data)
-    data = {"form":form, "appointments": appointments, "count": count,"record":record}
+    data = {"form":form, "appointments": appointments, "count": count,"record":record,'days':days,'months':months,'years':years}
     return render(request, 'vaccinerecordapp/appointment.html',data)                          
     
 @login_required(login_url='/')
 def certificate(request,pk):
     record = PatientRecord.objects.get(id=pk)
-    data = {"record":record}
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
+    data = {"record":record,'days':days,'months':months,'years':years}
     return render(request, 'vaccinerecordapp/vaccine-certificate.html',data )
 
 @login_required(login_url='/')
 def patient_profile(request,pk):
     form = PatientRecordForm(request.POST)
     record = PatientRecord.objects.get(id=pk)
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
+    data = {"record":record,'days':days,'months':months,'years':years,'form':form}
     # username = User.objects.get(id=User.objects.get(id=pk).id)
     # print(username)
     # record = PatientRecord.objects.get(user=PatientRecord.objects.get(user=username).user)
-    data = {"form":form, "record":record}
     return render(request, 'vaccinerecordapp/patient-profile.html',data )
 
 @login_required(login_url='/')
@@ -681,6 +735,10 @@ class GeneratePDF(View):
     def get(self, request, pk, *args, **kwargs):
         try:
             record = PatientRecord.objects.get(id=pk)
+            age = relativedelta(datetime.date.today(),record.bday)
+            days = age.days
+            months = age.months
+            years = age.years
         except:
             return HttpResponse("505 Not Found")
         curr_date = datetime.date.today()
@@ -688,7 +746,7 @@ class GeneratePDF(View):
             'first_name': record.first_name,
             'middle_name': record.middle_name,
             'last_name': record.last_name,
-            'age': record.age,
+            'age': f"{years} years, {months} months, {days} days",
             'city': record.city,
             'doctor_assigned': record.doctor_assigned,
             'date': curr_date,
@@ -715,12 +773,13 @@ def update_staff(request):
 
 @login_required(login_url='/')
 def reminder(request):
-    vaccines = Vaccine.objects.all()
     patients = PatientRecord.objects.all()
     remind = []
-    for patient in patients:
-        #Do this!!! age computation, https://stackoverflow.com/questions/38792126/how-to-use-dateutil-relativedelta-in-python-3-x 
-        #age = relativedelta(datetime.date.today(),patient.bday))
+    for patient in patients: 
+        age = relativedelta(datetime.date.today(),patient.bday)
+        days = age.days
+        months = age.months
+        years = age.years
         vaccine = Vaccine.objects.get(user = patient.user)
         if(vaccine.bcg_date is None):
             remind.append(patient)
