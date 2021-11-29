@@ -1,13 +1,8 @@
 {% load static %} {% load auth_extras %}
 
 <div class="d-flex align-items-start">
-<<<<<<< HEAD
-<ul class="nav flex-column " style="background-color:#e3f2fd;">
-  {% if request.user|has_group:"staff" or request.user|has_group:"doctor"%}
-=======
 <ul class="nav flex-column " style="background-color:#e3f2fd;;">
     {% if request.user|has_group:"staff" or request.user|has_group:"doctor"%}
->>>>>>> eba072f70369e0b130afd35bd440d8fbcc0e26d2
     <li class="profile">
       <a class="nav-link active" href="{% url 'patient-profile' record.pk %}">Profile</a>
     </li>
