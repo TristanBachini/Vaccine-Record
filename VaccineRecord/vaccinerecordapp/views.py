@@ -715,19 +715,23 @@ def tool(request):
     flu_no = 0
     
 
-    if app.count( )== 0:
-        for patient in patients:
+    # if app.count( )== 0:
+    for patient in patients:
             #Do this!!! age computation, https://stackoverflow.com/questions/38792126/how-to-use-dateutil-relativedelta-in-python-3-x 
             #age = relativedelta(datetime.date.today(),patient.bday))
             vaccine = Vaccine.objects.get(user = patient.user)
             # app = Appointment.objects.get(user = patient.user)
             if(vaccine.bcg_date is None):
-                # if (app.stat == "Confirmed"):
-                #     bcg_con += 1
-                # elif (app.stat == "Unconfirmed"):
-                #     bcg_not += 1
-                # else:
-                bcg_no += 1
+                if Appointment.objects.filter(user = patient.user) is not None:
+                    app = Appointment.objects.get(user = patient.user)
+                    if (app.stat == "Confirmed"):
+                        bcg_con += 1
+                    elif (app.stat == "Unconfirmed"):
+                        bcg_not += 1
+                    else:
+                        bcg_no += 1
+                else:
+                    bcg_no += 1
                 continue
             #dtap1
             if((datetime.date.today()-patient.bday).days > 42):
@@ -1108,28 +1112,28 @@ def tool(request):
                 var_no += 1
                 continue
         
-        bcg_total = bcg_no + bcg_con + bcg_not
-        hepb_total = hepb_no + hepb_con + hepb_not
-        dtap_total = dtap_no + dtap_con + dtap_not
-        opv_total = opv_no + opv_con + opv_not
-        hib_total = hib_no + hib_con + hib_not
-        pcv_total = pcv_no + pcv_con + pcv_not
-        rota_total = rota_no + rota_con + rota_not
-        msl_total = msl_no + msl_con + msl_not
-        mmr_total = mmr_no + mmr_con + mmr_not
-        var_total = var_no + var_con + var_not
-        inf_total = inf_no + inf_con + inf_not
-        jap_total = jap_no + jap_con + jap_not
-        hepaa_total = hepaa_no + hepaa_con + hepaa_not
-        mcc_total = mcc_no + mcc_con + mcc_not
-        typ_total = typ_no + typ_con + typ_not
-        tdap_total = tdap_no + tdap_con + tdap_not
-        hpv_total = hpv_no + hpv_con + hpv_not
-        flu_total = flu_no + flu_con + flu_not
+    bcg_total = bcg_no + bcg_con + bcg_not
+    hepb_total = hepb_no + hepb_con + hepb_not
+    dtap_total = dtap_no + dtap_con + dtap_not
+    opv_total = opv_no + opv_con + opv_not
+    hib_total = hib_no + hib_con + hib_not
+    pcv_total = pcv_no + pcv_con + pcv_not
+    rota_total = rota_no + rota_con + rota_not
+    msl_total = msl_no + msl_con + msl_not
+    mmr_total = mmr_no + mmr_con + mmr_not
+    var_total = var_no + var_con + var_not
+    inf_total = inf_no + inf_con + inf_not
+    jap_total = jap_no + jap_con + jap_not
+    hepaa_total = hepaa_no + hepaa_con + hepaa_not
+    mcc_total = mcc_no + mcc_con + mcc_not
+    typ_total = typ_no + typ_con + typ_not
+    tdap_total = tdap_no + tdap_con + tdap_not
+    hpv_total = hpv_no + hpv_con + hpv_not
+    flu_total = flu_no + flu_con + flu_not    
 
 
-        print(bcg_total)
-        data = {"bcg_con":bcg_con,"bcg_no":bcg_no, "bcg_not":bcg_not,"bcg_total":bcg_total, 
+    print(bcg_total)
+    data = {"bcg_con":bcg_con,"bcg_no":bcg_no, "bcg_not":bcg_not,"bcg_total":bcg_total, 
                 "hepb_con":hepb_con,"hepb_no":hepb_no, "hepb_not":hepb_not,"hepb_total":hepb_total,
                 "dtap_con":dtap_con,"dtap_no":dtap_no, "dtap_not":dtap_not,"dtap_total":dtap_total,
                 "opv_con":opv_con,"opv_no":opv_no, "opv_not":opv_not,"opv_total":opv_total,
@@ -1147,7 +1151,7 @@ def tool(request):
                 "tdap_con":tdap_con,"tdap_not":tdap_not, "tdap_no":tdap_no,"tdap_total":tdap_total,
                 "hpv_con":hpv_con,"hpv_not":hpv_not, "hpv_no":hpv_no,"hpv_total":hpv_total,
                 "flu_con":flu_con,"flu_not":flu_not, "flu_no":flu_no,"flu_total":flu_total}
-        return render(request, 'vaccinerecordapp/tool/tool.html', data)
+    return render(request, 'vaccinerecordapp/tool/tool.html', data)    
 
 @login_required(login_url='/')
 def staff(request): 
