@@ -27,7 +27,7 @@
                   <tr>
                     <td class="table-warning"><b>NAME</b></td>
                     <td class="table-warning">Nickname:</td>
-                    <td class="table-light">{{ record.nick_name|upper }}</td>
+                    <td class="table-light">{{ record.nick_name|default_if_none:''|upper }}</td>
                     <td class="table-warning" colspan="2">Attending Doctor:</td>
                     <td class="table-light" colspan="2">{{ record.doctor_assigned|upper }}</td>
                     <td class="table-warning" colspan="2">Patient Record #:</td>
@@ -35,13 +35,13 @@
                   </tr>
                   <tr>
                     <td class="table-warning">First:</td>
-                    <td class="table-light">{{ record.first_name|upper }}</td>
+                    <td class="table-light">{{ record.first_name|upper}}</td>
                     <td class="table-warning">Last:</td>
                     <td class="table-light" colspan="2">{{ record.last_name|upper }}</td>
                     <td class="table-warning">Middle:</td>
-                    <td class="table-light" colspan="2">{{ record.middle_name|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.middle_name|default_if_none:''|upper }}</td>
                     <td class="table-warning">Suffix:</td>
-                    <td class="table-light">{{ record.suffix|upper }}</td>
+                    <td class="table-light">{{ record.suffix|default_if_none:''|upper }}</td>
                   </tr>
                   <tr>
                     <td class="table-warning">Sex:</td>
@@ -54,70 +54,70 @@
                   <tr>
                     <td class="table-warning"><b>CONTACT #</b></td>
                     <td class="table-warning">Mobile:</td>
-                    <td class="table-light" colspan="2">{{ record.mobile|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.mobile|default_if_none:'' }}</td>
                     <td class="table-warning">Landline:</td>
-                    <td class="table-light" colspan="2">{{ record.landline|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.landline|default_if_none:'' }}</td>
                     <td class="table-warning">Email:</td>
-                    <td class="table-light" colspan="2">{{ record.email|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.email|default_if_none:''|upper }}</td>
                   </tr>
                   <tr>
                     <td class="table-warning"><b>ADDRESS</b></td>
                     <td class="table-warning">House/Unit No./Street:</td>
-                    <td class="table-light" colspan="4">{{ record.home_no|upper }}</td>
+                    <td class="table-light" colspan="4">{{ record.home_no|default_if_none:''|upper }}</td>
                     <td class="table-warning">Barangay:</td>
-                    <td class="table-light" colspan="3">{{ record.brgy|upper }}</td>
+                    <td class="table-light" colspan="3">{{ record.brgy|default_if_none:''|upper }}</td>
                   </tr>
                   <tr>
                     <td class="table-warning">City:</td>
-                    <td class="table-light">{{ record.city|upper }}</td>
+                    <td class="table-light">{{ record.city|default_if_none:''|upper }}</td>
                     <td class="table-warning">Province:</td>
-                    <td class="table-light" colspan="2">{{ record.province|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.province|default_if_none:''|upper }}</td>
                     <td class="table-warning">Region:</td>
-                    <td class="table-light" colspan="2">{{ record.region|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.region|default_if_none:''|upper }}</td>
                     <td class="table-warning">Zip Code:</td>
-                    <td class="table-light">{{ record.zip_code|upper }}</td>
+                    <td class="table-light">{{ record.zip_code|default_if_none:'' }}</td>
                   </tr>
                   <tr>
                     <td class="table-warning" colspan="10"><b>PARENT INFORMATION</b></td>
                   </tr>
                   <tr>
                     <td class="table-warning">Mother:</td>
-                    <td class="table-light">{{ record.fname_mom|upper }}</td>
-                    <td class="table-light" colspan="2">{{ record.lname_mom|upper }}</td>
+                    <td class="table-light">{{ record.fname_mom|default_if_none:''|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.lname_mom|default_if_none:''|upper }}</td>
                     <td class="table-warning">Contact #:</td>
-                    <td class="table-light" colspan="2">{{ record.contact_mom|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.contact_mom|default_if_none:'' }}</td>
                     <td class="table-warning">Email:</td>
-                    <td class="table-light" colspan="2">{{ record.email_mom }}</td>
+                    <td class="table-light" colspan="2">{{ record.email_mom|default_if_none:''|upper }}</td>
                   </tr>
                   <tr>
                     <td class="table-warning">Father</td>
-                    <td class="table-light">{{ record.fname_dad|upper }}</td>
-                    <td class="table-light" colspan="2">{{ record.lname_dad|upper }}</td>
+                    <td class="table-light">{{ record.fname_dad|default_if_none:''|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.lname_dad|default_if_none:''|upper }}</td>
                     <td class="table-warning">Contact #:</td>
-                    <td class="table-light" colspan="2">{{ record.contact_dad|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.contact_dad|default_if_none:'' }}</td>
                     <td class="table-warning">Email:</td>
-                    <td class="table-light" colspan="2">{{ record.email_dad }}</td>
+                    <td class="table-light" colspan="2">{{ record.email_dad|default_if_none:''|upper }}</td>
                   </tr>
                   <tr>
                     <td class="table-warning" colspan="10"><b>EMERGENCY CONTACT</b></td>
                   </tr>
                   <tr>
                     <td class="table-warning">Name:</td>
-                    <td>{{ record.fname_e1|upper }}</td>
-                    <td class="table-light" colspan="2">{{ record.lname_e1|upper }}</td>
+                    <td>{{ record.fname_e1|default_if_none:''|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.lname_e1|default_if_none:''|upper }}</td>
                     <td class="table-warning">Relation:</td>
-                    <td class="table-light" colspan="2">{{ record.relation_e1|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.relation_e1|default_if_none:''|upper }}</td>
                     <td class="table-warning">Contact #:</td>
-                    <td class="table-light" colspan="2">{{ record.contact_e1 }}</td>
+                    <td class="table-light" colspan="2">{{ record.contact_e1|default_if_none:'' }}</td>
                   </tr>
                   <tr>
                     <td class="table-warning">Name:</td>
-                    <td>{{ record.fname_e1|upper }}</td>
-                    <td class="table-light" colspan="2">{{ record.lname_e2|upper }}</td>
+                    <td>{{ record.fname_e2|default_if_none:''|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.lname_e2|default_if_none:''|upper }}</td>
                     <td class="table-warning">Relation:</td>
-                    <td class="table-light" colspan="2">{{ record.relation_e2|upper }}</td>
+                    <td class="table-light" colspan="2">{{ record.relation_e2|default_if_none:''|upper }}</td>
                     <td class="table-warning">Contact #:</td>
-                    <td class="table-light" colspan="2">{{ record.contact_e2 }}</td>
+                    <td class="table-light" colspan="2">{{ record.contact_e2|default_if_none:'' }}</td>
                   </tr>
                 </table>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">

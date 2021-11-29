@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <title>Vaccine Certificate</title>
+<style>
+  .clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+a {
+  text-decoration: underline;
+}
+
+body {
+  position: relative;
+  margin: 0 auto; 
+  color: #001028;
+  background: #FFFFFF; 
+  font-family: Arial, sans-serif; 
+  font-size: 14px; 
+  font-family: Arial;
+}
+
+header {
+  padding: 10px 0;
+  margin-bottom: 30px;
+}
+
+#logo {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#logo img {
+  width: 90px;
+}
+
+h1 {
+  
+  color: #5D6975;
+  font-size: 2.4em;
+  line-height: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+#project {
+  float: left;
+}
+
+#project span {
+  color: #5D6975;
+  text-align: right;
+  width: 52px;
+  margin-right: 10px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+#company {
+  float: right;
+  text-align: right;
+}
+
+#project div,
+#company div {
+  white-space: nowrap;        
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+#left-align {
+    width: 25%;
+    text-align: left;
+}
+
+.table-secondary {
+    background-color: #ededed;
+}
+
+.solid-black {
+    border-bottom: solid black;
+}
+
+.light-border {
+    border-bottom: 1px solid rgb(185, 185, 185);
+}
+
+table th,
+table td {
+    height: 35px;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+table th {
+  color: black;
+  /* white-space: nowrap;         */
+  font-weight: bold;
+}
+
+table .service,
+table .desc {
+  text-align: left;
+}
+
+table td {
+ padding-top:5px;
+ padding-bottom:5px; 
+}
+
+table td.service,
+table td.desc {
+  vertical-align: middle;
+}
+
+table td.unit,
+table td.qty,
+table td.total {
+  font-size: 1.2em;
+}
+
+table td.grand {
+  border-top: 1px solid gray;
+}
+
+#notices .notice {
+  color: #5D6975;
+  font-size: 1.2em;
+}
+
+footer {
+  color: #5D6975;
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid #C1CED9;
+  padding: 8px 0;
+  text-align: center;
+}
+
+
+  </style>
+</head>
+
+<body>
+  <header class="clearfix">
+    <h1>Vaccine Certificate</h1>
+    <div id="project">
+      <div style="font-weight: bold;">Disclaimer: This copy of vaccine certificate is for viewing purposes only and is not yet official
+            unless signed by your assigned doctor.   
+      </div>
+    <br>
+      <div>To whom this may concern, </div>
+    <br>
+        <div class="row" >
+            <div class="col" style="text-indent: 70px;"> This is to certify that {{ first_name }} {{ middle_name }} {{ last_name }}, 
+                {{ age }}, of {{ city }} City has completed the following vaccinations. 
+            </div>
+        </div>
+    <br>
+    </div>
+  </header>
+    <div class="table-container" style="overflow-x:auto">
+      <table class="table" style="width:100%">
+          <thead>
+              <tr class="solid-black">
+                <th scope="col" id="left-align">Vaccine</th>
+                <th scope="col">Brand</th>
+                <th scope="col">1st</th>
+                <th scope="col">2nd</th>
+                <th scope="col">3rd</th>
+                <th scope="col">4th</th>
+                <th scope="col">5th</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr class="light-border">
+                <th scope="row" id="left-align">BCG</th>
+                <td>{{ vaccine.bcg_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.bcg_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Hepatitis B</th>
+                <td>{{ vaccine.hepb1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.hepb1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hepb2_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hepb3_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">DTaP/DTwP</th>
+                <td>{{ vaccine.dtap1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.dtap1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.dtap2_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.dtap3_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.dtap4_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.dtap5_date|default_if_none:'' }}</td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">OPV/IPV</th>
+                <td>{{ vaccine.ipv1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.ipv1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.ipv2_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.ipv3_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.ipv4_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.ipv5_date|default_if_none:'' }}</td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Hib</th>
+                <td>{{ vaccine.hib1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.hib1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hib2_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hib3_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hib4_date|default_if_none:'' }}</td>
+                <td></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">PCV</th>
+                <td>{{ vaccine.pcv1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.pcv1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.pcv2_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.pcv3_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.pcv4_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Rotavirus</th>
+                <td>{{ vaccine.rota1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.rota1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.rota2_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.rota3_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Measles</th>
+                <td>{{ vaccine.msl_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.msl_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">MMR</th>
+                <td>{{ vaccine.mmr1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.mmr1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.mmr2_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Varicella</th>
+                <td>{{ vaccine.var1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.var1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.var2_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Influenza</th>
+                <td>{{ vaccine.inf1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.inf1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.inf2_date|default_if_none:'' }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Jap Encephalitis B</th>
+                <td>{{ vaccine.japb1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.japb1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.japb2_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Hepatitis A</th>
+                <td>{{ vaccine.hepa1_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.hepa1_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hepa2_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Meningococcal</th>
+                <td>{{ vaccine.men_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.men_date|default_if_none:'' }}</td>
+                <td></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Typhoid</th>
+                <td>{{ vaccine.typ_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.typ_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">Tdap</th>
+                <td>{{ vaccine.td_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.td_date|default_if_none:'' }}</td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+                <td class="table-secondary"></td>
+              </tr>
+              <tr class="light-border">
+                <th scope="row" id="left-align">HPV</th>
+                <td>{{ vaccine.hpv11_brand|default_if_none:'' }}</td>
+                <td>{{ vaccine.hpv11_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hpv12_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hpv21_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hpv22_date|default_if_none:'' }}</td>
+                <td>{{ vaccine.hpv23_date|default_if_none:'' }}</td>
+              </tr>
+          </tbody>
+      </table>
+    
+      <br>
+                  <div class="row" >
+                    <div class="col">
+                        This certificate is being issued upon the request of the above mentioned for whatever purpose it may serve, 
+                        except those of a medico-legal-nature.
+                        <br> <br>
+                        {{ doctor_assigned }} 
+                    </div>
+                  </div>
+                  <br>  
+
+    </div>
+</body>
+
+</html>
