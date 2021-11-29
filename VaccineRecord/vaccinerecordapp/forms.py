@@ -48,6 +48,21 @@ class DoctorForm(forms.ModelForm):
             'contact': TextInput(attrs={'class': 'form-control', 'placeholder': 'Contact Number', 'aria-label': 'Contact Number', 'required': True}),
         }
 
+class UpdateDoctorForm(forms.ModelForm):
+    class Meta:
+        model = Doctor
+        fields = "__all__"
+        widgets = {
+            'user':  HiddenInput(attrs={'type': 'hidden'}),
+            'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
+            'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': True}),
+            'prefix':  Select(attrs={'class': 'form-control'}),
+            'type':  Select(attrs={'class': 'form-control'}),
+            'title':  Select(attrs={'class': 'form-control','required': False}),
+            'end_date': DateInput(attrs={'class': 'form-control'}),
+            'contact': TextInput(attrs={'class': 'form-control', 'placeholder': 'Contact Number', 'aria-label': 'Contact Number', 'required': True}),
+        }
+
 class PatientForm(forms.ModelForm):
     attrs = {'class': 'form-control', 'id':'relationship',
              'placeholder': 'Relationship', 'required': True}

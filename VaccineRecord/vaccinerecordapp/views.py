@@ -614,6 +614,17 @@ def patient_profile(request,pk):
     return render(request, 'vaccinerecordapp/patient-profile.html',data )
 
 @login_required(login_url='/')
+def staff_profile(request,pk):
+    form = DoctorForm(request.POST)
+    record = Doctor.objects.get(id=pk)
+    data = {"record":record,'form':form}
+    print("pk " + pk)
+    # username = User.objects.get(id=User.objects.get(id=pk).id)
+    # print(username)
+    # record = PatientRecord.objects.get(user=PatientRecord.objects.get(user=username).user)
+    return render(request, 'vaccinerecordapp/tool/staff-profile.html',data )
+
+@login_required(login_url='/')
 def create_patient_record(request):
     form = PatientRecordForm(request.POST)
     data = {"form":form}
@@ -1345,6 +1356,43 @@ def update_staff(request):
     data = {"staffs":staffs}  
     return render(request,'vaccinerecordapp/tool/update-staff.html',data)
 
+def update_profile(request,pk):
+    patient = PatientRecord.objects.get(id = pk).user
+    profile = PatientRecord.objects.get(user=patient)
+    form = UpdatePatientRecordForm(instance = profile)
+    record = PatientRecord.objects.get(id = pk)
+    if(request.method=="POST"):   
+        user = User.objects.get(username=patient)
+        form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
+                                        'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
+                                        'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
+                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                        'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
+                                        'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
+                                        'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
+                                        'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
+                                        'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
+                                        'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
+                                        'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
+                                        'contact_e2':request.POST.get('contact_e2')}, instance = profile)
+        if(form.is_valid()):
+            form.save()
+            record = PatientRecord.objects.get(id = pk)
+            age = relativedelta(datetime.date.today(),record.bday)
+            days = age.days
+            months = age.months
+            years = age.years
+            data = {'record':record,'days':days,'months':months,'years':years}
+            return render(request, "vaccinerecordapp/search-patient.html",data)
+    record = PatientRecord.objects.get(id = pk)
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    months = age.months
+    years = age.years
+    data = {'record':record,'days':days,'months':months,'years':years,'form':form}
+    return render(request, "vaccinerecordapp/update-profile.html", data)
+
+
 @login_required(login_url='/')
 def reminder(request):
     patients = PatientRecord.objects.all()
@@ -1357,190 +1405,166 @@ def reminder(request):
         vaccine = Vaccine.objects.get(user = patient.user)
         if(vaccine.bcg_date is None):
             remind.append(patient)
-            continue
         #dtap1
         if((datetime.date.today()-patient.bday).days > 42):
             remind.append(patient)
-            continue
         #dtap2
         if(vaccine.dtap1_date is not None):
             if((datetime.date.today()-vaccine.dtap1_date).days > 28): 
                 remind.append(patient)
-                continue
         #dtap3
         if(vaccine.dtap2_date is not None):
             if((datetime.date.today()-vaccine.dtap2_date).days > 28): 
                 remind.append(patient)
-                continue
         #dtap booster 1
         if((datetime.date.today()-patient.bday).days > 350):
             remind.append(patient)
-            continue
         #dtap booster 2
         if((datetime.date.today()-patient.bday).days > 1400):
             remind.append(patient)
-            continue
         #hepb1
         if(vaccine.hepb1_date is None):
             remind.append(patient)
-            continue
         #hepb2
         if((datetime.date.today()-patient.bday).days > 30):
             remind.append(patient)
-            break
         #hepb3
         if((datetime.date.today()-patient.bday).days > 180):
             remind.append(patient)
-            continue
         #hib1
-        if((datetime.date.today()-vaccine.hepb3_date).days > 42):
-            remind.append(patient)
-            continue
+        if(vaccine.hepb3_date is not None):
+            if((datetime.date.today()-vaccine.hepb3_date).days > 42):
+                remind.append(patient)
         #hib2
-        if((datetime.date.today()-vaccine.hib1_date).days > 28):
-            remind.append(patient)
-            continue
+        if(vaccine.hib1_date is not None):
+            if((datetime.date.today()-vaccine.hib1_date).days > 28):
+                remind.append(patient)
         #hib3
-        if((datetime.date.today()-vaccine.hib2_date).days > 28):
-            remind.append(patient)
-            continue
+        if(vaccine.hib2_date is not None):
+            if((datetime.date.today()-vaccine.hib2_date).days > 28):
+                remind.append(patient)
         #hib booster1
-        if((datetime.date.today()-vaccine.hib3_date).days > 180):
-            remind.append(patient)
-            continue
+        if(vaccine.hib3_date is not None):
+            if((datetime.date.today()-vaccine.hib3_date).days > 180):
+                remind.append(patient)
         #hpv11
-
+        if (vaccine.hpv11_date is None):
+            remind.append(patient)
         #hpv12
-
+        if(9<years<15):
+            if ((datetime.date.today()-vaccine.hpv11_date).days > 180):
+                remind.append(patient)
         #hpv21
-
+        if (vaccine.hpv21_date is None):
+            remind.append(patient)
         #hpv22
-
+        if(years>=15):
+            if ((datetime.date.today()-vaccine.hpv21_date).days > 120):
+                remind.append(patient)
         #hpv3
-
+        if(years>=15):
+            if ((datetime.date.today()-vaccine.hpv22_date).days > 180):
+                remind.append(patient)
         #inactivehepa1
-        if((datetime.date.today()-patient.bday).days > 360):
+        if((datetime.date.today()-recopatientrd.bday).days > 360):
             remind.append(patient)
-            continue
         #inactivehepa2
-        if((datetime.date.today()-vaccine.hepa1_date).days > 180):
-            remind.append(patient)
-            continue
+        if(vaccine.hepa1_date is not None):
+            if((datetime.date.today()-vaccine.hepa1_date).days > 180):
+                remind.append(patient)
         #inf1
         if((datetime.date.today()-patient.bday).days > 180):
             remind.append(patient)
-            continue
         #inf2
-        if((datetime.date.today()-vaccine.inf1_date).days > 28):
-            remind.append(patient)
-            continue
+        if(vaccine.inf1_date is not None):
+            if((datetime.date.today()-vaccine.inf1_date).days > 28):
+                remind.append(patient)
         #annual flu
         if(vaccine.anf_date is None):
-            if((datetime.date.today()-patient.bday).days > 360):
-                remind.append(patient)
-                continue
+            remind.append(patient)
         else:
             if((datetime.date.today()-vaccine.anf_date).days > 360):
-                date = (datetime.date.today()-vaccine.anf_date).days
-                vaccine.anf_date = date
-                continue
+                remind.append(patient)
         #ipv/opv1
         if((datetime.date.today()-patient.bday).days > 42):
             remind.append(patient)
-            continue
         #ipv/opv2
-        if((datetime.date.today()-patient.ipv1_date).days > 28):
-            remind.append(patient)
-            continue
+        if(vaccine.ipv1_date is not None):
+            if((datetime.date.today()-vaccine.ipv1_date).days > 28):
+                remind.append(patient)
         #ipv/opv3
-        if((datetime.date.today()-patient.ipv2_date).days > 28):
-            remind.append(patient)
-            continue
+        if(vaccine.ipv2_date is not None):
+            if((datetime.date.today()-vaccine.ipv2_date).days > 28):
+                remind.append(patient)
         #ipv/opv booster 1
         if((datetime.date.today()-patient.bday).days > 360):
             remind.append(patient)
-            continue
         #ipv/opv booster 2
         if((datetime.date.today()-patient.bday).days > 1440):
             remind.append(patient)
-            continue
         #japencb1
         if((datetime.date.today()-patient.bday).days > 270):
             remind.append(patient)
-            continue
         #japencb2
-        if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
-            remind.append(patient)
-            continue
+        if(vaccine.japb1_date is not None):
+            if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
+                remind.append(patient)
         #msl
-            #note: sakop two cases either way ; needs fixing
-        if(((datetime.date.today()-patient.bday).days > 180) | 
-            ((datetime.date.today()-patient.bday).days > 270)):
+        if((datetime.date.today()-patient.bday).days > 180):
             remind.append(patient)
-            continue
         #meninggo vax
-
 
         #mmr1
         if((datetime.date.today()-patient.bday).days > 360):
-            remind.append(patient)
-            continue
+            remind.append("mmr #1")
         #mmr2
-        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
-            ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
-            remind.append(patient)
-            continue
+        if(((datetime.date.today()-patient.bday).days > 1440) |
+                ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
+                remind.append("mmr #2")
         #pcv1
         if(1440 < (datetime.date.today()-patient.bday).days > 42):
-            remind.append(patient)
-            continue
+            remind.append("pcv #1")
         #pcv2
-        if((datetime.date.today()-vaccine.pcv1_date).days > 28):
-            remind.append(patient)
-            continue
+        if(vaccine.pcv1_date is not None):
+            if((datetime.date.today()-vaccine.pcv1_date).days > 28):
+                remind.append("pcv #2")
         #pcv3
-        if((datetime.date.today()-vaccine.pcv2_date).days > 28):
-            remind.append(patient)
-            continue
+        if(vaccine.pcv2_date is not None):
+            if((datetime.date.today()-vaccine.pcv2_date).days > 28):
+                remind.append("pcv #3")
         #pcv booster1
-        if((datetime.date.today()-patient.pcv3_date).days > 180):
-            remind.append(patient)
-            continue
+        if(vaccine.pcv3_date is not None):
+            if((datetime.date.today()-vaccine.pcv3_date).days > 180):
+                remind.append("pcv booster #1")
         #rota1
         if((datetime.date.today()-patient.bday).days > 42):
-            remind.append(patient)
-            continue
+            remind.append("rota #1")
         #rota2
-        if((datetime.date.today()-vaccine.rota3_date).days > 28):
-            remind.append(patient)
-            continue
+        if(vaccine.rota1_date is not None):
+            if((datetime.date.today()-vaccine.rota1_date).days > 28):
+                remind.append("rota #2")
         #rota3
-        if((datetime.date.today()-vaccine.rota2_date).days > 28):
-            remind.append(patient)
-            continue
+        if(vaccine.rota2_date is not None):
+            if((datetime.date.today()-vaccine.rota2_date).days > 28):
+                remind.append("rota #3")
         #td
         if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
-            remind.append(patient)
-            continue
+            remind.append("td")
         #typ
         if(vaccine.typ_date is None):
             if((datetime.date.today()-patient.bday).days > 720):
-                remind.append(patient)
-                continue
+                remind.append("typ")
         else:
             if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
-                date = (datetime.date.today()-vaccine.typ_date).days
-                vaccine.typ_date = date
-                continue
+                remind.append("typ")
+
         #var1
         if((datetime.date.today()-patient.bday).days > 360):
-            remind.append(patient)
-            continue
+            remind.append("var #1")
         #var2
-        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
-            ((datetime.date.today()-vaccine.var_date).days > 90)):
-            remind.append(patient)
-            continue
+        if(((datetime.date.today()-patient.bday).days > 1440 ) |
+        ((datetime.date.today()-vaccine.var_date).days > 90)):
+            remind.append("var #2")
 
     data = {'patients':remind}
     return render(request, 'vaccinerecordapp/tool/reminder.html',data)
@@ -1697,14 +1721,14 @@ def reminder_vaccines(request,pk):
         #9 to 23 months of age, two doses three months apart
         #2 to 55 years old, single dose
         #mening11
-        if (270 > (datetime.date.today()-patient.bday).days > 690):
-            remindp.append(patient)
-            continue
-        #mening12
-        if ((datetime.date.today() - vaccine,mening11_date).day > 90):
-            remindp.append(patient)
-        #mening2
-        if((720 < datetime.date.today()-patient.bday).days < 19800):
+        if (270 > (datetime.date.today()-patient.bday).days > 690):   
+             remindp.append(patient)
+             continue
+        # #mening12
+        # if ((datetime.date.today() - vaccine,mening11_date).day > 90):
+        #     remindp.append(patient)
+        #mening2 single dose
+        elif((720 < datetime.date.today()-patient.bday).days < 19800):
             remindp.append(patient)
             continue
         #mmr1
