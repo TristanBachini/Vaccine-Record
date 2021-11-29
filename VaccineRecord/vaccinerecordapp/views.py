@@ -1547,10 +1547,6 @@ def reminder_vaccines(request,pk):
     patients = PatientRecord.objects.all()
     remindp = []
     for patient in patients: 
-        age = relativedelta(datetime.date.today(),patient.bday)
-        days = age.days
-        months = age.months
-        years = age.years
         vaccine = Vaccine.objects.get(user = patient.user)
         if(vaccine.bcg_date is None):
             remindp.append(patient)
@@ -1606,15 +1602,28 @@ def reminder_vaccines(request,pk):
             remindp.append(patient)
             continue
         #hpv11
-
+        if (vaccine.hpv11_date is None):
+            remindp.append(patient)
+            continue
         #hpv12
-
+        if(9<years<15):
+            if ((datetime.date.today()-vaccine.hpv11_date).days > 180):
+                remindp.append(patient)
+            continue
         #hpv21
-
+        if (vaccine.hpv21_date is None):
+            remindp.append(patient)
+            continue
         #hpv22
-
+        if(years>=15):
+            if ((datetime.date.today()-vaccine.hpv21_date).days > 120):
+                remindp.append(patient)
+            continue
         #hpv3
-
+        if(years>=15):
+            if ((datetime.date.today()-vaccine.hpv22_date).days > 180):
+                remindp.append(patient)
+            continue
         #inactivehepa1
         if((datetime.date.today()-patient.bday).days > 360):
             remindp.append(patient)
@@ -1665,24 +1674,33 @@ def reminder_vaccines(request,pk):
             remindp.append(patient)
             continue
         #japencb2
-        if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
+        if((datetime.date.today()-vaccine.japb1_date).days > 360):
             remindp.append(patient)
             continue
         #msl
-            #note: sakop two cases either way ; needs fixing
-        if(((datetime.date.today()-patient.bday).days > 180) | 
-            ((datetime.date.today()-patient.bday).days > 270)):
+        if((datetime.date.today()-patient.bday).days > 180):
             remindp.append(patient)
             continue
         #meninggo vax
-
-
+        #9 to 23 months of age, two doses three months apart
+        #2 to 55 years old, single dose
+        #mening11
+        if (270 > (datetime.date.today()-patient.bday).days > 690):
+            remindp.append(patient)
+            continue
+        #mening12
+        if ((datetime.date.today() - vaccine,mening11_date).day > 90):
+            remindp.append(patient)
+        #mening2
+        if((datetime.date.today()-patient.bday).days > 720):
+            remindp.append(patient)
+            continue
         #mmr1
         if((datetime.date.today()-patient.bday).days > 360):
             remindp.append(patient)
             continue
         #mmr2
-        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+        if(((datetime.date.today()-patient.bday).days > 1440) |
             ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
             remindp.append(patient)
             continue
@@ -1715,7 +1733,7 @@ def reminder_vaccines(request,pk):
             remindp.append(patient)
             continue
         #td
-        if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
+        if((datetime.date.today()-patient.bday).days > 3240):
             remindp.append(patient)
             continue
         #typ
@@ -1724,7 +1742,7 @@ def reminder_vaccines(request,pk):
                 remindp.append(patient)
                 continue
         else:
-            if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
+            if((datetime.date.today()-vaccine.typ_date).days > 720):
                 remindp.append(patient)
                 continue
         #var1
@@ -1732,7 +1750,7 @@ def reminder_vaccines(request,pk):
             remindp.append(patient)
             continue
         #var2
-        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+        if(((datetime.date.today()-patient.bday).days > 1440 ) |
             ((datetime.date.today()-vaccine.var_date).days > 90)):
             remindp.append(patient)
             continue
@@ -1783,15 +1801,23 @@ def reminder_vaccines(request,pk):
         if((datetime.date.today()-vaccine.hib3_date).days > 180):
             remind.append("hib booster #1")
     #hpv11
-
+    if (vaccine.hpv11_date is None):
+        remind.append("hpv #1 of 1")
     #hpv12
-
+    if(9<years<15):
+        if ((datetime.date.today()-vaccine.hpv11_date).days > 180):
+            remind.append("hpv #1 of 2")
     #hpv21
-
+    if (vaccine.hpv21_date is None):
+        remind.append("hpv #2 of 1")
     #hpv22
-
+    if(years>=15):
+        if ((datetime.date.today()-vaccine.hpv21_date).days > 120):
+            remind.append("hpv #2 of 2")
     #hpv3
-
+    if(years>=15):
+        if ((datetime.date.today()-vaccine.hpv22_date).days > 180):
+            remind.append("hpv #3 of 2")
     #inactivehepa1
     if((datetime.date.today()-record.bday).days > 360):
         remind.append("inactive hepa #1")
@@ -1837,11 +1863,9 @@ def reminder_vaccines(request,pk):
         if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
             remind.append("jap enc b #2")
     #msl
-        #note: sakop two cases either way ; needs fixing
     if((datetime.date.today()-record.bday).days > 180):
         remind.append("measles")
     #meninggo vax
-
 
     #mmr1
     if((datetime.date.today()-record.bday).days > 360):
@@ -1891,10 +1915,10 @@ def reminder_vaccines(request,pk):
     #var1
     if((datetime.date.today()-record.bday).days > 360):
         remind.append("var #1")
-    #var2 please change this po
- #   if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
- #       ((datetime.date.today()-vaccine.var1_date).days > 90)):
- #       remind.append("var #2")
+    #var2
+    if(((datetime.date.today()-patient.bday).days > 1440 ) |
+    ((datetime.date.today()-vaccine.var_date).days > 90)):
+        remind.append("var #2")
     
 
     data =  {'patients':remindp,'vaccines':remind}
