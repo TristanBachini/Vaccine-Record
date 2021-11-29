@@ -36,4 +36,5 @@ urlpatterns = [
     path('tool/report/', views.report, name="report"),
     path('tool/staff/update-staff', views.update_staff, name="update-staff"),
     path('tool/reminder/', views.reminder, name="reminder"),
+    path('tool/reminder-vaccines/<pk>',views.reminder_vaccines, name="reminder-vaccines"),
     ]
