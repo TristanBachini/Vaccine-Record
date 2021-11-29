@@ -1545,6 +1545,7 @@ def reminder(request):
     data = {'patients':remind}
     return render(request, 'vaccinerecordapp/tool/reminder.html',data)
 
+
 def reminder_vaccines(request,pk):
     record = PatientRecord.objects.get(id = pk)
     age = relativedelta(datetime.date.today(),record.bday)
@@ -1703,7 +1704,7 @@ def reminder_vaccines(request,pk):
         if ((datetime.date.today() - vaccine,mening11_date).day > 90):
             remindp.append(patient)
         #mening2
-        if((datetime.date.today()-patient.bday).days > 720):
+        if((720 < datetime.date.today()-patient.bday).days < 19800):
             remindp.append(patient)
             continue
         #mmr1
@@ -1882,8 +1883,7 @@ def reminder_vaccines(request,pk):
     if((datetime.date.today()-record.bday).days > 360):
         remind.append("mmr #1")
     #mmr2
-    if(vaccine.mmr1_date is not None):
-        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+    if(((datetime.date.today()-patient.bday).days > 1440) |
             ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
             remind.append("mmr #2")
     #pcv1
