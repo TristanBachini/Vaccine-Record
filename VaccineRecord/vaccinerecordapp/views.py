@@ -717,28 +717,36 @@ def tool(request):
 
     # if app.count( )== 0:
     for patient in patients:
-        #  for app in appt:
-            age = relativedelta(datetime.date.today(),patient.bday)
-            days = age.days
-            months = age.months
-            years = age.years
-            vaccine = Vaccine.objects.get(user = patient.user)
+        print("pat")
+        # for app in appt:
+        print("app")
+        age = relativedelta(datetime.date.today(),patient.bday)
+        days = age.days
+        months = age.months
+        years = age.years
+        vaccine = Vaccine.objects.get(user = patient.user)
             # app = Appointment.objects.get(user = patient.user)
-            if(vaccine.bcg_date is None):
-                for app in appt:
-                    if app.count() > 0:
-                        app = Appointment.objects.get(user = patient.user)
-                        if (app.stat == "Confirmed"):
-                            bcg_con += 1
-                        elif (app.stat == "Unconfirmed"):
-                            bcg_not += 1
-                        else:
-                            bcg_no += 1
-                    else:
+        print("hello")
+        if(vaccine.bcg_date is None):
+                if(Appointment.objects.get(user = patient.user) is not None):
+                 for app in appt:
+                    app = Appointment.objects.get(user = patient.user)
+                    if ((datetime.date.today() - app.date).days > 0):
+                                if (app.stat == "Confirmed"):
+                                    bcg_con += 1
+                                    print("+con")
+                                elif (app.stat == "Unconfirmed"):
+                                    bcg_not += 1
+                                    print("+not")
+                                else:
+                                    bcg_no += 1
+                                    print("+no")
+                else:
                         bcg_no += 1
-                    continue
+                        print("+noo")
+                continue
             #dtap1
-            if((datetime.date.today()-patient.bday).days > 42):
+        if((datetime.date.today()-patient.bday).days > 42):
                 # if (app.stat == "Confirmed"):
                 #     dtap_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -747,7 +755,7 @@ def tool(request):
                 dtap_no += 1
                 continue
             #dtap2
-            if(vaccine.dtap1_date is not None):
+        if(vaccine.dtap1_date is not None):
                 if((datetime.date.today()-vaccine.dtap1_date).days > 28): 
                     # if (app.stat == "Confirmed"):
                     #     dtap_con += 1
@@ -757,7 +765,7 @@ def tool(request):
                     dtap_no += 1
                     continue
             #dtap3
-            if(vaccine.dtap2_date is not None):
+        if(vaccine.dtap2_date is not None):
                 if((datetime.date.today()-vaccine.dtap2_date).days > 28): 
                     # if (app.stat == "Confirmed"):
                     #     dtap_con += 1
@@ -767,7 +775,7 @@ def tool(request):
                     dtap_no += 1
                     continue
             #dtap booster 1
-            if((datetime.date.today()-patient.bday).days > 350):
+        if((datetime.date.today()-patient.bday).days > 350):
                 # if (app.stat == "Confirmed"):
                 #         dtap_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -776,7 +784,7 @@ def tool(request):
                 dtap_no += 1
                 continue
             #dtap booster 2
-            if((datetime.date.today()-patient.bday).days > 1400):
+        if((datetime.date.today()-patient.bday).days > 1400):
                 # if (app.stat == "Confirmed"):
                 #         dtap_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -785,7 +793,7 @@ def tool(request):
                 dtap_no += 1
                 continue
             #hepb1
-            if(vaccine.hepb1_date is None):
+        if(vaccine.hepb1_date is None):
                 # if (app.stat == "Confirmed"):
                 #     hepb_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -794,7 +802,7 @@ def tool(request):
                 hepb_no += 1
                 continue
             #hepb2
-            if((datetime.date.today()-patient.bday).days > 30):
+        if((datetime.date.today()-patient.bday).days > 30):
                 # if (app.stat == "Confirmed"):
                 #     hepb_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -803,7 +811,7 @@ def tool(request):
                 hepb_no += 1
                 break
             #hepb3
-            if((datetime.date.today()-patient.bday).days > 180):
+        if((datetime.date.today()-patient.bday).days > 180):
                 # if (app.stat == "Confirmed"):
                 #     hepb_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -812,7 +820,7 @@ def tool(request):
                 hepb_no += 1
                 continue
             #hib1
-            if((datetime.date.today()-vaccine.hepb3_date).days > 42):
+        if((datetime.date.today()-vaccine.hepb3_date).days > 42):
                 # if (app.stat == "Confirmed"):
                 #     hib_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -821,7 +829,7 @@ def tool(request):
                 hib_no += 1
                 continue
             #hib2
-            if((datetime.date.today()-vaccine.hib1_date).days > 28):
+        if((datetime.date.today()-vaccine.hib1_date).days > 28):
                 # if (app.stat == "Confirmed"):
                 #     hib_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -830,7 +838,7 @@ def tool(request):
                 hib_no += 1
                 continue
             #hib3
-            if((datetime.date.today()-vaccine.hib2_date).days > 28):
+        if((datetime.date.today()-vaccine.hib2_date).days > 28):
                 # if (app.stat == "Confirmed"):
                 #     hib_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -839,7 +847,7 @@ def tool(request):
                 hib_no += 1
                 continue
             #hib booster1
-            if((datetime.date.today()-vaccine.hib3_date).days > 180):
+        if((datetime.date.today()-vaccine.hib3_date).days > 180):
                 # if (app.stat == "Confirmed"):
                 #     hib_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -858,7 +866,7 @@ def tool(request):
             #hpv3
 
             #inactivehepa1
-            if((datetime.date.today()-patient.bday).days > 360):
+        if((datetime.date.today()-patient.bday).days > 360):
                 # if (app.stat == "Confirmed"):
                 #     hepaa_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -867,7 +875,7 @@ def tool(request):
                 hepaa_no += 1
                 continue
             #inactivehepa2
-            if((datetime.date.today()-vaccine.hepa1_date).days > 180):
+        if((datetime.date.today()-vaccine.hepa1_date).days > 180):
                 # if (app.stat == "Confirmed"):
                 #     hepaa_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -876,7 +884,7 @@ def tool(request):
                 hepaa_no += 1
                 continue
             #inf1
-            if((datetime.date.today()-patient.bday).days > 180):
+        if((datetime.date.today()-patient.bday).days > 180):
                 # if (app.stat == "Confirmed"):
                 #     inf_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -885,7 +893,7 @@ def tool(request):
                 inf_no += 1
                 continue
             #inf2
-            if((datetime.date.today()-vaccine.inf1_date).days > 28):
+        if((datetime.date.today()-vaccine.inf1_date).days > 28):
                 # if (app.stat == "Confirmed"):
                 #     inf_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -894,7 +902,7 @@ def tool(request):
                 inf_no += 1
                 continue
             #annual flu
-            if(vaccine.anf_date is None):
+        if(vaccine.anf_date is None):
                 if((datetime.date.today()-patient.bday).days > 360):
                     # if (app.stat == "Confirmed"):
                     #     flu_con += 1
@@ -903,8 +911,8 @@ def tool(request):
                     # else:
                     flu_no += 1
                     continue
-            else:
-                if((datetime.date.today()-vaccine.anf_date).days > 360):
+                
+                elif((datetime.date.today()-vaccine.anf_date).days > 360):
                     date = (datetime.date.today()-vaccine.anf_date).days
                     # if (app.stat == "Confirmed"):
                     #     flu_con += 1
@@ -914,7 +922,7 @@ def tool(request):
                     flu_no += 1
                     continue
             #ipv/opv1
-            if((datetime.date.today()-patient.bday).days > 42):
+        if((datetime.date.today()-patient.bday).days > 42):
                 # if (app.stat == "Confirmed"):
                 #         opv_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -923,7 +931,7 @@ def tool(request):
                 opv_no += 1
                 continue
             #ipv/opv2
-            if((datetime.date.today()-patient.ipv1_date).days > 28):
+        if((datetime.date.today()-patient.ipv1_date).days > 28):
                 # if (app.stat == "Confirmed"):
                 #         opv_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -932,7 +940,7 @@ def tool(request):
                 opv_no += 1
                 continue
             #ipv/opv3
-            if((datetime.date.today()-patient.ipv2_date).days > 28):
+        if((datetime.date.today()-patient.ipv2_date).days > 28):
                 # if (app.stat == "Confirmed"):
                 #         opv_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -941,7 +949,7 @@ def tool(request):
                 opv_no += 1
                 continue
             #ipv/opv booster 1
-            if((datetime.date.today()-patient.bday).days > 360):
+        if((datetime.date.today()-patient.bday).days > 360):
                 # if (app.stat == "Confirmed"):
                 #         opv_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -950,7 +958,7 @@ def tool(request):
                 opv_no += 1
                 continue
             #ipv/opv booster 2
-            if((datetime.date.today()-patient.bday).days > 1440):
+        if((datetime.date.today()-patient.bday).days > 1440):
                 # if (app.stat == "Confirmed"):
                 #         opv_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -959,7 +967,7 @@ def tool(request):
                 opv_no += 1
                 continue
             #japencb1
-            if((datetime.date.today()-patient.bday).days > 270):
+        if((datetime.date.today()-patient.bday).days > 270):
                 # if (app.stat == "Confirmed"):
                 #         jap_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -968,7 +976,7 @@ def tool(request):
                 jap_no += 1
                 continue
             #japencb2
-            if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
+        if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
                 # if (app.stat == "Confirmed"):
                 #         jap_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -978,7 +986,7 @@ def tool(request):
                 continue
             #msl
                 #note: sakop two cases either way ; needs fixing
-            if(((datetime.date.today()-patient.bday).days > 180) | 
+        if(((datetime.date.today()-patient.bday).days > 180) | 
                 ((datetime.date.today()-patient.bday).days > 270)):
                 # if (app.stat == "Confirmed"):
                 #         msl_con += 1
@@ -991,7 +999,7 @@ def tool(request):
 
 
             #mmr1
-            if((datetime.date.today()-patient.bday).days > 360):
+        if((datetime.date.today()-patient.bday).days > 360):
                 # if (app.stat == "Confirmed"):
                 #         mmr_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1000,7 +1008,7 @@ def tool(request):
                 mmr_no += 1
                 continue
             #mmr2
-            if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
                 ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
                 # if (app.stat == "Confirmed"):
                 #         mmr_con += 1
@@ -1010,7 +1018,7 @@ def tool(request):
                 mmr_no += 1
                 continue
             #pcv1
-            if(1440 < (datetime.date.today()-patient.bday).days > 42):
+        if(1440 < (datetime.date.today()-patient.bday).days > 42):
                 # if (app.stat == "Confirmed"):
                 #         pcv_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1019,7 +1027,7 @@ def tool(request):
                 pcv_no += 1
                 continue
             #pcv2
-            if((datetime.date.today()-vaccine.pcv1_date).days > 28):
+        if((datetime.date.today()-vaccine.pcv1_date).days > 28):
                 # if (app.stat == "Confirmed"):
                 #         pcv_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1028,7 +1036,7 @@ def tool(request):
                 pcv_no += 1
                 continue
             #pcv3
-            if((datetime.date.today()-vaccine.pcv2_date).days > 28):
+        if((datetime.date.today()-vaccine.pcv2_date).days > 28):
                 # if (app.stat == "Confirmed"):
                 #         pcv_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1037,7 +1045,7 @@ def tool(request):
                 pcv_no += 1
                 continue
             #pcv booster1
-            if((datetime.date.today()-patient.pcv3_date).days > 180):
+        if((datetime.date.today()-patient.pcv3_date).days > 180):
                 # if (app.stat == "Confirmed"):
                 #         pcv_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1046,7 +1054,7 @@ def tool(request):
                 pcv_no += 1
                 continue
             #rota1
-            if((datetime.date.today()-patient.bday).days > 42):
+        if((datetime.date.today()-patient.bday).days > 42):
                 # if (app.stat == "Confirmed"):
                 #         rota_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1055,7 +1063,7 @@ def tool(request):
                 rota_no += 1
                 continue
             #rota2
-            if((datetime.date.today()-vaccine.rota3_date).days > 28):
+        if((datetime.date.today()-vaccine.rota3_date).days > 28):
                 # if (app.stat == "Confirmed"):
                 #         rota_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1064,7 +1072,7 @@ def tool(request):
                 rota_no += 1
                 continue
             #rota3
-            if((datetime.date.today()-vaccine.rota2_date).days > 28):
+        if((datetime.date.today()-vaccine.rota2_date).days > 28):
                 # if (app.stat == "Confirmed"):
                 #         rota_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1073,7 +1081,7 @@ def tool(request):
                 rota_no += 1
                 continue
             #td
-            if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
+        if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
                 # if (app.stat == "Confirmed"):
                 #         tdap_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1082,7 +1090,7 @@ def tool(request):
                 tdap_no += 1
                 continue
             #typ
-            if(vaccine.typ_date is None):
+        if(vaccine.typ_date is None):
                 if((datetime.date.today()-patient.bday).days > 720):
                     # if (app.stat == "Confirmed"):
                     #         typ_con += 1
@@ -1091,13 +1099,12 @@ def tool(request):
                     # else:
                     typ_no += 1
                     continue
-            else:
-                if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
+                elif(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
                     date = (datetime.date.today()-vaccine.typ_date).days
                     vaccine.typ_date = date
                     continue
             #var1
-            if((datetime.date.today()-patient.bday).days > 360):
+        if((datetime.date.today()-patient.bday).days > 360):
                 # if (app.stat == "Confirmed"):
                 #             var_con += 1
                 # elif (app.stat == "Unconfirmed"):
@@ -1106,7 +1113,7 @@ def tool(request):
                 var_no += 1
                 continue
             #var2
-            if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+        if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |    
                 ((datetime.date.today()-vaccine.var_date).days > 90)):
                 # if (app.stat == "Confirmed"):
                 #             var_con += 1
@@ -1136,7 +1143,7 @@ def tool(request):
     flu_total = flu_no + flu_con + flu_not    
 
 
-    print(bcg_total)
+    
     data = {"bcg_con":bcg_con,"bcg_no":bcg_no, "bcg_not":bcg_not,"bcg_total":bcg_total, 
                 "hepb_con":hepb_con,"hepb_no":hepb_no, "hepb_not":hepb_not,"hepb_total":hepb_total,
                 "dtap_con":dtap_con,"dtap_no":dtap_no, "dtap_not":dtap_not,"dtap_total":dtap_total,
@@ -1148,8 +1155,8 @@ def tool(request):
                 "mmr_con":mmr_con,"mmr_not":mmr_not, "mmr_no":mmr_no,"mmr_total":mmr_total,
                 "var_con":var_con,"var_not":var_not, "var_no":var_no,"var_total":var_total,
                 "inf_con":inf_con,"inf_no":inf_no, "inf_not":inf_not,"inf_total":inf_total,
-                "jap_con":jap_con,"jap_no":jap_no, "hepaa_not":hepaa_not,"jap_total":jap_total,
-                "hepaa_con":hepaa_con,"hepaa_no":hepaa_no, "msl_not":msl_not,"hepaa_total":hepaa_total,
+                "jap_con":jap_con,"jap_no":jap_no, "jap_not":jap_not,"jap_total":jap_total,
+                "hepaa_con":hepaa_con,"hepaa_no":hepaa_no, "hepaa_not":hepaa_not,"hepaa_total":hepaa_total,
                 "mcc_con":mcc_con,"mcc_not":mcc_not, "mcc_no":mcc_no,"mcc_total":mcc_total,
                 "typ_con":typ_con,"typ_not":typ_not, "typ_no":typ_no,"typ_total":typ_total,
                 "tdap_con":tdap_con,"tdap_not":tdap_not, "tdap_no":tdap_no,"tdap_total":tdap_total,
