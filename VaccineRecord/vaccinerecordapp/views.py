@@ -691,14 +691,14 @@ def tool(request):
     
     for patient in patients:
         print(patient.user)
-        print("pat")
         vaccine = Vaccine.objects.get(user = patient.user)
-        print("hello")
+        print("bcg")
         if(vaccine.bcg_date is None):
                 print("no appt")
                 if(Appointment.objects.filter(user = patient.user).count() == 0):
                     bcg_no += 1
                     print("+noo")
+                    
                 else:
                     print("yes appt")
                     appt = Appointment.objects.filter(user=patient.user)
@@ -725,12 +725,14 @@ def tool(request):
                                         print("+no")
                                         continue
             #dtap1
+        print("dtap1")
         if((datetime.date.today()-patient.bday).days > 42):
                     print("check vacc")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         dtap_no += 1
                         print("+noo")
+                        
                     else:
                         print("yes appt")
                         appt = Appointment.objects.filter(user=patient.user)
@@ -757,13 +759,16 @@ def tool(request):
                                             print("+no")
                                             continue
             #dtap2
+        
         if(vaccine.dtap1_date is not None):
+                print("dtap2")
                 if((datetime.date.today()-vaccine.dtap1_date).days > 28): 
                     print("check vacc")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         dtap_no += 1
                         print("+noo")
+                        
                     else:
                         print("yes appt")
                         appt = Appointment.objects.filter(user=patient.user)
@@ -791,12 +796,14 @@ def tool(request):
                                             continue
             #dtap3
         if(vaccine.dtap2_date is not None):
+                print("dtap3")
                 if((datetime.date.today()-vaccine.dtap2_date).days > 28): 
                     print("check vacc")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         dtap_no += 1
                         print("+noo")
+                        
                     else:
                         print("yes appt")
                         appt = Appointment.objects.filter(user=patient.user)
@@ -823,12 +830,14 @@ def tool(request):
                                             print("+no")
                                             continue
             #dtap booster 1
-        if((datetime.date.today()-patient.bday).days > 350):
-                    print("check vacc")
+        if(vaccine.dtap3_date is not None):
+            if((datetime.date.today()-patient.bday).days > 350):
+                    print("dtapboost1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         dtap_no += 1
                         print("+noo")
+                        
                     else:
                         print("yes appt")
                         appt = Appointment.objects.filter(user=patient.user)
@@ -855,12 +864,14 @@ def tool(request):
                                             print("+no")
                                             continue
             #dtap booster 2
-        if((datetime.date.today()-patient.bday).days > 1400):
-                    print("check vacc")
+        if(vaccine.dtap4_date is not None):
+            if((datetime.date.today()-patient.bday).days > 1400):
+                    print("dtapboost2")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         dtap_no += 1
                         print("+noo")
+                        
                     else:
                         print("yes appt")
                         appt = Appointment.objects.filter(user=patient.user)
@@ -886,14 +897,16 @@ def tool(request):
                                             dtap_no += 1
                                             print("+no")
                                             continue
+                    
             #hepb1
-        print("hepb")
+        
         if(vaccine.hepb1_date is None):
-                    print("check vacc")
+                    print("hepb1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         hepb_no += 1
                         print("+noo")
+                        
                     else:
                         print("yes appt")
                         appt = Appointment.objects.filter(user=patient.user)
@@ -920,8 +933,9 @@ def tool(request):
                                             print("+no")
                                             continue
             #hepb2
-        if((datetime.date.today()-patient.bday).days > 30):
-                    print("check vacc")
+        if(vaccine.hepb1_date is not None):
+            if((datetime.date.today()-patient.bday).days > 30):
+                    print("hepb2")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         hepb_no += 1
@@ -952,8 +966,9 @@ def tool(request):
                                             print("+no")
                                             continue
             #hepb3
-        if((datetime.date.today()-patient.bday).days > 180):
-                    print("check vacc")
+        if(vaccine.hepb2_date is not None):
+            if((datetime.date.today()-patient.bday).days > 180):
+                    print("hepb3")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         hepb_no += 1
@@ -985,7 +1000,7 @@ def tool(request):
                                             continue
             #hib1
         if((datetime.date.today()-patient.bday).days > 42):
-                    print("check vacc")
+                    print("hib1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         hib_no += 1
@@ -1019,7 +1034,7 @@ def tool(request):
             #hib2
         if(vaccine.hib1_date is not None):
             if((datetime.date.today()-vaccine.hib1_date).days > 28):
-                        print("check vacc")
+                        print("hib2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             hib_no += 1
@@ -1052,7 +1067,7 @@ def tool(request):
                 #hib3
         if(vaccine.hib2_date is not None):        
             if((datetime.date.today()-vaccine.hib2_date).days > 28):
-                        print("check vacc")
+                        print("hib3")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             hib_no += 1
@@ -1085,7 +1100,7 @@ def tool(request):
                 #hib booster1
         if(vaccine.hib3_date is not None):
             if((datetime.date.today()-vaccine.hib3_date).days > 180):
-                        print("check vacc")
+                        print("hib4")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             hib_no += 1
@@ -1127,7 +1142,7 @@ def tool(request):
 
             #inactivehepa1
         if((datetime.date.today()-patient.bday).days > 360):
-                    print("check vacc")
+                    print("hepaa1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         hepaa_no += 1
@@ -1160,7 +1175,7 @@ def tool(request):
             #inactivehepa2
         if(vaccine.hepa1_date is not None):
             if((datetime.date.today()-vaccine.hepa1_date).days > 180):
-                        print("check vacc")
+                        print("hepaa2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             hepaa_no += 1
@@ -1192,7 +1207,7 @@ def tool(request):
                                                 continue
             #inf1
         if((datetime.date.today()-patient.bday).days > 180):
-                    print("check vacc")
+                    print("inf1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         inf_no += 1
@@ -1225,7 +1240,7 @@ def tool(request):
             #inf2
         if(vaccine.inf1_date is not None):
             if((datetime.date.today()-vaccine.inf1_date).days > 28):
-                        print("check vacc")
+                        print("inf2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             inf_no += 1
@@ -1258,7 +1273,7 @@ def tool(request):
             #annual flu
         if(vaccine.anf_date is None):
                 if((datetime.date.today()-patient.bday).days > 360):
-                    print("check vacc")
+                    print("flu")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         flu_no += 1
@@ -1291,7 +1306,7 @@ def tool(request):
         if(vaccine.anf_date is not None):        
                 if((datetime.date.today()-vaccine.anf_date).days > 360):
                     date = (datetime.date.today()-vaccine.anf_date).days
-                    print("check vacc")
+                    print("flu")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         flu_no += 1
@@ -1323,7 +1338,7 @@ def tool(request):
                                             continue
             #ipv/opv1
         if((datetime.date.today()-patient.bday).days > 42):
-                    print("check vacc")
+                    print("opv1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         opv_no += 1
@@ -1356,7 +1371,7 @@ def tool(request):
             #ipv/opv2
         if(vaccine.ipv1_date is not None):
             if((datetime.date.today()-patient.ipv1_date).days > 28):
-                        print("check vacc")
+                        print("ipv2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             opv_no += 1
@@ -1389,7 +1404,7 @@ def tool(request):
                 #ipv/opv3
         if(vaccine.ipv2_date is not None):
             if((datetime.date.today()-patient.ipv2_date).days > 28):
-                        print("check vacc")
+                        print("ipbv3")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             opv_no += 1
@@ -1420,8 +1435,9 @@ def tool(request):
                                                 print("+no")
                                                 continue
             #ipv/opv booster 1
-        if((datetime.date.today()-patient.bday).days > 360):
-                    print("check vacc")
+        if(vaccine.ipv3_date is not None):
+            if((datetime.date.today()-patient.bday).days > 360):
+                    print("ipv boost1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         opv_no += 1
@@ -1452,8 +1468,9 @@ def tool(request):
                                             print("+no")
                                             continue
             #ipv/opv booster 2
-        if((datetime.date.today()-patient.bday).days > 1440):
-                    print("check vacc")
+        if(vaccine.ipv4_date is not None):
+            if((datetime.date.today()-patient.bday).days > 1440):
+                    print("hepaa boost 2")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         opv_no += 1
@@ -1485,7 +1502,7 @@ def tool(request):
                                             continue
             #japencb1
         if((datetime.date.today()-patient.bday).days > 270):
-                    print("check vacc")
+                    print("jap1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         jap_no += 1
@@ -1518,7 +1535,7 @@ def tool(request):
             #japencb2
         if(vaccine.japb1_date is not None):
             if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
-                        print("check vacc")
+                        print("jap2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             jap_no += 1
@@ -1552,7 +1569,7 @@ def tool(request):
                 #note: sakop two cases either way ; needs fixing
         if(((datetime.date.today()-patient.bday).days > 180) | 
                 ((datetime.date.today()-patient.bday).days > 270)):
-                    print("check vacc")
+                    print("msl1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         msl_no += 1
@@ -1587,7 +1604,7 @@ def tool(request):
 
             #mmr1
         if((datetime.date.today()-patient.bday).days > 360):
-                    print("check vacc")
+                    print("mmr1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         mmr_no += 1
@@ -1621,7 +1638,7 @@ def tool(request):
         if(vaccine.mmr1_date is not None):
             if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
                     ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
-                        print("check vacc")
+                        print("mmr2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             mmr_no += 1
@@ -1653,7 +1670,7 @@ def tool(request):
                                                 continue
             #pcv1
         if(1440 < (datetime.date.today()-patient.bday).days > 42):
-                    print("check vacc")
+                    print("pcv1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         pcv_no += 1
@@ -1686,7 +1703,7 @@ def tool(request):
             #pcv2
         if(vaccine.pcv1_date is not None):
             if((datetime.date.today()-vaccine.pcv1_date).days > 28):
-                        print("check vacc")
+                        print("pcv2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             pcv_no += 1
@@ -1719,7 +1736,7 @@ def tool(request):
                 #pcv3
         if(vaccine.pcv2_date is not None):        
             if((datetime.date.today()-vaccine.pcv2_date).days > 28):
-                        print("check vacc")
+                        print("pcv3")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             pcv_no += 1
@@ -1752,7 +1769,7 @@ def tool(request):
                 #pcv booster1
         if(vaccine.pcv3_date is not None):
             if((datetime.date.today()-patient.pcv3_date).days > 180):
-                        print("check vacc")
+                        print("pcvboost")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             pcv_no += 1
@@ -1784,7 +1801,7 @@ def tool(request):
                                                 continue
             #rota1
         if((datetime.date.today()-patient.bday).days > 42):
-                    print("check vacc")
+                    print("rota1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         rota_no += 1
@@ -1817,7 +1834,7 @@ def tool(request):
             #rota2
         if(vaccine.rota1_date is not None):
             if((datetime.date.today()-vaccine.rota1_date).days > 28):
-                        print("check vacc")
+                        print("rota2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             rota_no += 1
@@ -1850,7 +1867,7 @@ def tool(request):
                 #rota3
         if(vaccine.rota2_date is not None):        
             if((datetime.date.today()-vaccine.rota2_date).days > 28):
-                        print("check vacc")
+                        print("rota3")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             rota_no += 1
@@ -1882,7 +1899,7 @@ def tool(request):
                                                 continue
             #td
         if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
-                    print("check vacc")
+                    print("td")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         tdap_no += 1
@@ -1915,7 +1932,7 @@ def tool(request):
             #typ
         if(vaccine.typ_date is None):
                 if((datetime.date.today()-patient.bday).days > 720):
-                    print("check vacc")
+                    print("typ1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         typ_no += 1
@@ -1950,7 +1967,7 @@ def tool(request):
                 if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
                     date = (datetime.date.today()-vaccine.typ_date).days
                     vaccine.typ_date = date
-                    print("check vacc")
+                    print("typ2")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         typ_no += 1
@@ -1982,7 +1999,7 @@ def tool(request):
                                             continue
             #var1
         if((datetime.date.today()-patient.bday).days > 360):
-                    print("check vacc")
+                    print("var1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
                         var_no += 1
@@ -2013,10 +2030,10 @@ def tool(request):
                                             print("+no")
                                             continue
             #var2
-        if(vaccine.dtap1_date is not None):
+        if(vaccine.var1_date is not None):
             if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |    
                     ((datetime.date.today()-vaccine.var1_date).days > 90)):
-                        print("check vacc")
+                        print("var2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             var_no += 1
@@ -2047,26 +2064,26 @@ def tool(request):
                                                 print("+no")
                                                 continue
         
-        bcg_total = bcg_no + bcg_con + bcg_not
-        hepb_total = hepb_no + hepb_con + hepb_not
-        dtap_total = dtap_no + dtap_con + dtap_not
-        opv_total = opv_no + opv_con + opv_not
-        hib_total = hib_no + hib_con + hib_not
-        pcv_total = pcv_no + pcv_con + pcv_not
-        rota_total = rota_no + rota_con + rota_not
-        msl_total = msl_no + msl_con + msl_not
-        mmr_total = mmr_no + mmr_con + mmr_not
-        var_total = var_no + var_con + var_not
-        inf_total = inf_no + inf_con + inf_not
-        jap_total = jap_no + jap_con + jap_not
-        hepaa_total = hepaa_no + hepaa_con + hepaa_not
-        mcc_total = mcc_no + mcc_con + mcc_not
-        typ_total = typ_no + typ_con + typ_not
-        tdap_total = tdap_no + tdap_con + tdap_not
-        hpv_total = hpv_no + hpv_con + hpv_not
-        flu_total = flu_no + flu_con + flu_not    
+    bcg_total = bcg_no + bcg_con + bcg_not
+    hepb_total = hepb_no + hepb_con + hepb_not
+    dtap_total = dtap_no + dtap_con + dtap_not
+    opv_total = opv_no + opv_con + opv_not
+    hib_total = hib_no + hib_con + hib_not
+    pcv_total = pcv_no + pcv_con + pcv_not
+    rota_total = rota_no + rota_con + rota_not
+    msl_total = msl_no + msl_con + msl_not
+    mmr_total = mmr_no + mmr_con + mmr_not
+    var_total = var_no + var_con + var_not
+    inf_total = inf_no + inf_con + inf_not
+    jap_total = jap_no + jap_con + jap_not
+    hepaa_total = hepaa_no + hepaa_con + hepaa_not
+    mcc_total = mcc_no + mcc_con + mcc_not
+    typ_total = typ_no + typ_con + typ_not
+    tdap_total = tdap_no + tdap_con + tdap_not
+    hpv_total = hpv_no + hpv_con + hpv_not
+    flu_total = flu_no + flu_con + flu_not    
 
-        data = {"bcg_con":bcg_con,"bcg_no":bcg_no, "bcg_not":bcg_not,"bcg_total":bcg_total, 
+    data = {"bcg_con":bcg_con,"bcg_no":bcg_no, "bcg_not":bcg_not,"bcg_total":bcg_total, 
                 "hepb_con":hepb_con,"hepb_no":hepb_no, "hepb_not":hepb_not,"hepb_total":hepb_total,
                 "dtap_con":dtap_con,"dtap_no":dtap_no, "dtap_not":dtap_not,"dtap_total":dtap_total,
                 "opv_con":opv_con,"opv_no":opv_no, "opv_not":opv_not,"opv_total":opv_total,
@@ -2085,7 +2102,7 @@ def tool(request):
                 "hpv_con":hpv_con,"hpv_not":hpv_not, "hpv_no":hpv_no,"hpv_total":hpv_total,
                 "flu_con":flu_con,"flu_not":flu_not, "flu_no":flu_no,"flu_total":flu_total}
 
-        return render(request, 'vaccinerecordapp/tool/tool.html', data)    
+    return render(request, 'vaccinerecordapp/tool/tool.html', data)    
 
 
 @login_required(login_url='/')
