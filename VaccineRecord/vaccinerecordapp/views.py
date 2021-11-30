@@ -2945,7 +2945,7 @@ def reminder_vaccines(request,pk):
     if (vaccine.hpv11_date is None):
         remind.append("hpv #1 of 1")
     #hpv12
-    if(vaccine.hep12_date is None):
+    if(vaccine.hpv12_date is None):
         if(vaccine.hpv11_date is not None):
             if(9<years<15):
                 if ((datetime.date.today()-vaccine.hpv11_date).days > 180):
