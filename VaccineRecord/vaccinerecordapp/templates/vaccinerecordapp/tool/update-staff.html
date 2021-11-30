@@ -66,10 +66,10 @@
 					{% for staff in staffs %}
 					
 					<tr>
-						<td>{{staff.title}}</td>
-						<td>{{staff.first_name}}</td>
-						<td>{{staff.last_name}}</td>
-						<td>{{staff.user.username}}</td>
+						<td><a href="{% url 'staff-profile' staff.id %}" ></a>{{staff.title}}</td>
+						<td><a href="{% url 'staff-profile' staff.id %}" ></a>{{staff.first_name}}</td>
+						<td><a href="{% url 'staff-profile' staff.id %}" ></a>{{staff.last_name}}</td>
+						<td><a href="{% url 'staff-profile' staff.id %}" ></a>{{staff.user.username}}</td>
 					</tr>
 					{% endfor %}
 

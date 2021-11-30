@@ -1,0 +1,76 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+
+<!-- <p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+  {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  |  {{years|upper}} Years {{months|upper}} Months {{days|upper}} Days | {{ record.gender|upper }} | {{ record.bday|upper }}
+</p> -->
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Navbar -->
+    <!-- <div class="col-1">
+      {% include 'vaccinerecordapp/navbar.html' %}
+    </div> -->
+
+  <!-- Profile -->
+    <div class="col-11">
+          <div class="card border-info" style="margin-left: 5%; margin-right: 5%">
+            <h5 class="card-header">Staff Profile</h5>
+            <div class="card-body">
+              <div>
+                <table class="table table-bordered">
+                  <tr>
+                    <td class="table-warning">Account Username:</td>
+                    <td class="table-warning">{{ record.user.username|upper }}</td>
+                    <td class="table-warning" colspan="8"></td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning"><b>NAME</b></td>
+                    <td class="table-warning" colspan="2">Staff Record #:</td>
+                    <td class="table-warning" colspan="2">{{ record.id }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">First:</td>
+                    <td class="table-light">{{ record.first_name|upper}}</td>
+                    <td class="table-warning">Last:</td>
+                    <td class="table-light" colspan="2">{{ record.last_name|upper }}</td>
+                    <td class="table-warning">Middle:</td>
+                    <td class="table-light" colspan="2">{{ record.middle_name|default_if_none:''|upper }}</td>
+                    <td class="table-warning">Suffix:</td>
+                    <td class="table-light">{{ record.suffix|default_if_none:''|upper }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning"><b>PREFIX</b></td>
+                    <td class="table-light" colspan="2">{{ record.prefix|default_if_none:'' }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning"><b>TYPE</b></td>
+                    <td class="table-light" colspan="4">{{ record.type|default_if_none:''|upper }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">TITLE</td>
+                    <td class="table-light">{{ record.title|default_if_none:''|upper }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">End date:</td>
+                    <td class="table-light">{{ record.end_date|default_if_none:''|upper }}</td>
+                    <td class="table-warning">Contact #:</td>
+                    <td class="table-light" colspan="2">{{ record.contact|default_if_none:'' }}</td>
+                  </tr>
+          <!--<a href="{% url 'update-patient-profile' record.pk %}">-->
+                    <a href="{% url 'update-profile' record.pk %}">     
+                    <button class="btn btn-success" id="submit_button" type="submit">
+                      <i class="fas fa-save"></i>
+                      Update
+                      </button></a>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+          <br><br><br><br><br>
+</div>    
+</div>
+
+
+{% endblock %}
