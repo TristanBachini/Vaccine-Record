@@ -9,7 +9,7 @@
   <div class="row">
     <!-- Navbar -->
     <!-- <div class="col-1">
-      {% include 'vaccinerecordapp/navbar.html' %}
+      {% include 'vaccinerecordapp/staff-navbar.html' %}
     </div> -->
 
   <!-- Profile -->
@@ -58,7 +58,7 @@
                     <td class="table-light" colspan="2">{{ record.contact|default_if_none:'' }}</td>
                   </tr>
           <!--<a href="{% url 'update-patient-profile' record.pk %}">-->
-                    <a href="{% url 'update-profile' record.pk %}">     
+                    <a href="{% url 'update-staff-profile' record.pk %}">     
                     <button class="btn btn-success" id="submit_button" type="submit">
                       <i class="fas fa-save"></i>
                       Update
