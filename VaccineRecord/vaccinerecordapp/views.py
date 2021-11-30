@@ -1513,7 +1513,19 @@ def reminder(request):
         if((datetime.date.today()-patient.bday).days > 180):
             remind.append(patient)
         #meninggo vax
-
+        #9 to 23 months of age, two doses three months apart
+        #2 to 55 years old, single dose
+        #mening11
+        if (270 > (datetime.date.today()-patient.bday).days > 690):   
+             remindp.append(patient)
+             continue
+        #mening12
+        #if ((datetime.date.today() - vaccine,mening11_date).day > 90):
+        #     remindp.append(patient)
+        #mening2 single dose
+        elif((720 < datetime.date.today()-patient.bday).days < 19800):
+            remindp.append(patient)
+            continue
         #mmr1
         if((datetime.date.today()-patient.bday).days > 360):
             remind.append("mmr #1")
@@ -1724,8 +1736,8 @@ def reminder_vaccines(request,pk):
         if (270 > (datetime.date.today()-patient.bday).days > 690):   
              remindp.append(patient)
              continue
-        # #mening12
-        # if ((datetime.date.today() - vaccine,mening11_date).day > 90):
+        #mening12
+        #if ((datetime.date.today() - vaccine,mening11_date).day > 90):
         #     remindp.append(patient)
         #mening2 single dose
         elif((720 < datetime.date.today()-patient.bday).days < 19800):
@@ -1902,7 +1914,19 @@ def reminder_vaccines(request,pk):
     if((datetime.date.today()-record.bday).days > 180):
         remind.append("measles")
     #meninggo vax
-
+        #9 to 23 months of age, two doses three months apart
+        #2 to 55 years old, single dose
+        #mening11
+        if (270 > (datetime.date.today()-patient.bday).days > 690):   
+             remindp.append(patient)
+             continue
+        #mening12
+        #if ((datetime.date.today() - vaccine,mening11_date).day > 90):
+        #     remindp.append(patient)
+        #mening2 single dose
+        elif((720 < datetime.date.today()-patient.bday).days < 19800):
+            remindp.append(patient)
+            continue
     #mmr1
     if((datetime.date.today()-record.bday).days > 360):
         remind.append("mmr #1")
