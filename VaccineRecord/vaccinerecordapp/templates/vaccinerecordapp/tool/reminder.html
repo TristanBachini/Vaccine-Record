@@ -3,9 +3,31 @@
 
 
 {% include 'vaccinerecordapp/staff-navbar.html' %}
+<div class="container">
+    <div class="row">
+	<div class="col-sm-4">
+		<div class="card card-body" style="width: 20rem;">
+			<h3 class="card-title">Reminder</h3>
+			<br />
+				<div class="mb-3"><label for="floatingInput1">Record No.:</label>
+				<input class="form-control form-control-sm" id="floatingInput1" type="number" placeholder="Record No." aria-label=".form-control-sm example" name="id">
+				</div>
+				<div class="mb-3"><label for="floatingInput2">Date of Birth:</label>
+				<input class="form-control form-control-sm" id="floatingInput2" type="text" placeholder="mm/dd/yyyy" aria-label=".form-control-sm example" name="bday">
+				</div>
+				<div class="mb-3"><label for="floatingInput3">First Name:</label>
+				<input class="form-control form-control-sm" id="floatingInput3" type="text" placeholder="First Name" aria-label=".form-control-sm example" name="first_name">
+				</div>
+				<div class="mb-3"><label for="floatingInput4">Last Name:</label>
+				<input class="form-control form-control-sm" id="floatingInput4" type="text" placeholder="Last Name" aria-label=".form-control-sm example" name="last_name">
+				</div>
+
+		</div>
+	</div>
+
 
 <div class="row">
-    <table class="table table-primary table-striped table-bordered table-sm table-hover">
+    <table  class="table table-primary table-striped table-bordered table-sm table-hover">
 				
         <tr>
             <th>Record #</th>
@@ -27,8 +49,8 @@
     <table class="table table-primary table-striped table-bordered table-sm table-hover">
 				
         <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Vaccine</th>
+            <th>Date Given</th>
         </tr>
         {% for vaccine in vaccines %}
         
@@ -39,6 +61,8 @@
     
     </table>
 </div>
+</div>
+
 
 
 
