@@ -19,7 +19,7 @@ urlpatterns = [
     path('create-patient-record/', views.create_patient_record, name="create-patient-record"),
     path('create-record/<username>', views.create_record, name="create-record"),
     path('patient-profile/<pk>', views.patient_profile, name="patient-profile"),
-    path('staff-profile/<pk>', views.staff_profile, name="staff-profile"),
+    path('tool/staff-profile/<pk>', views.staff_profile, name="staff-profile"),
     path('register-patient',views.register_patient, name="register-patient"),
     path('search-patient/', views.search_patient, name="search-patient"),
     path('patient-landing', views.patient_landing, name="patient-landing"),
@@ -38,6 +38,7 @@ urlpatterns = [
     path('update-profile/<pk>', views.update_profile, name="update-profile"),
     path('tool/report/', views.report, name="report"),
     path('tool/staff/update-staff', views.update_staff, name="update-staff"),
+    path('tool/staff/update-staff-profile/<pk>', views.update_staff_profile, name="update-staff-profile"),
     path('tool/reminder/', views.reminder, name="reminder"),
     path('tool/reminder-vaccines/<pk>',views.reminder_vaccines, name="reminder-vaccines"),
     ]

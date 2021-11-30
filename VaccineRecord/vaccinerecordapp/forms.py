@@ -54,8 +54,8 @@ class UpdateDoctorForm(forms.ModelForm):
         fields = "__all__"
         widgets = {
             'user':  HiddenInput(attrs={'type': 'hidden'}),
-            'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
-            'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': True}),
+            # 'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),
+            # 'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last name', 'aria-label': 'Last name', 'required': True}),
             'prefix':  Select(attrs={'class': 'form-control'}),
             'type':  Select(attrs={'class': 'form-control'}),
             'title':  Select(attrs={'class': 'form-control','required': False}),

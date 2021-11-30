@@ -1,0 +1,76 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Navbar -->
+    <div class="col-1">
+      {% include 'vaccinerecordapp/staff-navbar.html' %}
+    </div>
+
+  <!-- Profile -->
+    <div class="col-11">
+          <div class="card border-info" style="margin-left: 3%; margin-right: 2%">
+            <h5 class="card-header">Staff Profile</h5>
+            <div class="card-body">
+              <form action="{% url 'update-staff-profile' record.pk %}" method="POST">
+              {% csrf_token %}
+              {{form.user}}
+              <div>
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="table-warning">Account Username:</td>
+                        <td class="table-warning">{{ record.user.username|upper }}</td>
+                        <td class="table-warning" colspan="8"></td>
+                      </tr>
+                      <tr>
+                        <td class="table-warning" colspan="2">Staff Record #:</td>
+                        <td class="table-warning" colspan="2">{{ record.id }}</td>
+                      </tr>
+                      <tr>
+                        <td class="table-warning"><b>NAME</b></td>
+                      </tr>
+                      <tr>
+                        <td class="table-warning">First:</td>
+                        <td class="table-light">{{ form.first_name}}</td>
+                        <td class="table-warning">Last:</td>
+                        <td class="table-light" colspan="2">{{ form.last_name}}</td>
+                      </tr>
+                      <tr>
+                        <td class="table-warning"><b>PREFIX</b></td>
+                        <td class="table-light" colspan="2">{{ form.prefix}}</td>
+                      </tr>
+                      <tr>
+                        <td class="table-warning"><b>TYPE</b></td>
+                        <td class="table-light" colspan="4">{{ form.type}}</td>
+                      </tr>
+                      <tr>
+                        <td class="table-warning">TITLE</td>
+                        <td class="table-light">{{ form.title}}</td>
+                      </tr>
+                      <tr>
+                        <td class="table-warning">End date:</td>
+                        <td class="table-light">{{ form.end_date}}</td>
+                        <td class="table-warning">Contact #:</td>
+                        <td class="table-light" colspan="2">{{ form.contact}}</td>
+                      </tr>
+                </table>
+              </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button id="submit_button" type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
+              </div>
+              </form>
+              </div>
+            </div>
+          </div>
+    </div>
+          <br><br><br><br><br>
+</div>    
+  
+      {% for message in messages %} {% if message.tags == 'success' %}
+    
+          {% else %}
+          {{message | striptags}}
+          {% endif %} {% endfor %}
+
+{%endblock%}

@@ -618,7 +618,6 @@ def staff_profile(request,pk):
     form = DoctorForm(request.POST)
     record = Doctor.objects.get(id=pk)
     data = {"record":record,'form':form}
-    print("pk " + pk)
     # username = User.objects.get(id=User.objects.get(id=pk).id)
     # print(username)
     # record = PatientRecord.objects.get(user=PatientRecord.objects.get(user=username).user)
@@ -2268,6 +2267,27 @@ def update_staff(request):
     data = {"staffs":staffs}  
     return render(request,'vaccinerecordapp/tool/update-staff.html',data)
 
+@login_required(login_url='/')
+def update_staff_profile(request,pk):
+    form = UpdateDoctorForm(request.POST)
+    doctor = Doctor.objects.get(id=pk).user
+    profile = Doctor.objects.get(user=doctor)
+    record = Doctor.objects.get(id=pk)
+    if(request.method=="POST"):   
+        user = User.objects.get(username=doctor)
+        form = DoctorForm({ 'user':user,
+                            'prefix':request.POST.get('prefix'), 'type':request.POST.get('type'), 'title':request.POST.get('title'),
+                            'end_date':request.POST.get('end_date'),'contact':request.POST.get('contact')}, instance = profile)
+    print(form.errors)
+    if(form.is_valid()):
+            form.save()
+            record = Doctor.objects.get(id=pk)
+            data = {"record":record,'form':form}
+            return render(request, "vaccinerecordapp/update-staff.html",data)
+    record = Doctor.objects.get(id=pk)
+    data = {"record":record,'form':form}
+    return render(request, "vaccinerecordapp/tool/update-staff-profile.html",data)
+
 def update_profile(request,pk):
     patient = PatientRecord.objects.get(id = pk).user
     profile = PatientRecord.objects.get(user=patient)
@@ -2968,4 +2988,3 @@ def reminder_vaccines(request,pk):
     data =  {'patients':remindp,'vaccines':remind}
 
     return render(request,'vaccinerecordapp/tool/reminder.html',data)
-
