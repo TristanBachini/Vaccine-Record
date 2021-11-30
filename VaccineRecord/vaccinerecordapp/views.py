@@ -1286,8 +1286,8 @@ def tool(request):
                                             flu_no += 1
                                             print("+no")
                                             continue
-                
-                elif((datetime.date.today()-vaccine.anf_date).days > 360):
+        if(vaccine.anf_date is not None):
+                if((datetime.date.today()-vaccine.anf_date).days > 360):
                     date = (datetime.date.today()-vaccine.anf_date).days
                     print("check vacc")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1939,7 +1939,8 @@ def tool(request):
                                             typ_no += 1
                                             print("+no")
                                             continue
-                elif(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
+        if(vaccine.typ_date is not None):                       
+                if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
                     date = (datetime.date.today()-vaccine.typ_date).days
                     vaccine.typ_date = date
                     print("check vacc")
