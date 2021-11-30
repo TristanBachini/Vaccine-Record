@@ -1,8 +1,9 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %} {% load auth_extras %}
 
-
-{% include 'vaccinerecordapp/staff-navbar.html' %}
+<div class="col-1">
+    {% include 'vaccinerecordapp/staff-navbar.html' %}
+  </div>
 <div class="container">
     <div class="row">
 	<div class="col-sm-4">
@@ -21,7 +22,6 @@
 				<div class="mb-3"><label for="floatingInput4">Last Name:</label>
 				<input class="form-control form-control-sm" id="floatingInput4" type="text" placeholder="Last Name" aria-label=".form-control-sm example" name="last_name">
 				</div>
-
 		</div>
 	</div>
 
@@ -58,9 +58,32 @@
             <td>{{vaccine}}</td>
         </tr>
         {% endfor %}
-    
     </table>
-</div>
+    </div>
+
+    <form action="due-vaccine" method="get">
+        <div class="modal-body" style="color: black">
+            {% csrf_token %}
+            <center>
+            <br />
+            <h2> Due Vaccines
+            </h2>
+            </center>
+            <br />
+                <div style="width: 70%; margin-left: 15%; margin-right: 15%">
+                  <table class="table table-borderless table-md">
+                      <tr>
+                        <td>Enter date
+                        <input type="date" id="date" name="date">
+                        </td>
+                      </tr>
+                    </table>
+                    <button id="submit_button" type="submit" class="btn btn-primary">Enter</button>
+                </div> 
+            <div>
+            </div>   
+        </div>
+    </form>
 </div>
 
 
