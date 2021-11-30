@@ -28,11 +28,6 @@
       <a class="nav-link" href="{% url 'certificate-pt' record.id %}">Certificate</a>
     </li>
     {% endif %}
-    {% if request.user|has_group:"staff"%}
-    <li class="portal">
-      <a class="nav-link" href="#">Portal</a>
-    </li>
-    {% endif %}
     
 </ul>
 </div>
