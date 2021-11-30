@@ -1050,6 +1050,7 @@ def tool(request):
                                                 print("+no")
                                                 continue
                 #hib3
+        if(vaccine.hib2_date is not None):        
             if((datetime.date.today()-vaccine.hib2_date).days > 28):
                         print("check vacc")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1082,6 +1083,7 @@ def tool(request):
                                                 print("+no")
                                                 continue
                 #hib booster1
+        if(vaccine.hib3_date is not None):
             if((datetime.date.today()-vaccine.hib3_date).days > 180):
                         print("check vacc")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1286,8 +1288,8 @@ def tool(request):
                                             flu_no += 1
                                             print("+no")
                                             continue
-                
-                elif((datetime.date.today()-vaccine.anf_date).days > 360):
+        if(vaccine.anf_date is not None):        
+                if((datetime.date.today()-vaccine.anf_date).days > 360):
                     date = (datetime.date.today()-vaccine.anf_date).days
                     print("check vacc")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1385,6 +1387,7 @@ def tool(request):
                                                 print("+no")
                                                 continue
                 #ipv/opv3
+        if(vaccine.ipv2_date is not None):
             if((datetime.date.today()-patient.ipv2_date).days > 28):
                         print("check vacc")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1714,6 +1717,7 @@ def tool(request):
                                                 print("+no")
                                                 continue
                 #pcv3
+        if(vaccine.pcv2_date is not None):        
             if((datetime.date.today()-vaccine.pcv2_date).days > 28):
                         print("check vacc")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1746,6 +1750,7 @@ def tool(request):
                                                 print("+no")
                                                 continue
                 #pcv booster1
+        if(vaccine.pcv3_date is not None):
             if((datetime.date.today()-patient.pcv3_date).days > 180):
                         print("check vacc")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1843,6 +1848,7 @@ def tool(request):
                                                 print("+no")
                                                 continue
                 #rota3
+        if(vaccine.rota2_date is not None):        
             if((datetime.date.today()-vaccine.rota2_date).days > 28):
                         print("check vacc")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1939,7 +1945,9 @@ def tool(request):
                                             typ_no += 1
                                             print("+no")
                                             continue
-                elif(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
+                                            
+        if(vaccine.typ_date is not None):                                    
+                if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
                     date = (datetime.date.today()-vaccine.typ_date).days
                     vaccine.typ_date = date
                     print("check vacc")
