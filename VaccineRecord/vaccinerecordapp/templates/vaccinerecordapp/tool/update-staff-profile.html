@@ -1,6 +1,11 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %}
 
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+  {{ record.user.first_name|upper }} {{ record.user.last_name|upper }}  |  {{ record.title|upper }}
+</p>
+
+
 <div class="container-fluid">
   <div class="row">
     <!-- Navbar -->
@@ -18,45 +23,42 @@
               {{form.user}}
               <div>
                 <table class="table table-bordered">
-                    <tr>
-                        <td class="table-warning">Account Username:</td>
-                        <td class="table-warning">{{ record.user.username|upper }}</td>
-                        <td class="table-warning" colspan="8"></td>
-                      </tr>
-                      <tr>
-                        <td class="table-warning" colspan="2">Staff Record #:</td>
-                        <td class="table-warning" colspan="2">{{ record.id }}</td>
-                      </tr>
-                      <tr>
-                        <td class="table-warning"><b>NAME</b></td>
-                      </tr>
-                      <tr>
-                        <td class="table-warning">First:</td>
-                        <td class="table-light">{{ form.first_name}}</td>
-                        <td class="table-warning">Last:</td>
-                        <td class="table-light" colspan="2">{{ form.last_name}}</td>
-                      </tr>
-                      <tr>
-                        <td class="table-warning"><b>PREFIX</b></td>
-                        <td class="table-light" colspan="2">{{ form.prefix}}</td>
-                      </tr>
-                      <tr>
-                        <td class="table-warning"><b>TYPE</b></td>
-                        <td class="table-light" colspan="4">{{ form.type}}</td>
-                      </tr>
-                      <tr>
-                        <td class="table-warning">TITLE</td>
-                        <td class="table-light">{{ form.title}}</td>
-                      </tr>
-                      <tr>
-                        <td class="table-warning">End date:</td>
-                        <td class="table-light">{{ form.end_date}}</td>
-                        <td class="table-warning">Contact #:</td>
-                        <td class="table-light" colspan="2">{{ form.contact}}</td>
-                      </tr>
+                  <tr>
+                    <td class="table-warning">Account Username:</td>
+                    <td class="table-warning">{{ record.user.username|upper }}</td>
+                    <td class="table-warning">Staff Record #:</td>
+                    <td class="table-warning">{{ record.id }}</td>
+                    <td class="table-warning" colspan="2"></td>
+                  </tr>
+                  <!-- <tr>
+                    <td class="table-warning"colspan="6"><b>NAME</b></td>
+                  </tr> -->
+                  <tr>
+                    <td class="table-warning">Prefix:</td>
+                    <td class="table-light">{{ form.prefix }}</td>
+                    <td class="table-warning">First:</td>
+                    <td class="table-light" >{{ form.first_name}}</td>
+                    <td class="table-warning">Last:</td>
+                    <td class="table-light">{{ form.last_name}}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Type:</td>
+                    <td class="table-light">{{ form.type }}</td>
+                    <td class="table-warning">Title</td>
+                    <td class="table-light">{{ form.title }}</td>
+                    <td class="table-warning" colspan="2"></td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">End date:</td>
+                    <td class="table-light">{{ form.end_date }}</td>
+                    <td class="table-warning">Contact No#:</td>
+                    <td class="table-light">{{ form.contact }}</td>
+                    <td class="table-warning" colspan="2"></td>
+                  </tr>
                 </table>
               </div>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{% url 'update-staff' %}"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Cancel</button></a>
                 <button id="submit_button" type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
               </div>
               </form>

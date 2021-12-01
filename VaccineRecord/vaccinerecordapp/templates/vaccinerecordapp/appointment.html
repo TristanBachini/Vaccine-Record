@@ -4,89 +4,98 @@
     {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  | {% if years > 0 %} {{years|upper}} Y {% endif %} {{months|upper}} M  {{weeks|upper}} Wks | {{ record.gender|upper }} | {{ record.bday|upper }}
   </p>
 
-{% include 'vaccinerecordapp/patient-navbar.html' %}
 
-<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button
-    class="btn btn-sm btn-outline-dark"
-    data-bs-toggle="modal"
-    data-bs-target="#appointment"
-    style="color: black">
-    <i class="fas fa-folder-plus fa-lg"></i> 
-    Schedule Appointment </button>
-</div>
-
-{% if count == 0 %}
-        <div id = "noAppointment">
-            <span><i class ="fas fa-calendar-check fa-3x"></i></span>
-            <h1>No Appointment for Today!</h1>
-        </div>
-    {% else %}
-        <h1>Appointments</h1>
-        <table class="table table-striped table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Appointment No#</th>
-                <th scope="col">Patient username</th>
-                <th scope="col">Time of Appointment</th>
-                <th scope="col">Date of Appointment</th>
-                <th scope="col">Doctor Assigned</th>
-                <th scope="col">Type of Visit</th>
-                <th scope="col">Location</th>
-                <th scope="col">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for appointment in appointments %}
-
-        <tr>
-            <td> <a>{{appointment.id}}</a></td>
-            <td> <a>{{appointment.patient_username}}</a></td>
-            <td> <a>{{appointment.time}}</a></td>
-            <td> <a>{{appointment.date}}</a></td>
-            <td> <a>{{appointment.doctor}}</a></td>
-            <td> <a>{{appointment.visit}}</a></td>
-            <td> <a>{{appointment.location}}</a></td>
-            <td> <a href="#" >{{appointment.stat}}</a></td>
-        </tr>
-
-        {% endfor %}
-        </tbody>
-        </table>
-    {% endif %}
-<!-- Set Appointment -->
-<div class="modal fade" id="appointment">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Schedule Appointment</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-        <form action="{% url 'appointment' record.pk %}" method="post">
-            <div class="modal-body" style="color: black">
-                {% csrf_token %}
-                <div class="modal-body" style="color: black">
-                        <div class="row" style="margin-left: 15%; margin-right: 15%">
-                        </div>
-                        <br />
-                        <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-                        <div class="col">Requested Appointment Date: {{form.date}}</div>
-                        </div>
-                        <br />
-                        <br />
-                        <div class="row" style="margin-left: 15%; margin-right: 15%">
-                        <div class="col">Select Location: {{form.location}}</div>
-                        <div class="col">Select Time: {{form.time}}</div>
-                        <div class="col">Reason for Visit: {{form.visit}}</div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button id="submit_button" type="submit" class="btn btn-primary">Set Appointment</button>
-                </div>
-            </div>
-        </form>
+<div class="container-fluid">
+    <div class="row">
+      <!-- Navbar -->
+      <div class="col-1">
+        {% include 'vaccinerecordapp/patient-navbar.html' %}
       </div>
-    </div>
-  </div>
+
+      <div class="col-11">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button
+                class="btn btn-sm btn-outline-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#appointment"
+                style="color: black">
+                <i class="fas fa-folder-plus fa-lg"></i> 
+                Schedule Appointment </button>
+            </div>
+            
+            <div style="margin-left: 3%; margin-right: 3%;">
+            {% if count == 0 %}
+                <div id = "noAppointment">
+                        <span><i class ="fas fa-calendar-check fa-3x"></i></span>
+                        <h1>No Appointment for Today!</h1>
+                </div>
+            {% else %}
+                    <h1>Appointments</h1>
+                    <table class="table table-striped table-hover ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Appointment No#</th>
+                            <th scope="col">Patient username</th>
+                            <th scope="col">Time of Appointment</th>
+                            <th scope="col">Date of Appointment</th>
+                            <th scope="col">Doctor Assigned</th>
+                            <th scope="col">Type of Visit</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+
+                    <tr>
+                        <td> <a>{{appointment.id}}</a></td>
+                        <td> <a>{{appointment.patient_username}}</a></td>
+                        <td> <a>{{appointment.time}}</a></td>
+                        <td> <a>{{appointment.date}}</a></td>
+                        <td> <a>{{appointment.doctor}}</a></td>
+                        <td> <a>{{appointment.visit}}</a></td>
+                        <td> <a>{{appointment.location}}</a></td>
+                        <td> <a href="#" >{{appointment.stat}}</a></td>
+                    </tr>
+
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                {% endif %}
+            <!-- Set Appointment -->
+            <div class="modal fade" id="appointment">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Schedule Appointment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{% url 'appointment' record.pk %}" method="post">
+                        <div class="modal-body" style="color: black">
+                            {% csrf_token %}
+                            <div class="modal-body" style="color: black">
+                                    <div class="row" style="margin-left: 15%; margin-right: 15%">
+                                    </div>
+                                    <br />
+                                    <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+                                    <div class="col">Requested Appointment Date: {{form.date}}</div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="row" style="margin-left: 15%; margin-right: 15%">
+                                    <div class="col">Select Location: {{form.location}}</div>
+                                    <div class="col">Select Time: {{form.time}}</div>
+                                    <div class="col">Reason for Visit: {{form.visit}}</div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button id="submit_button" type="submit" class="btn btn-primary">Set Appointment</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div></div>
+</div></div></div>
 {%endblock%}
