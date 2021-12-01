@@ -25,6 +25,7 @@ from .filters import RecordFilter
 from django.views.generic import View
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from backports.datetime_fromisoformat import MonkeyPatch
 # Create your views here.
 
 def home(request):
@@ -1689,6 +1690,33 @@ def reminder(request):
                     remind.append(patient)
                     continue
 
+    date = ""
+    #for due vaccine part
+    if request.method == 'POST':
+        date = request.POST.get('date')
+        date = datetime.date.fromisoformat(date)
+        print(date - patient.bday)
+
+    # if user.groups.filter(name="Doctor"):
+    #     doc = Doctor.objects.get(user = user)
+    #     notExist = ""
+    #     patients = PatientRecord.objects.filter(doctor_assigned = doc)
+    #     myFilter = RecordFilter(request.GET, queryset=patients)
+    #     patients = myFilter.qs
+    #     if patients.count()==0:
+    #         notExist = "The patient does not exist."
+    #     data = {"patients":patients, 'myFilter':myFilter,'notExist':notExist}
+    # else: 
+    #     patients = PatientRecord.objects.all()
+    #     notExist = ""
+    #     myFilter = RecordFil
+    # ter(request.GET, queryset=patients)
+    #     patients = myFilter.qs
+    #     if patients.count()==0:
+    #         notExist = "The patient does not exist."
+    #     data = {"patients":patients, 'myFilter':myFilter,'notExist':notExist}
+
+
     data = {'patients':remind}
     return render(request, 'vaccinerecordapp/tool/reminder.html',data)
 
@@ -2204,8 +2232,8 @@ def due_vaccine(request):
     # else:
     #     form2 = DueVaccineForm()
     # return render(request, 'vaccinerecordapp/tool/reminder.html', {'form2': form2})
-    if request.method == 'GET':
-        date = request.GET.get('date')
+    if request.method == 'POST':
+        date = request.POST.get('date')
         print(date)
 
 
