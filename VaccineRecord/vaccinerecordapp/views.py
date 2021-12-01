@@ -2357,11 +2357,11 @@ def staff(request):
     return render(request, 'vaccinerecordapp/tool/staff.html',data)
 
 @login_required(login_url='/')
-def patient_landing(request):
-    current_user = request.user
-    if current_user.groups.filter(name = "Patient"):
-        patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
-    data = {'patient':patient}
+def patient_landing(request, pk):
+    patients = PatientRecord.objects.all()
+    record = PatientRecord.objects.get(id = pk)
+    appt = Appointment.objects.get(user=patient.user)
+    data = {'patients':patients, "record":record, "appt":appt}
     return render(request, 'vaccinerecordapp/patient-landing.html',data)
     
 

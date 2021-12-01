@@ -15,9 +15,9 @@
     
     <div class="col-11">
         <div class="card border-info" style="margin-left: 5%; margin-right: 5%">
-          <h5 class="card-header">Welcome! {{request.user.username|upper}}. </h5>
+          <h5 class="card-header">Welcome, {{record.first_name}} {{record.last_name}}! </h5>
             <div class="card-body">
-                Hi! This is from the [Clinic Name/Location] of [Name of Doctor] reminding you of your child’s vaccination schedule this [Date mm/dd/yyy] at [Time 00:00AM/PM]. Your child is due for [vaccine name]. Please reply CONFIRM to finalize your booking appointment. If you need to reschedule, message [contact number]. 	
+                Hi! This is from the BaQna Clinic of {{ record.doctor_assigned }}, reminding you of your child’s vaccination schedule this {{appt.date}} at {{appt.time}}. Your child is due for [vaccine name].  	
             </div>
         </div>
     </div>
