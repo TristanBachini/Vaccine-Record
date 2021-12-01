@@ -96,7 +96,7 @@ class PatientRecord(models.Model):
     doctor_assigned = ForeignKey(Doctor, on_delete=models.CASCADE, null=True)
     gender = models.CharField(choices=GENDER,max_length=11, null=True)
     bday = models.DateField(null=True)
-    age = models.IntegerField(null=True)
+    
     mobile = models.CharField(max_length=11, blank=True, null=True)
     landline = models.CharField(max_length=11, blank=True, null=True)
     email = models.EmailField(max_length=100,  blank=True, null=True) 

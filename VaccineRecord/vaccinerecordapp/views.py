@@ -92,7 +92,7 @@ def create_record(request,username):
         form = PatientRecordForm({'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
                                         'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
                                         'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                        'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
                                         'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
                                         'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
                                         'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
@@ -112,7 +112,7 @@ def create_record(request,username):
             print(form.errors)
     else:
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
-    data = {"form":form, "patients":patients,"username":username}
+    data = {"form":form, "patients":patients,"username":username, }
     return render(request, 'vaccinerecordapp/account-creation/create-patient-record.html',data)
 
 def update_patient_profile(request,pk):
@@ -128,7 +128,7 @@ def update_patient_profile(request,pk):
         form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
                                         'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
                                         'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                        'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
                                         'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
                                         'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
                                         'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
@@ -144,10 +144,10 @@ def update_patient_profile(request,pk):
             days = age.days
             months = age.months
             years = age.years
-            data = {'record':record,'days':days,'months':months,'years':years}
+            data = {'record':record,'days':days,'months':months,'years':years, 'age': f"{years} years, {months} months, {days} days",}
             return render(request, "vaccinerecordapp/patient-landing.html",data)
     
-    data = {'record':record,'days':days,'months':months,'years':years,'form':form}
+    data = {'record':record,'days':days,'months':months,'years':years,'form':form, 'age': f"{years} years, {months} months, {days} days",}
     return render(request, "vaccinerecordapp/update-patient-profile.html", data)
 
 def update_profile(request,pk):
@@ -160,7 +160,7 @@ def update_profile(request,pk):
         form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
                                         'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
                                         'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                        'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
                                         'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
                                         'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
                                         'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
@@ -176,14 +176,14 @@ def update_profile(request,pk):
             days = age.days
             months = age.months
             years = age.years
-            data = {'record':record,'days':days,'months':months,'years':years}
+            data = {'record':record,'days':days,'months':months,'years':years, 'age': f"{years} years, {months} months, {days} days",}
             return render(request, "vaccinerecordapp/search-patient.html",data)
     record = PatientRecord.objects.get(id = pk)
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
     months = age.months
     years = age.years
-    data = {'record':record,'days':days,'months':months,'years':years,'form':form}
+    data = {'record':record,'days':days,'months':months,'years':years,'form':form, 'age': f"{years} years, {months} months, {days} days",}
     return render(request, "vaccinerecordapp/update-profile.html", data)
 
 def create_patient(request):
@@ -607,7 +607,7 @@ def patient_profile(request,pk):
     days = age.days
     months = age.months
     years = age.years
-    data = {"record":record,'days':days,'months':months,'years':years,'form':form}
+    data = {"record":record,'days':days,'months':months,'years':years,'form':form, 'age': f"{years} years, {months} months, {days} days",}
     # username = User.objects.get(id=User.objects.get(id=pk).id)
     # print(username)
     # record = PatientRecord.objects.get(user=PatientRecord.objects.get(user=username).user)
@@ -2350,14 +2350,6 @@ def patient_landing(request):
     data = {'patient':patient}
     return render(request, 'vaccinerecordapp/patient-landing.html',data)
     
-
-@login_required(login_url='/')
-def portal(request): 
-    form1 = UserForm(request.POST)
-    form2 = PatientForm(request.POST)
-    patients = User.objects.filter(groups__name="Patient")
-    data = {"form1":form1, "form2":form2, "patients":patients}
-    return render(request, 'vaccinerecordapp/portal.html',data)
 
 def passwordReset(request): 
     if request.method == "POST":
