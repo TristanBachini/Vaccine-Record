@@ -18,20 +18,20 @@
               <div class="card-body">
                 <div>
                     <br><br>
-                    <form method="get">
+                    <form method="get" action="{% url 'report' %}">
                       <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-3">
                           <div class="input-group">
                           <span class="input-group-text">From:</span>
-                          <input type="text" class="form-control" id="from" placeholder="mm/dd/yyyy" aria-label="mm/dd/yyyy">
+                          <input type="text" class="form-control" id="from" placeholder="mm/dd/yyyy" aria-label="mm/dd/yyyy" name="from">
                           </div>
                         </div>
                         <div class="col-sm-1"></div>
                         <div class="col-sm-3">
                           <div class="input-group">
                           <span class="input-group-text">To:</span>
-                          <input type="text" class="form-control" id="to" placeholder="mm/dd/yyyy" aria-label="mm/dd/yyyy">
+                          <input type="text" class="form-control" id="to" placeholder="mm/dd/yyyy" aria-label="mm/dd/yyyy" name="to">
                           </div>
                         </div>
                         <div class="col-sm-1"></div>
