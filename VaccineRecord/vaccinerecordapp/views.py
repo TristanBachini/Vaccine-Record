@@ -25,7 +25,6 @@ from .filters import RecordFilter
 from django.views.generic import View
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
-from backports.datetime_fromisoformat import MonkeyPatch
 # Create your views here.
 
 def home(request):
@@ -1690,12 +1689,13 @@ def reminder(request):
                     remind.append(patient)
                     continue
 
-    date = ""
     #for due vaccine part
     if request.method == 'POST':
         date = request.POST.get('date')
         date = datetime.date.fromisoformat(date)
-        print(date - patient.bday)
+        age = date - patient.bday
+
+
 
     # if user.groups.filter(name="Doctor"):
     #     doc = Doctor.objects.get(user = user)
@@ -2061,7 +2061,7 @@ def reminder_vaccines(request,pk):
     if (vaccine.hpv11_date is None):
         remind.append("hpv #1 of 1")
     #hpv12
-    if(vaccine.hep12_date is None):
+    if(vaccine.hpv12_date is None):
         if(vaccine.hpv11_date is not None):
             if(9<years<15):
                 if ((datetime.date.today()-vaccine.hpv11_date).days > 180):
