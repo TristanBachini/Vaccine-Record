@@ -121,6 +121,7 @@ def update_patient_profile(request,pk):
     record = PatientRecord.objects.get(id = pk)
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
+    # weeks = (days/7)
     months = age.months
     years = age.years
     if(request.method=="POST"):   
@@ -605,9 +606,13 @@ def patient_profile(request,pk):
     record = PatientRecord.objects.get(id=pk)
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
+    weeks = age.weeks
     months = age.months
     years = age.years
-    data = {"record":record,'days':days,'months':months,'years':years,'form':form}
+
+
+
+    data = {"record":record,'days':days, 'weeks':weeks,'months':months,'years':years,'form':form}
     # username = User.objects.get(id=User.objects.get(id=pk).id)
     # print(username)
     # record = PatientRecord.objects.get(user=PatientRecord.objects.get(user=username).user)
@@ -2532,8 +2537,6 @@ def report(request):
     to_date = to_obj.date()
     print(from_date)
     print(to_date)
-
-
 
     bcg_con = 0 
     bcg_not = 0
