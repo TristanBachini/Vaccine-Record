@@ -1,4 +1,5 @@
 from collections import Counter
+from datetime import date
 from os import name
 from django.forms.widgets import DateTimeBaseInput
 from .models import *
@@ -40,15 +41,17 @@ def home(request):
                 form2 = PatientForm(request.POST)
                 patients = User.objects.filter(groups__name="Patient")
                 if user.groups.filter(name="Doctor"):
-                    appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id)
+                    appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id,date=datetime.date.today())
                     count = appointments.count()
                     print(user)
                     data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
                 if user.groups.filter(name="Staff"):
                     appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+                    cappointments = Appointment.objects.filter(stat = "CONFIRMED")
                     count = appointments.count()
-                    data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
+                    ccount = cappointments.count()
+                    data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"cappointments":cappointments,"count":count,"ccount":ccount}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
                 else:
                     data = {"form1":form1, "form2":form2, "patients":patients}
@@ -308,8 +311,14 @@ def create_staff(request):
                 group = Group.objects.get(name="doctor")
                 user = User.objects.get(username = form1.cleaned_data.get("username"))
                 user.groups.add(group) 
+
+            appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+            cappointments = Appointment.objects.filter(stat = "CONFIRMED")
+            count = appointments.count()
+            ccount = cappointments.count()
+            data = {"form1":form1, "form2":form2, "appointments":appointments,"cappointments":cappointments,"count":count,"ccount":ccount}
             
-            return redirect('/dashboard')
+            return render(request, 'vaccinerecordapp/dashboard.html',data)
         else:
             print(form2.errors)
     else:
