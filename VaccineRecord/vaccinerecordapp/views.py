@@ -5794,3 +5794,27 @@ def reminder_vaccines(request,pk):
 
     data =  {'patients':due_vax_result,'myFilter':myFilter,'notExist':notExist, 'vaccines':remind}
     return render(request,'vaccinerecordapp/tool/reminder.html',data)
+
+def send_email_reminder(request,pk):
+    patient = PatientRecord.objects.get(id = pk).user
+    profile = PatientRecord.objects.get(user=patient)
+    form = UpdatePatientRecordForm(instance = profile)
+    record = PatientRecord.objects.get(id = pk)
+    email = patient.email
+    subject = "Reminder for due vaccine: "
+    message = "<h1> Good day " + first_name + " " + last_name + "! We are writing to inform you that you have due vaccinations. blah balh"
+    first_name = patient.first_name
+    last_name = patient.last_name
+    from_email = settings.EMAIL_HOST_USER
+    recepeint_list = [email]
+    email = EmailMessage(
+        subject,
+        message,
+        from_email,
+        recepient_list
+    )
+    email.content_subtype = html
+    email.send()
+    print(sent)    
+    
+    return render(request,'vaccinerecordapp/tool/reminder.html')
