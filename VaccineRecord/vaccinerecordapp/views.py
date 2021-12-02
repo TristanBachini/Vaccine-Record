@@ -4374,7 +4374,7 @@ def update_staff_profile(request,pk):
             data = {"record":record,'form':form}
             return render(request, "vaccinerecordapp/tool/update-staff.html",data)
     data = {"record":record,'form':form}
-    return render(request, "vaccinerecordapp/tool/update-staff-profile.html",data)
+    return redirect('')
 
 def update_profile(request,pk):
     patient = PatientRecord.objects.get(id = pk).user
