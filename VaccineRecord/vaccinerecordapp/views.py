@@ -534,7 +534,7 @@ def update_vaccine(request,pk):
             form.save()
             record = PatientRecord.objects.get(id = pk)
             data = {"record":record,'days':days,'months':months,'years':years, 'weeks':weeks}
-            return render(request, "vaccinerecordapp/search-patient.html",data)
+            return redirect('search-patient')
 
     data = {"record":record, "form":form,'days':days,'months':months,'years':years, 'weeks':weeks}
     return render(request, "vaccinerecordapp/update-vaccine.html", data) 
@@ -4372,9 +4372,9 @@ def update_staff_profile(request,pk):
             print("valid")
             profile = Doctor.objects.get(user=doctor)
             data = {"record":record,'form':form}
-            return render(request, "vaccinerecordapp/tool/update-staff.html",data)
+            return redirect('update-staff')
     data = {"record":record,'form':form}
-    return redirect('')
+    return render(request, "vaccinerecordapp/tool/update-staff-profile.html",data)
 
 def update_profile(request,pk):
     patient = PatientRecord.objects.get(id = pk).user
@@ -4403,7 +4403,7 @@ def update_profile(request,pk):
             months = age.months
             years = age.years
             data = {'record':record,'days':days,'months':months,'years':years}
-            return render(request, "vaccinerecordapp/search-patient.html",data)
+            return redirect('search-patient')
     record = PatientRecord.objects.get(id = pk)
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
