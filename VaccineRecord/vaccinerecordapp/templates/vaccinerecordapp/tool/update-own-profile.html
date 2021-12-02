@@ -1,0 +1,74 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+  {{ record.user.first_name|upper }} {{ record.user.last_name|upper }}  |  {{ record.title|upper }}
+</p>
+
+
+<div class="container-fluid">
+  <div class="row">
+
+  <!-- Profile -->
+    <div class="col">
+          <div class="card border-info" style="margin-left: 3%; margin-right: 2%">
+            <h5 class="card-header">My Profile</h5>
+            <div class="card-body">
+              <form action="{% url 'update-own-profile' record.pk %}" method="POST">
+              {% csrf_token %}
+              {{form.user}}
+              <div>
+                <table class="table table-bordered">
+                  <tr>
+                    <td class="table-warning">Account Username:</td>
+                    <td class="table-warning">{{ record.user.username|upper }}</td>
+                    <td class="table-warning">Staff Record #:</td>
+                    <td class="table-warning">{{ record.id }}</td>
+                    <td class="table-warning" colspan="2"></td>
+                  </tr>
+                  <!-- <tr>
+                    <td class="table-warning"colspan="6"><b>NAME</b></td>
+                  </tr> -->
+                  <tr>
+                    <td class="table-warning">Prefix:</td>
+                    <td class="table-light">{{ form.prefix }}</td>
+                    <td class="table-warning">First:</td>
+                    <td class="table-light" >{{ form.first_name}}</td>
+                    <td class="table-warning">Last:</td>
+                    <td class="table-light">{{ form.last_name}}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Type:</td>
+                    <td class="table-light">{{ form.type }}</td>
+                    <td class="table-warning">Title</td>
+                    <td class="table-light">{{ form.title }}</td>
+                    <td class="table-warning" colspan="2"></td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">End date:</td>
+                    <td class="table-light">{{ form.end_date }}</td>
+                    <td class="table-warning">Contact No#:</td>
+                    <td class="table-light">{{ form.contact }}</td>
+                    <td class="table-warning" colspan="2"></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{% url 'dashboard' %}"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Cancel</button></a>
+                <button id="submit_button" type="submit" class="btn btn-success"><i class="fas fa-save"></i> Save</button>
+              </div>
+              </form>
+              </div>
+            </div>
+          </div>
+    </div>
+          <br><br><br><br><br>
+</div>    
+  
+      {% for message in messages %} {% if message.tags == 'success' %}
+    
+          {% else %}
+          {{message | striptags}}
+          {% endif %} {% endfor %}
+
+{%endblock%}
