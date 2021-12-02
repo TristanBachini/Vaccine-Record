@@ -14,11 +14,11 @@
         <thead>
             <tr>
                 <th scope="col">Appointment No#</th>
-                <th scope="col">Patient username</th>
-                <th scope="col">Time of Appointment</th>
-                <th scope="col">Date of Appointment</th>
-                <th scope="col">Doctor Assigned</th>
-                <th scope="col">Type of Visit</th>
+                <th scope="col">Patient</th>
+                <th scope="col">Time</th>
+                <th scope="col">Date</th>
+                <th scope="col">Doctor </th>
+                <th scope="col">Visit</th>
                 <th scope="col">Location</th>
                 <th scope="col">Status</th>
                 <th scope="col">Confirm</th>
@@ -32,7 +32,7 @@
             <td> <a>{{appointment.id}}</a></td>
             <td> <a>{{appointment.patient_username}}</a></td>
             <td> <a>{{appointment.time}}</a></td>
-            <td> <a>{{appointment.date}}</a></td>
+            <td> <a>{{appointment.date|date:"m/d/Y"}}</a></td>
             <td> <a>{{appointment.doctor}}</a></td>
             <td> <a>{{appointment.visit}}</a></td>
             <td> <a>{{appointment.location}}</a></td>
