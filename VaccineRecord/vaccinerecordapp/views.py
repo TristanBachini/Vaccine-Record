@@ -4688,7 +4688,7 @@ def reminder(request):
         notExist = ""
 
     else:
-        due_vax_result = []
+        due_vax_result =  PatientRecord.objects.none()
 
     for patient in patients:
         #for due vaccine part
