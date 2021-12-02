@@ -4687,6 +4687,9 @@ def reminder(request):
         due_vax_result = PatientRecord.objects.filter(doctor_assigned = doc)
         notExist = ""
 
+    else:
+        due_vax_result = []
+
     for patient in patients:
         #for due vaccine part
         q = []
