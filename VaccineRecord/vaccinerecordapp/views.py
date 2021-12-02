@@ -78,15 +78,19 @@ def dashboard(request):
     appointments = Appointment.objects.all()
     count = appointments.count()
 
-    if request.user.groups.filter(name="Doctor") or request.user.groups.filter(name="Staff"):
-        appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id)
+    if request.user.groups.filter(name="Doctor"):
+        appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id, date = datetime.date.today())
         count = appointments.count()
-    else:
-        appointments = Appointment.objects.filter(user = request.user)
-        count = appointments.count()
-    data = {'appointments' : appointments,
+        data = {'appointments' : appointments,
             'count': count}
-    return render(request,'vaccinerecordapp/dashboard.html', data)
+        return render(request,'vaccinerecordapp/dashboard.html', data)
+    else:
+        appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+        cappointments = Appointment.objects.filter(stat = "CONFIRMED")
+        count = appointments.count()
+        ccount = cappointments.count()
+        data = {"appointments":appointments,"cappointments":cappointments,"count":count,"ccount":ccount}
+        return render(request, 'vaccinerecordapp/dashboard.html',data)
 
 def create_record(request,username):
     form = PatientRecordForm()
