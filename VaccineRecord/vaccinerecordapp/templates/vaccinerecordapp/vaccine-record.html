@@ -2,7 +2,7 @@
 {% block content %} {% load static %}
 
 <p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
-    {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  | {% if years > 0 %} {{years|upper}} Y {% endif %} {{months|upper}} M  {{weeks|upper}} Wks | {{ record.gender|upper }} | {{ record.bday|upper }}
+    {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  | {% if years > 0 %} {{years|upper}} Y {% endif %} {{months|upper}} M  {{weeks|upper}} Wks | {{ record.gender|upper }} | {{ record.bday|date:"m/d/Y" }}
   </p>
   
   <div class="container-fluid">
