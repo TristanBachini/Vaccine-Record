@@ -4356,22 +4356,23 @@ def update_staff(request):
 
 @login_required(login_url='/')
 def update_staff_profile(request,pk):
-    form = UpdateDoctorForm(request.POST)
     doctor = Doctor.objects.get(id=pk).user
     profile = Doctor.objects.get(user=doctor)
+    form = UpdateDoctorForm(instance = profile)
     record = Doctor.objects.get(id=pk)
+    # print(profile.prefix)
     if(request.method=="POST"):   
         user = User.objects.get(username=doctor)
-        form = DoctorForm({ 'user':user,
+        form = DoctorForm({ 'user':user, 'first_name':request.POST.get('first_name'), 'last_name':request.POST.get('last_name'),
                             'prefix':request.POST.get('prefix'), 'type':request.POST.get('type'), 'title':request.POST.get('title'),
                             'end_date':request.POST.get('end_date'),'contact':request.POST.get('contact')}, instance = profile)
-    # print(form.errors)
+    print(form.errors)
     if(form.is_valid()):
             form.save()
-            record = Doctor.objects.get(id=pk)
+            print("valid")
+            profile = Doctor.objects.get(user=doctor)
             data = {"record":record,'form':form}
-            return render(request, "vaccinerecordapp/update-staff.html",data)
-    record = Doctor.objects.get(id=pk)
+            return render(request, "vaccinerecordapp/tool/update-staff.html",data)
     data = {"record":record,'form':form}
     return render(request, "vaccinerecordapp/tool/update-staff-profile.html",data)
 
