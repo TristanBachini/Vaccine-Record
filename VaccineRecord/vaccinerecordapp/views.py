@@ -534,7 +534,7 @@ def update_vaccine(request,pk):
             form.save()
             record = PatientRecord.objects.get(id = pk)
             data = {"record":record,'days':days,'months':months,'years':years, 'weeks':weeks}
-            return render(request, "vaccinerecordapp/search-patient.html",data)
+            return redirect('search-patient')
 
     data = {"record":record, "form":form,'days':days,'months':months,'years':years, 'weeks':weeks}
     return render(request, "vaccinerecordapp/update-vaccine.html", data) 
@@ -4361,22 +4361,23 @@ def update_staff(request):
 
 @login_required(login_url='/')
 def update_staff_profile(request,pk):
-    form = UpdateDoctorForm(request.POST)
     doctor = Doctor.objects.get(id=pk).user
     profile = Doctor.objects.get(user=doctor)
+    form = UpdateDoctorForm(instance = profile)
     record = Doctor.objects.get(id=pk)
+    # print(profile.prefix)
     if(request.method=="POST"):   
         user = User.objects.get(username=doctor)
-        form = DoctorForm({ 'user':user,
+        form = DoctorForm({ 'user':user, 'first_name':request.POST.get('first_name'), 'last_name':request.POST.get('last_name'),
                             'prefix':request.POST.get('prefix'), 'type':request.POST.get('type'), 'title':request.POST.get('title'),
                             'end_date':request.POST.get('end_date'),'contact':request.POST.get('contact')}, instance = profile)
-    # print(form.errors)
+    print(form.errors)
     if(form.is_valid()):
             form.save()
-            record = Doctor.objects.get(id=pk)
+            print("valid")
+            profile = Doctor.objects.get(user=doctor)
             data = {"record":record,'form':form}
-            return render(request, "vaccinerecordapp/update-staff.html",data)
-    record = Doctor.objects.get(id=pk)
+            return redirect('update-staff')
     data = {"record":record,'form':form}
     return render(request, "vaccinerecordapp/tool/update-staff-profile.html",data)
 
@@ -4407,7 +4408,7 @@ def update_profile(request,pk):
             months = age.months
             years = age.years
             data = {'record':record,'days':days,'months':months,'years':years}
-            return render(request, "vaccinerecordapp/search-patient.html",data)
+            return redirect('search-patient')
     record = PatientRecord.objects.get(id = pk)
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
@@ -4690,6 +4691,9 @@ def reminder(request):
         doc = Doctor.objects.get(user = user)
         due_vax_result = PatientRecord.objects.filter(doctor_assigned = doc)
         notExist = ""
+
+    else:
+        due_vax_result =  PatientRecord.objects.none()
 
     for patient in patients:
         #for due vaccine part
