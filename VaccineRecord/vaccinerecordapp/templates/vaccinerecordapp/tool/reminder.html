@@ -1,10 +1,15 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %} {% load auth_extras %}
 
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+    Due Vaccines 
+  </p>
+
 <div class="col-1">
     {% include 'vaccinerecordapp/staff-navbar.html' %}
   </div>
 <div class="container">
+
 
     <form method="post">
         <div class="modal-body" style="color: black">
@@ -51,6 +56,7 @@
             <td> <form action="{% url 'send-email-reminder' patient.id %}" method="post">
                 {% csrf_token %}
                 <button id="submit_button" type="submit" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-envelope-square"></i>
                 Send email reminder
             </button>
             </form>

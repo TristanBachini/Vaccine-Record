@@ -1,27 +1,32 @@
 {% extends 'vaccinerecordapp/navbar.html' %} {% block content %} {% load static %} {% load auth_extras %}
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+    {{ user.first_name|upper }} {{ user.last_name|upper }}  
+  </p>
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}"/>
 </head>
 <body>
+
+<br>
+<!-- For Staff -->
     {% if request.user|has_group:"staff"%}
-    <br>
-    <a class="btn btn-lg btn-info"  href="{% url 'confirm-appointments' %}" style="color: black">Confirm Appointments</a>
-    {% if count == 0 %}
-        <div id = "noAppointment">
-            <span><i class ="fas fa-calendar-check fa-3x"></i></span>
-            <h1>No Appointment for Today!</h1>
-        </div>
-    {% else %}
-        <h1>Unconfirmed Appointments</h1>
-        <table class="table table-striped table-hover">
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="margin-right: 1%;">  
+    <a class="btn btn-md btn-info"  href="{% url 'confirm-appointments' %}" style="color: black">Confirm Appointments</a></div>
+ 
+    <div class="card" style="margin-left: 2%; margin-right: 1%;">   
+        <br>
+        <h3 style="margin-left: 1%;">Unconfirmed Appointments</h3>
+        
+        <table class="table table-striped table-hover" style="margin-left: .5%; vertical-align: middle;">
         <thead>
             <tr>
                 <th scope="col">Appointment No#</th>
-                <th scope="col">Patient username</th>
-                <th scope="col">Time of Appointment</th>
-                <th scope="col">Date of Appointment</th>
-                <th scope="col">Doctor Assigned</th>
-                <th scope="col">Type of Visit</th>
+                <th scope="col">Patient</th>
+                <th scope="col">Time</th>
+                <th scope="col">Date</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Visit</th>
                 <th scope="col">Location</th>
                 <th scope="col">Status</th>
             </tr>
@@ -33,7 +38,7 @@
             <td> <a>{{appointment.id}}</a></td>
             <td> <a>{{appointment.patient_username}}</a></td>
             <td> <a>{{appointment.time}}</a></td>
-            <td> <a>{{appointment.date}}</a></td>
+            <td> <a>{{appointment.date|date:"m/d/Y"}}</a></td>
             <td> <a>{{appointment.doctor}}</a></td>
             <td> <a>{{appointment.visit}}</a></td>
             <td> <a>{{appointment.location}}</a></td>
@@ -43,24 +48,26 @@
         {% endfor %}
         </tbody>
         </table>
-    {% endif %}
+       
+    </div>
 
-    {% if count == 0 %}
-        <div id = "noAppointment">
-            <span><i class ="fas fa-calendar-check fa-3x"></i></span>
-            <h1>No Confirmed Appointments</h1>
-        </div>
-    {% else %}
-        <h1>Confirmed Appointments</h1>
-        <table class="table table-striped table-hover">
+<br>
+<br>
+
+    
+    <div class="card" style="margin-left: 2%; margin-right: 1%;">
+        <br>
+        <h3 style="margin-left: 1%;">Confirmed Appointments</h3>
+        
+        <table class="table table-striped table-hover" style="margin-left: .5%; vertical-align: middle;">
         <thead>
             <tr>
                 <th scope="col">Appointment No#</th>
-                <th scope="col">Patient username</th>
-                <th scope="col">Time of Appointment</th>
-                <th scope="col">Date of Appointment</th>
-                <th scope="col">Doctor Assigned</th>
-                <th scope="col">Type of Visit</th>
+                <th scope="col">Patient</th>
+                <th scope="col">Time</th>
+                <th scope="col">Date</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Visit</th>
                 <th scope="col">Location</th>
                 <th scope="col">Status</th>
             </tr>
@@ -72,7 +79,7 @@
             <td> <a>{{cappointment.id}}</a></td>
             <td> <a>{{cappointment.patient_username}}</a></td>
             <td> <a>{{cappointment.time}}</a></td>
-            <td> <a>{{cappointment.date}}</a></td>
+            <td> <a>{{cappointment.date|date:"m/d/Y"}}</a></td>
             <td> <a>{{cappointment.doctor}}</a></td>
             <td> <a>{{cappointment.visit}}</a></td>
             <td> <a>{{cappointment.location}}</a></td>
@@ -83,8 +90,13 @@
 
         </tbody>
         </table>
+    </div>        
+        
         {% endif %}
-        {% endif %}
+
+<br>
+<div style="margin-left: 2%; margin-right: 1%;"> 
+<!-- For Doctor -->
         {% if request.user|has_group:"doctor"%}
         {% if count == 0 %}
         <div id = "noAppointment">
@@ -92,16 +104,16 @@
             <h1>No Appointment for Today!</h1>
         </div>
         {% else %}
-        <h1>Appointments today:</h1>
-        <table class="table table-striped table-hover">
+        <h3>Appointments today:</h3>
+        <table class="table table-striped table-hover"style="margin-left: .5%; vertical-align: middle;">
         <thead>
             <tr>
                 <th scope="col">Appointment No#</th>
-                <th scope="col">Patient username</th>
-                <th scope="col">Time of Appointment</th>
-                <th scope="col">Date of Appointment</th>
-                <th scope="col">Doctor Assigned</th>
-                <th scope="col">Type of Visit</th>
+                <th scope="col">Patient</th>
+                <th scope="col">Time</th>
+                <th scope="col">Date</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Visit</th>
                 <th scope="col">Location</th>
                 <th scope="col">Status</th>
             </tr>
@@ -113,7 +125,7 @@
             <td> <a>{{appointment.id}}</a></td>
             <td> <a>{{appointment.patient_username}}</a></td>
             <td> <a>{{appointment.time}}</a></td>
-            <td> <a>{{appointment.date}}</a></td>
+            <td> <a>{{appointment.date|date:"m/d/Y"}}</a></td>
             <td> <a>{{appointment.doctor}}</a></td>
             <td> <a>{{appointment.visit}}</a></td>
             <td> <a>{{appointment.location}}</a></td>
@@ -128,6 +140,7 @@
         </table>
         {% endif %}
         {% endif %}
+</div>
 </body>
 
 

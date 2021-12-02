@@ -1,24 +1,56 @@
 {% extends 'vaccinerecordapp/navbar.html' %} {% block content %} {% load static %} {% load auth_extras %}
-<form method="post" action="{% url 'reschedule-appointment' pk %}">
-    {% csrf_token %}
-        <div class="row" style="margin-left: 15%; margin-right: 15%">
-        </div>
-        <br />
-        <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
-        <div class="col">Requested Appointment Date: {{form.date}}</div>
-        </div>
-        <br />
-        <br />
-        <div class="row" style="margin-left: 15%; margin-right: 15%">
-        <div class="col">Select Location: {{form.location}}</div>
-        <div class="col">Select Time: {{form.time}}</div>
-        <div class="col">Reason for Visit: {{form.visit}}</div>
+
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+    Reschedule Appointment
+  </p>
+<br>
+<br>
+<div>
+    <div class='row'>
+        
+        <center>
+            <div class='col-7'>
+                    <div class="card w-75 card border-info">
+                        <form method="post" action="{% url 'reschedule-appointment' pk %}"></form>
+                            <div class="card-header">
+                                Reschedule Appointment
+                            </div>
+                            <div class="card-body">
+                                {% csrf_token %}
+                                <div class="row" style="margin-left: 15%; margin-right: 15%">
+                                </div>
+                                <br />
+                                <div class="row" style="width: 50%; margin-left: 15%; margin-right: 15%">
+                                <div class="col">Requested Appointment Date: {{form.date}}</div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="row" style="margin-left: 15%; margin-right: 15%">
+                                <div class="col">Select Location: {{form.location}}</div>
+                                <div class="col">Select Time: {{form.time}}</div>
+                                <div class="col">Reason for Visit: {{form.visit}}</div>
+                                <div></div>
+                            </div>
+                            <div class="card-footer">
+                                <button id="submit_button" type="submit" class="btn btn-primary">Set Appointment</button>
+                            </div>
+                        </form>
+                    </div>
+            </div>
+        </center>
+        
     </div>
+</div>
+                
 
-    <button id="submit_button" type="submit" class="btn btn-primary">Set Appointment</button>
 
 
-</form>
+
+
+
+
+
+
 
 
 
