@@ -2526,6 +2526,8 @@ class GeneratePDF_MD(View):
             patients = PatientRecord.objects.all()
             for patient in patients:
                 vaccine = Vaccine.objects.get(user = patient.user)
+            username = PatientRecord.objects.get(id=pk).user
+            vaccine = Vaccine.objects.get(user = username)
             age = relativedelta(datetime.date.today(),record.bday)
             days = age.days
             months = age.months
@@ -2539,14 +2541,16 @@ class GeneratePDF_MD(View):
             'middle_name': record.middle_name,
             'last_name': record.last_name,
             'age': f"{years} years, {months} months, {weeks} weeks",
+            'gender': record.gender,
             'city': record.city,
             'doctor_assigned': record.doctor_assigned,
             'date': curr_date,
+            'username': username,
             'patients': patients,
             'patient': patient,
             'vaccine':vaccine,
         }
-        pdf = render_to_pdf('vaccinerecordapp/certificate-pdf-md.html', data)
+        pdf = render_to_pdf('vaccinerecordapp/certificate-pdf-pt.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 
 class GeneratePDF_PT(View):
@@ -2570,6 +2574,7 @@ class GeneratePDF_PT(View):
             'middle_name': record.middle_name,
             'last_name': record.last_name,
             'age': f"{years} years, {months} months, {weeks} weeks",
+            'gender': record.gender,
             'city': record.city,
             'doctor_assigned': record.doctor_assigned,
             'username': username,
@@ -4686,6 +4691,9 @@ def reminder(request):
         doc = Doctor.objects.get(user = user)
         due_vax_result = PatientRecord.objects.filter(doctor_assigned = doc)
         notExist = ""
+
+    else:
+        due_vax_result =  PatientRecord.objects.none()
 
     for patient in patients:
         #for due vaccine part

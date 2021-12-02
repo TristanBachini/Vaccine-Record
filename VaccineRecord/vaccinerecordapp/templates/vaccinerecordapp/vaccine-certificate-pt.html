@@ -19,8 +19,8 @@
             <div class="card-body">
                 <br>
                 <div class="row" >
-                  <div class="col">This is to certify that {{ record.first_name }} {{ record.middle_name|default_if_none:'' }} {{ record.last_name }}, 
-                      {{years}} Years {{months}} Months {{days}} Days, of {{ record.city }} City has completed the following vaccinations. This certificate is being
+                  <div class="col">This is to certify that <span style="font-weight: bold">{{ record.first_name }} {{ record.middle_name|default_if_none:'' }} {{ record.last_name }}, 
+                      {{years}} years {{months}} months {{weeks}} weeks, {{record.gender}}, of {{ record.city }} City</span> has completed the following vaccinations. This certificate is being
                       issued upon the request of the above mentioned for whatever purpose it may serve, except those of a medico-legal-nature.
                       <br> <br>
                       {{ record.doctor_assigned }} 
