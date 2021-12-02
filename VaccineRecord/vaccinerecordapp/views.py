@@ -5801,20 +5801,20 @@ def send_email_reminder(request,pk):
     form = UpdatePatientRecordForm(instance = profile)
     record = PatientRecord.objects.get(id = pk)
     email = patient.email
-    subject = "Reminder for due vaccine: "
-    message = "<h1> Good day " + first_name + " " + last_name + "! We are writing to inform you that you have due vaccinations. blah balh"
     first_name = patient.first_name
     last_name = patient.last_name
+    subject = "Reminder for due vaccine: "
+    message = "<h1> Good day " + first_name + " " + last_name + "! We are writing to inform you that you have due vaccinations. blah balh"
     from_email = settings.EMAIL_HOST_USER
-    recepeint_list = [email]
+    recipient_list = [email]
     email = EmailMessage(
         subject,
         message,
         from_email,
-        recepient_list
+        recipient_list
     )
-    email.content_subtype = html
+    email.content_subtype = 'html'
     email.send()
-    print(sent)    
+    print("sent")    
     
     return render(request,'vaccinerecordapp/tool/reminder.html')
