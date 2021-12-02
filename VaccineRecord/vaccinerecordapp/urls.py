@@ -42,5 +42,5 @@ urlpatterns = [
     path('tool/staff/update-staff-profile/<pk>', views.update_staff_profile, name="update-staff-profile"),
     path('tool/reminder/', views.reminder, name="reminder"),
     path('tool/reminder-vaccines/<pk>',views.reminder_vaccines, name="reminder-vaccines"),
-    path('tool/reminder/',views.send_email_reminder, name="send-email-reminder")
+    path('tool/reminder/send-email-reminder/<pk>',views.send_email_reminder, name="send-email-reminder")
     ]
