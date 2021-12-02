@@ -1,8 +1,8 @@
 {% extends 'vaccinerecordapp/navbar.html' %} 
 {% block content %} {% load static %}
 <p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
-  {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  |  {{years|upper}} Years {{months|upper}} Months {{days|upper}} Days | {{ record.gender|upper }} | {{ record.bday|upper }}
-</p>
+    {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  | {% if years > 0 %} {{years|upper}} Y {% endif %} {{months|upper}} M  {{weeks|upper}} Wks | {{ record.gender|upper }} | {{ record.bday|upper }}
+  </p>
 
 
 <div class="container-fluid">
@@ -410,7 +410,7 @@
                                 <tr>
                                     <td scope="col">Annual</td>
                                     <td scope="col">Influenza</td>
-                                    <td scope="col"></td>
+                                    <td scope="col">Once every year</td>
                                     <td scope="col">{{ form.anf_brand}}</td>
                                     <td scope="col">{{ form.anf_date}}</td>
                                     <td scope="col">{{ form.anf_loc}}</td>

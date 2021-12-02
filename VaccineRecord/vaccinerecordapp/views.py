@@ -1,4 +1,5 @@
 from collections import Counter
+from datetime import date
 from os import name
 from django.forms.widgets import DateTimeBaseInput
 from .models import *
@@ -40,15 +41,17 @@ def home(request):
                 form2 = PatientForm(request.POST)
                 patients = User.objects.filter(groups__name="Patient")
                 if user.groups.filter(name="Doctor"):
-                    appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id)
+                    appointments = Appointment.objects.filter(doctor = Doctor.objects.get(user_id = request.user.id).id,date=datetime.date.today())
                     count = appointments.count()
                     print(user)
                     data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
                 if user.groups.filter(name="Staff"):
                     appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+                    cappointments = Appointment.objects.filter(stat = "CONFIRMED")
                     count = appointments.count()
-                    data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
+                    ccount = cappointments.count()
+                    data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"cappointments":cappointments,"count":count,"ccount":ccount}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
                 else:
                     data = {"form1":form1, "form2":form2, "patients":patients}
@@ -58,8 +61,9 @@ def home(request):
                 age = relativedelta(datetime.date.today(),record.bday)
                 days = age.days
                 months = age.months
+                weeks = age.weeks
                 years = age.years
-                data = {'record':record,'days':days,'months':months,'years':years}
+                data = {'record':record,'days':days,'months':months,'years':years, 'weeks':weeks}
                 return render(request, 'vaccinerecordapp/patient-landing.html',data)
         else:
             messages.error(request,"Invalid Email or Password")
@@ -92,7 +96,7 @@ def create_record(request,username):
         form = PatientRecordForm({'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
                                         'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
                                         'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                        'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
                                         'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
                                         'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
                                         'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
@@ -112,7 +116,7 @@ def create_record(request,username):
             print(form.errors)
     else:
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled is filled correctly.")
-    data = {"form":form, "patients":patients,"username":username}
+    data = {"form":form, "patients":patients,"username":username, }
     return render(request, 'vaccinerecordapp/account-creation/create-patient-record.html',data)
 
 def update_patient_profile(request,pk):
@@ -121,6 +125,8 @@ def update_patient_profile(request,pk):
     record = PatientRecord.objects.get(id = pk)
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
+    weeks = age.weeks
+    # weeks = (days/7)
     months = age.months
     years = age.years
     if(request.method=="POST"):   
@@ -128,7 +134,7 @@ def update_patient_profile(request,pk):
         form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
                                         'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
                                         'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                        'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
                                         'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
                                         'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
                                         'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
@@ -143,11 +149,12 @@ def update_patient_profile(request,pk):
             age = relativedelta(datetime.date.today(),record.bday)
             days = age.days
             months = age.months
+            weeks = age.weeks
             years = age.years
-            data = {'record':record,'days':days,'months':months,'years':years}
+            data = {'record':record,'days':days,'months':months,'years':years,'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
             return render(request, "vaccinerecordapp/patient-landing.html",data)
     
-    data = {'record':record,'days':days,'months':months,'years':years,'form':form}
+    data = {'record':record,'days':days,'months':months,'years':years,'form':form, 'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
     return render(request, "vaccinerecordapp/update-patient-profile.html", data)
 
 def update_profile(request,pk):
@@ -160,7 +167,7 @@ def update_profile(request,pk):
         form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
                                         'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
                                         'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                        'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
                                         'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
                                         'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
                                         'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
@@ -175,15 +182,17 @@ def update_profile(request,pk):
             age = relativedelta(datetime.date.today(),record.bday)
             days = age.days
             months = age.months
+            weeks = age.weeks
             years = age.years
-            data = {'record':record,'days':days,'months':months,'years':years}
+            data = {'record':record,'days':days,'months':months,'years':years, 'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
             return render(request, "vaccinerecordapp/search-patient.html",data)
     record = PatientRecord.objects.get(id = pk)
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
     months = age.months
+    weeks = age.weeks
     years = age.years
-    data = {'record':record,'days':days,'months':months,'years':years,'form':form}
+    data = {'record':record,'days':days,'months':months,'years':years,'form':form, 'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
     return render(request, "vaccinerecordapp/update-profile.html", data)
 
 def create_patient(request):
@@ -302,8 +311,14 @@ def create_staff(request):
                 group = Group.objects.get(name="doctor")
                 user = User.objects.get(username = form1.cleaned_data.get("username"))
                 user.groups.add(group) 
+
+            appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+            cappointments = Appointment.objects.filter(stat = "CONFIRMED")
+            count = appointments.count()
+            ccount = cappointments.count()
+            data = {"form1":form1, "form2":form2, "appointments":appointments,"cappointments":cappointments,"count":count,"ccount":ccount}
             
-            return redirect('/dashboard')
+            return render(request, 'vaccinerecordapp/dashboard.html',data)
         else:
             print(form2.errors)
     else:
@@ -324,8 +339,9 @@ def display_vaccine_record(request,pk):
         age = relativedelta(datetime.date.today(),record.bday)
         days = age.days
         months = age.months
+        weeks = age.weeks
         years = age.years
-        data = {"record":record, "vaccine":vaccine, "form":form,'days':days,'months':months,'years':years}
+        data = {"record":record, "vaccine":vaccine, "form":form,'days':days,'months':months,'years':years, 'weeks':weeks}
         return render(request, 'vaccinerecordapp/display-vaccine.html',data)
     else:
         return create_vaccine_record(request,pk)
@@ -336,8 +352,9 @@ def create_vaccine_record(request,pk):
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
     months = age.months
+    weeks = age.weeks
     years = age.years
-    data = {"record":record, "form":form,'days':days,'months':months,'years':years}
+    data = {"record":record, "form":form,'days':days,'months':months,'years':years, 'weeks':weeks}
     return render(request,'vaccinerecordapp/vaccine-record.html',data)
 
 def vaccine_record(request):
@@ -438,6 +455,7 @@ def update_vaccine(request,pk):
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
     months = age.months
+    weeks = age.weeks
     years = age.years
 
     if(request.method=="POST"):   
@@ -511,10 +529,10 @@ def update_vaccine(request,pk):
         if(form.is_valid()):
             form.save()
             record = PatientRecord.objects.get(id = pk)
-            data = {"record":record,'days':days,'months':months,'years':years}
+            data = {"record":record,'days':days,'months':months,'years':years, 'weeks':weeks}
             return render(request, "vaccinerecordapp/search-patient.html",data)
 
-    data = {"record":record, "form":form,'days':days,'months':months,'years':years}
+    data = {"record":record, "form":form,'days':days,'months':months,'years':years, 'weeks':weeks}
     return render(request, "vaccinerecordapp/update-vaccine.html", data) 
 
 @login_required(login_url='/')
@@ -547,6 +565,7 @@ def appointment(request,pk):
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
     months = age.months
+    weeks = age.weeks
     years = age.years
     form = AppointmentForm(request.POST)
     user = User.objects.get(username=request.user.username)
@@ -579,8 +598,9 @@ def appointment(request,pk):
                 age = relativedelta(datetime.date.today(),record.bday)
                 days = age.days
                 months = age.months
+                weeks = age.weeks
                 years = age.years
-                data = {"record":record,'days':days,'months':months,'years':years}
+                data = {"record":record,'days':days,'months':months,'years':years, 'weeks':weeks}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
         else:
             if request.user.groups.filter(name="patient"):
@@ -588,15 +608,16 @@ def appointment(request,pk):
                 age = relativedelta(datetime.date.today(),record.bday)
                 days = age.days
                 months = age.months
+                weeks = age.weeks
                 years = age.years
-                data = {"record":record,'days':days,'months':months,'years':years}
+                data = {"record":record,'days':days,'months':months,'years':years, 'weeks':weeks}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
         
         appointments = Appointment.objects.filter(user = record.user)
         count = appointments.count()
-        data = {'appointments':appointments,'count':count,'record':record,'form':form,'days':days,'months':months,'years':years}
+        data = {'appointments':appointments,'count':count,'record':record,'form':form,'days':days,'months':months,'years':years, 'weeks':weeks}
         return render(request, 'vaccinerecordapp/appointment.html',data)
-    data = {"form":form, "appointments": appointments, "count": count,"record":record,'days':days,'months':months,'years':years}
+    data = {"form":form, "appointments": appointments, "count": count,"record":record,'days':days,'months':months,'years':years, 'weeks':weeks}
     return render(request, 'vaccinerecordapp/appointment.html',data)                          
 
 @login_required(login_url='/')
@@ -605,9 +626,11 @@ def patient_profile(request,pk):
     record = PatientRecord.objects.get(id=pk)
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
+    weeks = age.weeks
     months = age.months
     years = age.years
-    data = {"record":record,'days':days,'months':months,'years':years,'form':form}
+
+    data = {"record":record,'days':days,'months':months,'years':years,'form':form,'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
     # username = User.objects.get(id=User.objects.get(id=pk).id)
     # print(username)
     # record = PatientRecord.objects.get(user=PatientRecord.objects.get(user=username).user)
@@ -633,6 +656,13 @@ def create_patient_record(request):
 @login_required(login_url='/')
 def tool(request): 
     patients = PatientRecord.objects.all()
+
+    from_str = request.GET.get("from")
+    to_str = request.GET.get("to")
+    print(from_str)
+    print(to_str)
+
+    
 
     bcg_con = 0 
     bcg_not = 0
@@ -690,15 +720,21 @@ def tool(request):
     flu_no = 0
     
     for patient in patients:
+
+        age = relativedelta(datetime.date.today(),patient.bday)
+        days = age.days
+        months = age.months
+        years = age.years
+
         print(patient.user)
         vaccine = Vaccine.objects.get(user = patient.user)
         print("bcg")
+
         if(vaccine.bcg_date is None):
                 print("no appt")
                 if(Appointment.objects.filter(user = patient.user).count() == 0):
                     bcg_no += 1
-                    print("+noo")
-                    
+                    print("+noo")  
                 else:
                     print("yes appt")
                     appt = Appointment.objects.filter(user=patient.user)
@@ -761,6 +797,7 @@ def tool(request):
             #dtap2
         
         if(vaccine.dtap1_date is not None):
+            if(vaccine.dtap2_date is None):
                 print("dtap2")
                 if((datetime.date.today()-vaccine.dtap1_date).days > 28): 
                     print("check vacc")
@@ -796,6 +833,7 @@ def tool(request):
                                             continue
             #dtap3
         if(vaccine.dtap2_date is not None):
+            if(vaccine.dtap3_date is None):
                 print("dtap3")
                 if((datetime.date.today()-vaccine.dtap2_date).days > 28): 
                     print("check vacc")
@@ -831,72 +869,74 @@ def tool(request):
                                             continue
             #dtap booster 1
         if(vaccine.dtap3_date is not None):
-            if((datetime.date.today()-patient.bday).days > 350):
-                    print("dtapboost1")
-                    if(Appointment.objects.filter(user = patient.user).count() == 0):
-                        print("no appt")
-                        dtap_no += 1
-                        print("+noo")
-                        
-                    else:
-                        print("yes appt")
-                        appt = Appointment.objects.filter(user=patient.user)
-                        print("pumasok filter")
-                        print(appt)
-                        for app in appt:
-                            print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            dtap_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            dtap_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            dtap_no += 1
-                                            print("+no")
-                                            continue
+            if(vaccine.dtap4_date is None):
+                if((datetime.date.today()-patient.bday).days > 350):
+                        print("dtapboost1")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            dtap_no += 1
+                            print("+noo")
+                            
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                dtap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                dtap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                dtap_no += 1
+                                                print("+no")
+                                                continue
             #dtap booster 2
         if(vaccine.dtap4_date is not None):
-            if((datetime.date.today()-patient.bday).days > 1400):
-                    print("dtapboost2")
-                    if(Appointment.objects.filter(user = patient.user).count() == 0):
-                        print("no appt")
-                        dtap_no += 1
-                        print("+noo")
-                        
-                    else:
-                        print("yes appt")
-                        appt = Appointment.objects.filter(user=patient.user)
-                        print("pumasok filter")
-                        print(appt)
-                        for app in appt:
-                            print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            dtap_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            dtap_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            dtap_no += 1
-                                            print("+no")
-                                            continue
+            if(vaccine.dtap5_date is None):
+                if((datetime.date.today()-patient.bday).days > 1400):
+                        print("dtapboost2")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            dtap_no += 1
+                            print("+noo")
+                            
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                dtap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                dtap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                dtap_no += 1
+                                                print("+no")
+                                                continue
                     
             #hepb1
         
@@ -934,70 +974,72 @@ def tool(request):
                                             continue
             #hepb2
         if(vaccine.hepb1_date is not None):
-            if((datetime.date.today()-patient.bday).days > 30):
-                    print("hepb2")
-                    if(Appointment.objects.filter(user = patient.user).count() == 0):
-                        print("no appt")
-                        hepb_no += 1
-                        print("+noo")
-                    else:
-                        print("yes appt")
-                        appt = Appointment.objects.filter(user=patient.user)
-                        print("pumasok filter")
-                        print(appt)
-                        for app in appt:
-                            print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            hepb_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            hepb_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            hepb_no += 1
-                                            print("+no")
-                                            continue
+            if(vaccine.hepb2_date is None):
+                if((datetime.date.today()-patient.bday).days > 30):
+                        print("hepb2")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hepb_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hepb_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hepb_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hepb_no += 1
+                                                print("+no")
+                                                continue
             #hepb3
         if(vaccine.hepb2_date is not None):
-            if((datetime.date.today()-patient.bday).days > 180):
-                    print("hepb3")
-                    if(Appointment.objects.filter(user = patient.user).count() == 0):
-                        print("no appt")
-                        hepb_no += 1
-                        print("+noo")
-                    else:
-                        print("yes appt")
-                        appt = Appointment.objects.filter(user=patient.user)
-                        print("pumasok filter")
-                        print(appt)
-                        for app in appt:
-                            print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            hepb_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            hepb_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            hepb_no += 1
-                                            print("+no")
-                                            continue
+            if(vaccine.hepb3_date is None):
+                if((datetime.date.today()-patient.bday).days > 180):
+                        print("hepb3")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hepb_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hepb_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hepb_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hepb_no += 1
+                                                print("+no")
+                                                continue
             #hib1
         if((datetime.date.today()-patient.bday).days > 42):
                     print("hib1")
@@ -1033,77 +1075,113 @@ def tool(request):
                     
             #hib2
         if(vaccine.hib1_date is not None):
-            if((datetime.date.today()-vaccine.hib1_date).days > 28):
-                        print("hib2")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            hib_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hib_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hib_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hib_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.hib2_date is None):
+                if((datetime.date.today()-vaccine.hib1_date).days > 28):
+                            print("hib2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                hib_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hib_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hib_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hib_no += 1
+                                                    print("+no")
+                                                    continue
                 #hib3
-        if(vaccine.hib2_date is not None):        
-            if((datetime.date.today()-vaccine.hib2_date).days > 28):
-                        print("hib3")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            hib_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hib_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hib_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hib_no += 1
-                                                print("+no")
-                                                continue
+        if(vaccine.hib2_date is not None):   
+            if(vaccine.hib3_date is None):     
+                if((datetime.date.today()-vaccine.hib2_date).days > 28):
+                            print("hib3")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                hib_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hib_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hib_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hib_no += 1
+                                                    print("+no")
+                                                    continue
                 #hib booster1
         if(vaccine.hib3_date is not None):
-            if((datetime.date.today()-vaccine.hib3_date).days > 180):
-                        print("hib4")
+            if(vaccine.hib4_date is None):
+                if((datetime.date.today()-vaccine.hib3_date).days > 180):
+                            print("hib4")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                hib_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hib_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hib_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hib_no += 1
+                                                    print("+no")
+                                                    continue
+            #hpv11
+        if(8<years<15):
+            if(vaccine.hpv11_date is None):
+                        print("hpv11")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
-                            hib_no += 1
+                            hpv_no += 1
                             print("+noo")
                         else:
                             print("yes appt")
@@ -1119,27 +1197,157 @@ def tool(request):
                                 if ((app.date - curr_date).days > 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
-                                                hib_con += 1
+                                                hpv_con += 1
                                                 print("+con")
                                                 continue
                                             elif (app.stat == "UNCONFIRMED"):
-                                                hib_not += 1
+                                                hpv_not += 1
                                                 print("+not")
                                                 continue
                                             else:
-                                                hib_no += 1
+                                                hpv_no += 1
                                                 print("+no")
                                                 continue
-            #hpv11
-
-            #hpv12
-
-            #hpv21
-
-            #hpv22
-
-            #hpv3
-
+        #hpv12
+        if(vaccine.hpv11_date is not None):
+            if(vaccine.hpv12_date is None):
+                if(9<years<15):
+                    if ((datetime.date.today()-vaccine.hpv11_date).days > 180):
+                        print("hpv12")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hpv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hpv_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hpv_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hpv_no += 1
+                                                print("+no")
+                                                continue
+        #hpv21
+        if(years>=15):
+            if(vaccine.hpv11_date is None):
+                if(vaccine.hpv21_date is None):
+                        print("hpv21")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hpv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hpv_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hpv_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hpv_no += 1
+                                                print("+no")
+                                                continue
+        #hpv22
+        if(vaccine.hpv21_date is not None):
+            if(vaccine.hpv22_date is None):
+                if(years>=15):
+                    if ((datetime.date.today()-vaccine.hpv21_date).days > 120):
+                        print("hpv22")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hpv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hpv_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hpv_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hpv_no += 1
+                                                print("+no")
+                                                continue
+        #hpv3
+        if(vaccine.hpv22_date is not None):
+            if(vaccine.hpv23_date is None):
+                if(years>=15):
+                    if ((datetime.date.today()-vaccine.hpv22_date).days > 180):
+                        print("hpv23")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hpv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hpv_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hpv_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hpv_no += 1
+                                                print("+no")
+                                                continue
+ 
             #inactivehepa1
         if((datetime.date.today()-patient.bday).days > 360):
                     print("hepaa1")
@@ -1161,50 +1369,51 @@ def tool(request):
                             if ((app.date - curr_date).days > 0):
                                         print("hi")
                                         if (app.stat == "CONFIRMED"):
-                                            hib_con += 1
+                                            hepaa_con += 1
                                             print("+con")
                                             continue
                                         elif (app.stat == "UNCONFIRMED"):
-                                            hib_not += 1
+                                            hepaa_not += 1
                                             print("+not")
                                             continue
                                         else:
-                                            hib_no += 1
+                                            hepaa_no += 1
                                             print("+no")
                                             continue
             #inactivehepa2
         if(vaccine.hepa1_date is not None):
-            if((datetime.date.today()-vaccine.hepa1_date).days > 180):
-                        print("hepaa2")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            hepaa_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hepaa_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hepaa_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hepaa_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.hepa2_date is None):
+                if((datetime.date.today()-vaccine.hepa1_date).days > 180):
+                            print("hepaa2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                hepaa_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hepaa_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hepaa_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hepaa_no += 1
+                                                    print("+no")
+                                                    continue
             #inf1
         if((datetime.date.today()-patient.bday).days > 180):
                     print("inf1")
@@ -1239,37 +1448,38 @@ def tool(request):
                                             continue
             #inf2
         if(vaccine.inf1_date is not None):
-            if((datetime.date.today()-vaccine.inf1_date).days > 28):
-                        print("inf2")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            inf_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                inf_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                inf_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                inf_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.inf2_date is None):
+                if((datetime.date.today()-vaccine.inf1_date).days > 28):
+                            print("inf2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                inf_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    inf_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    inf_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    inf_no += 1
+                                                    print("+no")
+                                                    continue
             #annual flu
         if(vaccine.anf_date is None):
                 if((datetime.date.today()-patient.bday).days > 360):
@@ -1370,41 +1580,77 @@ def tool(request):
                                             continue
             #ipv/opv2
         if(vaccine.ipv1_date is not None):
-            if((datetime.date.today()-patient.ipv1_date).days > 28):
-                        print("ipv2")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            opv_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                opv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                opv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                opv_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.ipv2_date is None):
+                if((datetime.date.today()-patient.ipv1_date).days > 28):
+                            print("ipv2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                opv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    opv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    opv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    opv_no += 1
+                                                    print("+no")
+                                                    continue
                 #ipv/opv3
         if(vaccine.ipv2_date is not None):
-            if((datetime.date.today()-patient.ipv2_date).days > 28):
-                        print("ipbv3")
+            if(vaccine.ipv3_date is None):
+                if((datetime.date.today()-patient.ipv2_date).days > 28):
+                            print("ipbv3")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                opv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    opv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    opv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    opv_no += 1
+                                                    print("+no")
+                                                    continue
+            #ipv/opv booster 1
+        if(vaccine.ipv3_date is not None):
+            if(vaccine.ipv4_date is None):
+                if((datetime.date.today()-patient.bday).days > 360):
+                        print("ipv boost1")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
                             opv_no += 1
@@ -1434,72 +1680,40 @@ def tool(request):
                                                 opv_no += 1
                                                 print("+no")
                                                 continue
-            #ipv/opv booster 1
-        if(vaccine.ipv3_date is not None):
-            if((datetime.date.today()-patient.bday).days > 360):
-                    print("ipv boost1")
-                    if(Appointment.objects.filter(user = patient.user).count() == 0):
-                        print("no appt")
-                        opv_no += 1
-                        print("+noo")
-                    else:
-                        print("yes appt")
-                        appt = Appointment.objects.filter(user=patient.user)
-                        print("pumasok filter")
-                        print(appt)
-                        for app in appt:
-                            print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            opv_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            opv_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            opv_no += 1
-                                            print("+no")
-                                            continue
             #ipv/opv booster 2
         if(vaccine.ipv4_date is not None):
-            if((datetime.date.today()-patient.bday).days > 1440):
-                    print("hepaa boost 2")
-                    if(Appointment.objects.filter(user = patient.user).count() == 0):
-                        print("no appt")
-                        opv_no += 1
-                        print("+noo")
-                    else:
-                        print("yes appt")
-                        appt = Appointment.objects.filter(user=patient.user)
-                        print("pumasok filter")
-                        print(appt)
-                        for app in appt:
-                            print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            opv_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            opv_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            opv_no += 1
-                                            print("+no")
-                                            continue
+            if(vaccine.ipv5_date is None):
+                if((datetime.date.today()-patient.bday).days > 1440):
+                        print("hepaa boost 2")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            opv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                opv_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                opv_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                opv_no += 1
+                                                print("+no")
+                                                continue
             #japencb1
         if((datetime.date.today()-patient.bday).days > 270):
                     print("jap1")
@@ -1534,37 +1748,38 @@ def tool(request):
                                             continue
             #japencb2
         if(vaccine.japb1_date is not None):
-            if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
-                        print("jap2")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            jap_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                jap_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                jap_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                jap_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.japb2_date is None):
+                if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
+                            print("jap2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                jap_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    jap_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    jap_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    jap_no += 1
+                                                    print("+no")
+                                                    continue
             #msl
                 #note: sakop two cases either way ; needs fixing
         if(((datetime.date.today()-patient.bday).days > 180) | 
@@ -1600,7 +1815,39 @@ def tool(request):
                                             print("+no")
                                             continue
             #meninggo vax
-
+        if(1<years<56):
+            if(vaccine.men_date is None):
+                if(((datetime.date.today()-patient.bday).days > 720) and ((datetime.date.today()-patient.bday).days < 19800)):
+                    print("mcc1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        mcc_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            curr_date = datetime.date.today()
+                            print(curr_date)
+                            print(app.date)
+                            print(app.stat)
+                            if ((app.date - curr_date).days > 0):
+                                        print("hi")
+                                        if (app.stat == "CONFIRMED"):
+                                            mcc_con += 1
+                                            print("+con")
+                                            continue
+                                        elif (app.stat == "UNCONFIRMED"):
+                                            mcc_not += 1
+                                            print("+not")
+                                            continue
+                                        else:
+                                            msl_no += 1
+                                            print("+no")
+                                            continue
 
             #mmr1
         if((datetime.date.today()-patient.bday).days > 360):
@@ -1636,38 +1883,39 @@ def tool(request):
                                             continue
             #mmr2
         if(vaccine.mmr1_date is not None):
-            if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
-                    ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
-                        print("mmr2")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            mmr_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                mmr_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                mmr_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                mmr_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.mmr2_date is None):
+                if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+                        ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
+                            print("mmr2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                mmr_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    mmr_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    mmr_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    mmr_no += 1
+                                                    print("+no")
+                                                    continue
             #pcv1
         if(1440 < (datetime.date.today()-patient.bday).days > 42):
                     print("pcv1")
@@ -1702,103 +1950,106 @@ def tool(request):
                                             continue
             #pcv2
         if(vaccine.pcv1_date is not None):
-            if((datetime.date.today()-vaccine.pcv1_date).days > 28):
-                        print("pcv2")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            pcv_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                pcv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                pcv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                pcv_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.pcv2_date is None):
+                if((datetime.date.today()-vaccine.pcv1_date).days > 28):
+                            print("pcv2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                pcv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    pcv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    pcv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    pcv_no += 1
+                                                    print("+no")
+                                                    continue
                 #pcv3
-        if(vaccine.pcv2_date is not None):        
-            if((datetime.date.today()-vaccine.pcv2_date).days > 28):
-                        print("pcv3")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            pcv_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                pcv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                pcv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                pcv_no += 1
-                                                print("+no")
-                                                continue
+        if(vaccine.pcv2_date is not None):
+            if(vaccine.pcv3_date is None):        
+                if((datetime.date.today()-vaccine.pcv2_date).days > 28):
+                            print("pcv3")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                pcv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    pcv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    pcv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    pcv_no += 1
+                                                    print("+no")
+                                                    continue
                 #pcv booster1
         if(vaccine.pcv3_date is not None):
-            if((datetime.date.today()-patient.pcv3_date).days > 180):
-                        print("pcvboost")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            pcv_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                pcv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                pcv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                pcv_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.pcv4_date is None):
+                if((datetime.date.today()-patient.pcv3_date).days > 180):
+                            print("pcvboost")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                pcv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    pcv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    pcv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    pcv_no += 1
+                                                    print("+no")
+                                                    continue
             #rota1
         if((datetime.date.today()-patient.bday).days > 42):
                     print("rota1")
@@ -1833,70 +2084,72 @@ def tool(request):
                                             continue
             #rota2
         if(vaccine.rota1_date is not None):
-            if((datetime.date.today()-vaccine.rota1_date).days > 28):
-                        print("rota2")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            rota_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                rota_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                rota_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                rota_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.rota2_date is None):
+                if((datetime.date.today()-vaccine.rota1_date).days > 28):
+                            print("rota2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                rota_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    rota_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    rota_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    rota_no += 1
+                                                    print("+no")
+                                                    continue
                 #rota3
-        if(vaccine.rota2_date is not None):        
-            if((datetime.date.today()-vaccine.rota2_date).days > 28):
-                        print("rota3")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            rota_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                rota_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                rota_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                rota_no += 1
-                                                print("+no")
-                                                continue
+        if(vaccine.rota2_date is not None):      
+            if(vaccine.rota3_date is None):  
+                if((datetime.date.today()-vaccine.rota2_date).days > 28):
+                            print("rota3")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                rota_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    rota_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    rota_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    rota_no += 1
+                                                    print("+no")
+                                                    continue
             #td
         if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
                     print("td")
@@ -2031,38 +2284,39 @@ def tool(request):
                                             continue
             #var2
         if(vaccine.var1_date is not None):
-            if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |    
-                    ((datetime.date.today()-vaccine.var1_date).days > 90)):
-                        print("var2")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            var_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                var_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                var_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                var_no += 1
-                                                print("+no")
-                                                continue
+            if(vaccine.var2_date is None):
+                if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |    
+                        ((datetime.date.today()-vaccine.var1_date).days > 90)):
+                            print("var2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                var_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    var_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    var_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    var_no += 1
+                                                    print("+no")
+                                                    continue
         
     bcg_total = bcg_no + bcg_con + bcg_not
     hepb_total = hepb_no + hepb_con + hepb_not
@@ -2112,21 +2366,13 @@ def staff(request):
     return render(request, 'vaccinerecordapp/tool/staff.html',data)
 
 @login_required(login_url='/')
-def patient_landing(request):
-    current_user = request.user
-    if current_user.groups.filter(name = "Patient"):
-        patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
-    data = {'patient':patient}
+def patient_landing(request, pk):
+    patients = PatientRecord.objects.all()
+    record = PatientRecord.objects.get(id = pk)
+    appt = Appointment.objects.get(user=patient.user)
+    data = {'patients':patients, "record":record, "appt":appt}
     return render(request, 'vaccinerecordapp/patient-landing.html',data)
     
-
-@login_required(login_url='/')
-def portal(request): 
-    form1 = UserForm(request.POST)
-    form2 = PatientForm(request.POST)
-    patients = User.objects.filter(groups__name="Patient")
-    data = {"form1":form1, "form2":form2, "patients":patients}
-    return render(request, 'vaccinerecordapp/portal.html',data)
 
 def passwordReset(request): 
     if request.method == "POST":
@@ -2177,11 +2423,54 @@ def confirm_appointment(request,pk):
 @login_required(login_url='/')
 def reject_appointment(request,pk):
     appointment = Appointment.objects.get(id = pk)
+    email = appointment.user.email
+    username = appointment.user.username
+    subject = "Appointment update: "
+    message = "<h1>Hello " + username +", good day!</h1> <br><br>This is to inform you that your request for an appointment has been denied. Please contact your doctor to set a valid time, date, and location for your appointment. Thank you!"
+    from_email = settings.EMAIL_HOST_USER
+    recepient_list = [email]
+    # send_mail(subject, message, from_email, recepient_list)
+    email = EmailMessage(
+        subject,
+        message,
+        from_email,
+        recepient_list
+    )
+    email.content_subtype = 'html'
+    email.send()
     appointment.delete()
     appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
     count = appointments.count()
     data = {'appointments':appointments, 'count':count}
     return render(request,'vaccinerecordapp/confirm-appointment.html',data)
+
+@login_required(login_url='/')
+def reschedule_appointment(request,pk):
+    appointment = Appointment.objects.get(id = pk)
+    form = AppointmentForm(instance=appointment)
+    if(request.method == 'POST'):
+        record = PatientRecord.objects.get(user = appointment.user)
+        age = relativedelta(datetime.date.today(),record.bday)
+        days = age.days
+        months = age.months
+        weeks = age.weeks
+        years = age.years
+        form = AppointmentForm({ 'user':record.user, 
+            'patient_username': record.user.username,
+            'date': request.POST.get('date'),
+            'time': request.POST.get('time'),
+            'doctor': record.doctor_assigned,
+            'visit': request.POST.get('visit'),
+            'location': request.POST.get('location'),
+            'stat': 'UNCONFIRMED'},instance=appointment)
+        if(form.is_valid):
+            form.save()
+        appointments = Appointment.objects.filter(user = record.user)
+        count = appointments.count()
+        data = {'appointments':appointments,'count':count,'record':record,'form':form,'days':days,'months':months,'years':years, 'weeks':weeks}
+        return render(request, 'vaccinerecordapp/appointment.html',data)
+    data = {'form':form, 'pk':pk}
+    return render(request,'vaccinerecordapp/reschedule-appointment.html',data)
 
 # certificate tab
 
@@ -2191,9 +2480,10 @@ def certificate_md(request,pk):
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
     months = age.months
+    weeks = age.weeks
     years = age.years
     curr_date = datetime.date.today()
-    data = {"record":record,'days':days,'months':months,'years':years, 'date':curr_date}
+    data = {"record":record,'days':days,'months':months,'years':years, 'date':curr_date, 'weeks':weeks}
     return render(request, 'vaccinerecordapp/vaccine-certificate-md.html',data )
 
 @login_required(login_url='/')
@@ -2202,8 +2492,9 @@ def certificate_pt(request,pk):
     age = relativedelta(datetime.date.today(),record.bday)
     days = age.days
     months = age.months
+    weeks = age.weeks
     years = age.years
-    data = {"record":record,'days':days,'months':months,'years':years,}
+    data = {"record":record,'days':days,'months':months,'years':years, 'weeks':weeks}
     return render(request, 'vaccinerecordapp/vaccine-certificate-pt.html',data )
 
 # for generating pdf
@@ -2234,6 +2525,7 @@ class GeneratePDF_MD(View):
             age = relativedelta(datetime.date.today(),record.bday)
             days = age.days
             months = age.months
+            weeks = age.weeks
             years = age.years
         except:
             return HttpResponse("505 Not Found")
@@ -2242,7 +2534,7 @@ class GeneratePDF_MD(View):
             'first_name': record.first_name,
             'middle_name': record.middle_name,
             'last_name': record.last_name,
-            'age': f"{years} years, {months} months, {days} days",
+            'age': f"{years} years, {months} months, {weeks} weeks",
             'city': record.city,
             'doctor_assigned': record.doctor_assigned,
             'date': curr_date,
@@ -2265,6 +2557,7 @@ class GeneratePDF_PT(View):
             age = relativedelta(datetime.date.today(),record.bday)
             days = age.days
             months = age.months
+            weeks = age.weeks
             years = age.years
         except:
             return HttpResponse("505 Not Found")
@@ -2272,7 +2565,7 @@ class GeneratePDF_PT(View):
             'first_name': record.first_name,
             'middle_name': record.middle_name,
             'last_name': record.last_name,
-            'age': f"{years} years, {months} months, {days} days",
+            'age': f"{years} years, {months} months, {weeks} weeks",
             'city': record.city,
             'doctor_assigned': record.doctor_assigned,
             'username': username,
@@ -2284,8 +2577,1765 @@ class GeneratePDF_PT(View):
         return HttpResponse(pdf, content_type='application/pdf')
 
 @login_required(login_url='/')
-def report(request):
-    return render(request,'vaccinerecordapp/tool/report.html')
+def report(request): 
+    patients = PatientRecord.objects.all()
+
+    from_str = request.GET.get("from")
+    to_str = request.GET.get("to")
+    print(from_str)
+    print(to_str)
+
+    from_obj = datetime.datetime.strptime(from_str, '%m/%d/%Y')
+    to_obj = datetime.datetime.strptime(to_str, '%m/%d/%Y')
+    print(from_obj)
+    print(to_obj)
+
+    from_date = from_obj.date()
+    to_date = to_obj.date()
+    print(from_date)
+    print(to_date)
+
+    bcg_con = 0 
+    bcg_not = 0
+    bcg_no = 0
+    hepb_con = 0
+    hepb_not = 0
+    hepb_no = 0
+    dtap_con = 0
+    dtap_not = 0
+    dtap_no = 0
+    opv_con = 0
+    opv_not = 0
+    opv_no = 0
+    hib_con = 0
+    hib_not = 0
+    hib_no = 0
+    pcv_con = 0
+    pcv_not = 0
+    pcv_no = 0
+    rota_con = 0
+    rota_not = 0
+    rota_no = 0
+    msl_con = 0
+    msl_not = 0
+    msl_no = 0
+    mmr_con = 0
+    mmr_not = 0
+    mmr_no = 0
+    var_con = 0
+    var_not = 0
+    var_no = 0
+    inf_con = 0
+    inf_not = 0
+    inf_no = 0
+    jap_con = 0
+    jap_not = 0
+    jap_no = 0
+    hepaa_con = 0
+    hepaa_not = 0
+    hepaa_no = 0
+    mcc_con = 0
+    mcc_not = 0
+    mcc_no = 0
+    typ_con = 0
+    typ_not = 0
+    typ_no = 0
+    tdap_con = 0
+    tdap_not = 0
+    tdap_no = 0
+    hpv_con = 0
+    hpv_not = 0
+    hpv_no = 0
+    flu_con = 0
+    flu_not = 0
+    flu_no = 0
+    
+    for patient in patients:
+
+        age = relativedelta(datetime.date.today(),patient.bday)
+        days = age.days
+        months = age.months
+        years = age.years
+
+        print(patient.user)
+        vaccine = Vaccine.objects.get(user = patient.user)
+        print("bcg")
+
+        if(vaccine.bcg_date is None):
+                print("no appt")
+                if(Appointment.objects.filter(user = patient.user).count() == 0):
+                    bcg_no += 1
+                    print("+noo")  
+                else:
+                    print("yes appt")
+                    appt = Appointment.objects.filter(user=patient.user)
+                    print("pumasok filter")
+                    print(appt)
+                    for app in appt:
+                        print("pumasok loop")
+                        if( from_date <= app.date <= to_date):
+                            curr_date = datetime.date.today()
+                            print(curr_date)
+                            print(app.date)
+                            print(app.stat)
+                            if ((app.date - curr_date).days > 0):
+                                        print("hi")
+                                        if (app.stat == "CONFIRMED"):
+                                            bcg_con += 1
+                                            print("+con")
+                                            continue
+                                        elif (app.stat == "UNCONFIRMED"):
+                                            bcg_not += 1
+                                            print("+not")
+                                            continue
+                                        else:
+                                            bcg_no += 1
+                                            print("+no")
+                                            continue
+            #dtap1
+        print("dtap1")
+        if((datetime.date.today()-patient.bday).days > 42):
+                    print("check vacc")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        dtap_no += 1
+                        print("+noo")
+                        
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                dtap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                dtap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                dtap_no += 1
+                                                print("+no")
+                                                continue
+            #dtap2
+        
+        if(vaccine.dtap1_date is not None):
+            if(vaccine.dtap2_date is None):
+                print("dtap2")
+                if((datetime.date.today()-vaccine.dtap1_date).days > 28): 
+                    print("check vacc")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        dtap_no += 1
+                        print("+noo")
+                        
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if(from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                dtap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                dtap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                dtap_no += 1
+                                                print("+no")
+                                                continue
+            #dtap3
+        if(vaccine.dtap2_date is not None):
+            if(vaccine.dtap3_date is None):
+                print("dtap3")
+                if((datetime.date.today()-vaccine.dtap2_date).days > 28): 
+                    print("check vacc")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        dtap_no += 1
+                        print("+noo")
+                        
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                dtap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                dtap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                dtap_no += 1
+                                                print("+no")
+                                                continue
+            #dtap booster 1
+        if(vaccine.dtap3_date is not None):
+            if(vaccine.dtap4_date is None):
+                if((datetime.date.today()-patient.bday).days > 350):
+                    print("dtapboost1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        dtap_no += 1
+                        print("+noo")
+                        
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                dtap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                dtap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                dtap_no += 1
+                                                print("+no")
+                                                continue
+            #dtap booster 2
+        if(vaccine.dtap4_date is not None):
+            if(vaccine.dtap5_date is None):
+                if((datetime.date.today()-patient.bday).days > 1400):
+                        print("dtapboost2")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            dtap_no += 1
+                            print("+noo")
+                            
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    dtap_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    dtap_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    dtap_no += 1
+                                                    print("+no")
+                                                    continue
+                    
+            #hepb1
+        
+        if(vaccine.hepb1_date is None):
+                    print("hepb1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        hepb_no += 1
+                        print("+noo")
+                        
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hepb_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hepb_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hepb_no += 1
+                                                print("+no")
+                                                continue
+            #hepb2
+        if(vaccine.hepb1_date is not None):
+            if(vaccine.hepb2_date is None):
+                if((datetime.date.today()-patient.bday).days > 30):
+                        print("hepb2")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hepb_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hepb_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hepb_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hepb_no += 1
+                                                    print("+no")
+                                                    continue
+            #hepb3
+        if(vaccine.hepb2_date is not None):
+            if(vaccine.hepb3_date is None):
+                if((datetime.date.today()-patient.bday).days > 180):
+                        print("hepb3")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hepb_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hepb_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hepb_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hepb_no += 1
+                                                    print("+no")
+                                                    continue
+            #hib1
+        if((datetime.date.today()-patient.bday).days > 42):
+                    print("hib1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        hib_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hib_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hib_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hib_no += 1
+                                                print("+no")
+                                                continue
+                    
+            #hib2
+        if(vaccine.hib1_date is not None):
+            if(vaccine.hib2_date is None):
+                if((datetime.date.today()-vaccine.hib1_date).days > 28):
+                            print("hib2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                hib_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        hib_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        hib_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        hib_no += 1
+                                                        print("+no")
+                                                        continue
+                #hib3
+        if(vaccine.hib2_date is not None):
+            if(vaccine.hib3_date is None):        
+                if((datetime.date.today()-vaccine.hib2_date).days > 28):
+                            print("hib3")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                hib_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        hib_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        hib_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        hib_no += 1
+                                                        print("+no")
+                                                        continue
+                #hib booster1
+        if(vaccine.hib3_date is not None):
+            if(vaccine.hib4_date is None):
+                if((datetime.date.today()-vaccine.hib3_date).days > 180):
+                            print("hib4")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                hib_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        hib_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        hib_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        hib_no += 1
+                                                        print("+no")
+                                                        continue
+            #hpv11
+        if(8<years<15):
+            if(vaccine.hpv11_date is None):
+                        print("hpv11")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hpv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
+        #hpv12
+        if(vaccine.hpv11_date is not None):
+            if(vaccine.hpv12_date is None):
+                if(9<years<15):
+                    if ((datetime.date.today()-vaccine.hpv11_date).days > 180):
+                        print("hpv12")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hpv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
+        #hpv21
+        if(years>=15):
+            if(vaccine.hpv11_date is None):
+                if(vaccine.hpv21_date is None):
+                        print("hpv21")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hpv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
+        #hpv22
+        if(vaccine.hpv21_date is not None):
+            if(vaccine.hpv22_date is None):
+                if(years>=15):
+                    if ((datetime.date.today()-vaccine.hpv21_date).days > 120):
+                        print("hpv22")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hpv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
+        #hpv3
+        if(vaccine.hpv22_date is not None):
+            if(vaccine.hpv23_date is None):
+                if(years>=15):
+                    if ((datetime.date.today()-vaccine.hpv22_date).days > 180):
+                        print("hpv23")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            hpv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
+ 
+            #inactivehepa1
+        if((datetime.date.today()-patient.bday).days > 360):
+                    print("hepaa1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        hepaa_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hepaa_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hepaa_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hepaa_no += 1
+                                                print("+no")
+                                                continue
+            #inactivehepa2
+        if(vaccine.hepa1_date is not None):
+            if(vaccine.hepa2_date is None):
+                if((datetime.date.today()-vaccine.hepa1_date).days > 180):
+                            print("hepaa2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                hepaa_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        hepaa_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        hepaa_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        hepaa_no += 1
+                                                        print("+no")
+                                                        continue
+            #inf1
+        if((datetime.date.today()-patient.bday).days > 180):
+                    print("inf1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        inf_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                inf_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                inf_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                inf_no += 1
+                                                print("+no")
+                                                continue
+            #inf2
+        if(vaccine.inf1_date is not None):
+            if(vaccine.inf2_date is None):
+                if((datetime.date.today()-vaccine.inf1_date).days > 28):
+                            print("inf2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                inf_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        inf_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        inf_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        inf_no += 1
+                                                        print("+no")
+                                                        continue
+            #annual flu
+        if(vaccine.anf_date is None):
+                if((datetime.date.today()-patient.bday).days > 360):
+                    print("flu")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        flu_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                flu_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                flu_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                flu_no += 1
+                                                print("+no")
+                                                continue
+        if(vaccine.anf_date is not None):        
+                if((datetime.date.today()-vaccine.anf_date).days > 360):
+                    date = (datetime.date.today()-vaccine.anf_date).days
+                    print("flu")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        flu_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                flu_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                flu_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                flu_no += 1
+                                                print("+no")
+                                                continue
+            #ipv/opv1
+        if((datetime.date.today()-patient.bday).days > 42):
+                    print("opv1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        opv_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                opv_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                opv_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                opv_no += 1
+                                                print("+no")
+                                                continue
+            #ipv/opv2
+        if(vaccine.ipv1_date is not None):
+            if(vaccine.ipv2_date is None):
+                if((datetime.date.today()-patient.ipv1_date).days > 28):
+                            print("ipv2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                opv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        opv_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        opv_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        opv_no += 1
+                                                        print("+no")
+                                                        continue
+                #ipv/opv3
+        if(vaccine.ipv2_date is not None):
+            if(vaccine.ipv3_date is None):
+                if((datetime.date.today()-patient.ipv2_date).days > 28):
+                            print("ipbv3")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                opv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        opv_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        opv_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        opv_no += 1
+                                                        print("+no")
+                                                        continue
+            #ipv/opv booster 1
+        if(vaccine.ipv3_date is not None):
+            if(vaccine.ipv4_date is None):
+                if((datetime.date.today()-patient.bday).days > 360):
+                        print("ipv boost1")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            opv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    opv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    opv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    opv_no += 1
+                                                    print("+no")
+                                                    continue
+            #ipv/opv booster 2
+        if(vaccine.ipv4_date is not None):
+            if(vaccine.ipv5_date is None):
+                if((datetime.date.today()-patient.bday).days > 1440):
+                        print("hepaa boost 2")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            opv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                if( from_date <= app.date <= to_date):
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    opv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    opv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    opv_no += 1
+                                                    print("+no")
+                                                    continue
+            #japencb1
+        if((datetime.date.today()-patient.bday).days > 270):
+                    print("jap1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        jap_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                jap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                jap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                jap_no += 1
+                                                print("+no")
+                                                continue
+            #japencb2
+        if(vaccine.japb1_date is not None):
+            if(vaccine.japb2_date is None):
+                if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
+                            print("jap2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                jap_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        jap_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        jap_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        jap_no += 1
+                                                        print("+no")
+                                                        continue
+            #msl
+                #note: sakop two cases either way ; needs fixing
+        if(((datetime.date.today()-patient.bday).days > 180) | 
+                ((datetime.date.today()-patient.bday).days > 270)):
+                    print("msl1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        msl_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                msl_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                msl_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                msl_no += 1
+                                                print("+no")
+                                                continue
+            #meninggo vax
+        if(1<years<56):
+            if(vaccine.men_date is None):
+                 if(((datetime.date.today()-patient.bday).days > 720) and ((datetime.date.today()-patient.bday).days < 19800)):
+                    print("mcc1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        mcc_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                mcc_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                mcc_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                msl_no += 1
+                                                print("+no")
+                                                continue
+
+            #mmr1
+        if((datetime.date.today()-patient.bday).days > 360):
+                    print("mmr1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        mmr_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                mmr_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                mmr_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                mmr_no += 1
+                                                print("+no")
+                                                continue
+            #mmr2
+        if(vaccine.mmr1_date is not None):
+            if(vaccine.mmr2_date is None):
+                if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
+                        ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
+                            print("mmr2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                mmr_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        mmr_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        mmr_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        mmr_no += 1
+                                                        print("+no")
+                                                        continue
+            #pcv1
+        if(1440 < (datetime.date.today()-patient.bday).days > 42):
+                    print("pcv1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        pcv_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                pcv_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                pcv_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                pcv_no += 1
+                                                print("+no")
+                                                continue
+            #pcv2
+        if(vaccine.pcv1_date is not None):
+            if(vaccine.pcv2_date is None):
+                if((datetime.date.today()-vaccine.pcv1_date).days > 28):
+                            print("pcv2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                pcv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        pcv_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        pcv_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        pcv_no += 1
+                                                        print("+no")
+                                                        continue
+                #pcv3
+        if(vaccine.pcv2_date is not None):
+            if(vaccine.pcv3_date is None):        
+                if((datetime.date.today()-vaccine.pcv2_date).days > 28):
+                            print("pcv3")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                pcv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        pcv_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        pcv_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        pcv_no += 1
+                                                        print("+no")
+                                                        continue
+                #pcv booster1
+        if(vaccine.pcv3_date is not None):
+            if(vaccine.pcv4_date is None):
+                if((datetime.date.today()-patient.pcv3_date).days > 180):
+                            print("pcvboost")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                pcv_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        pcv_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        pcv_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        pcv_no += 1
+                                                        print("+no")
+                                                        continue
+            #rota1
+        if((datetime.date.today()-patient.bday).days > 42):
+                    print("rota1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        rota_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                rota_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                rota_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                rota_no += 1
+                                                print("+no")
+                                                continue
+            #rota2
+        if(vaccine.rota1_date is not None):
+            if(vaccine.rota2_date is None):
+                if((datetime.date.today()-vaccine.rota1_date).days > 28):
+                            print("rota2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                rota_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        rota_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        rota_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        rota_no += 1
+                                                        print("+no")
+                                                        continue
+                #rota3
+        if(vaccine.rota2_date is not None):
+            if(vaccine.rota3_date is None):        
+                if((datetime.date.today()-vaccine.rota2_date).days > 28):
+                            print("rota3")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                rota_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        rota_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        rota_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        rota_no += 1
+                                                        print("+no")
+                                                        continue
+            #td
+        if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
+                    print("td")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        tdap_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                tdap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                tdap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                tdap_no += 1
+                                                print("+no")
+                                                continue
+            #typ
+        if(vaccine.typ_date is None):
+                if((datetime.date.today()-patient.bday).days > 720):
+                    print("typ1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        typ_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                typ_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                typ_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                typ_no += 1
+                                                print("+no")
+                                                continue
+                                            
+        if(vaccine.typ_date is not None):                                    
+                if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
+                    date = (datetime.date.today()-vaccine.typ_date).days
+                    vaccine.typ_date = date
+                    print("typ2")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        typ_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                typ_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                typ_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                typ_no += 1
+                                                print("+no")
+                                                continue
+            #var1
+        if((datetime.date.today()-patient.bday).days > 360):
+                    print("var1")
+                    if(Appointment.objects.filter(user = patient.user).count() == 0):
+                        print("no appt")
+                        var_no += 1
+                        print("+noo")
+                    else:
+                        print("yes appt")
+                        appt = Appointment.objects.filter(user=patient.user)
+                        print("pumasok filter")
+                        print(appt)
+                        for app in appt:
+                            print("pumasok loop")
+                            if( from_date <= app.date <= to_date):
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                var_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                var_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                var_no += 1
+                                                print("+no")
+                                                continue
+            #var2
+        if(vaccine.var1_date is not None):
+            if(vaccine.var2_date is None):
+                if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |    
+                        ((datetime.date.today()-vaccine.var1_date).days > 90)):
+                            print("var2")
+                            if(Appointment.objects.filter(user = patient.user).count() == 0):
+                                print("no appt")
+                                var_no += 1
+                                print("+noo")
+                            else:
+                                print("yes appt")
+                                appt = Appointment.objects.filter(user=patient.user)
+                                print("pumasok filter")
+                                print(appt)
+                                for app in appt:
+                                    print("pumasok loop")
+                                    if( from_date <= app.date <= to_date):
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        var_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        var_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        var_no += 1
+                                                        print("+no")
+                                                        continue
+        
+    bcg_total = bcg_no + bcg_con + bcg_not
+    hepb_total = hepb_no + hepb_con + hepb_not
+    dtap_total = dtap_no + dtap_con + dtap_not
+    opv_total = opv_no + opv_con + opv_not
+    hib_total = hib_no + hib_con + hib_not
+    pcv_total = pcv_no + pcv_con + pcv_not
+    rota_total = rota_no + rota_con + rota_not
+    msl_total = msl_no + msl_con + msl_not
+    mmr_total = mmr_no + mmr_con + mmr_not
+    var_total = var_no + var_con + var_not
+    inf_total = inf_no + inf_con + inf_not
+    jap_total = jap_no + jap_con + jap_not
+    hepaa_total = hepaa_no + hepaa_con + hepaa_not
+    mcc_total = mcc_no + mcc_con + mcc_not
+    typ_total = typ_no + typ_con + typ_not
+    tdap_total = tdap_no + tdap_con + tdap_not
+    hpv_total = hpv_no + hpv_con + hpv_not
+    flu_total = flu_no + flu_con + flu_not    
+
+    data = {"bcg_con":bcg_con,"bcg_no":bcg_no, "bcg_not":bcg_not,"bcg_total":bcg_total, 
+                "hepb_con":hepb_con,"hepb_no":hepb_no, "hepb_not":hepb_not,"hepb_total":hepb_total,
+                "dtap_con":dtap_con,"dtap_no":dtap_no, "dtap_not":dtap_not,"dtap_total":dtap_total,
+                "opv_con":opv_con,"opv_no":opv_no, "opv_not":opv_not,"opv_total":opv_total,
+                "hib_con":hib_con,"hib_no":hib_no, "hib_not":hib_not,"hib_total":hib_total,
+                "pcv_con":pcv_con,"pcv_no":pcv_no, "pcv_not":pcv_not,"pcv_total":pcv_total,
+                "rota_con":rota_con,"rota_no":rota_no, "rota_not":rota_not,"rota_total":rota_total,
+                "msl_con":msl_con,"msl_no":msl_no, "msl_not":msl_not,"msl_total":msl_total,
+                "mmr_con":mmr_con,"mmr_not":mmr_not, "mmr_no":mmr_no,"mmr_total":mmr_total,
+                "var_con":var_con,"var_not":var_not, "var_no":var_no,"var_total":var_total,
+                "inf_con":inf_con,"inf_no":inf_no, "inf_not":inf_not,"inf_total":inf_total,
+                "jap_con":jap_con,"jap_no":jap_no, "jap_not":jap_not,"jap_total":jap_total,
+                "hepaa_con":hepaa_con,"hepaa_no":hepaa_no, "hepaa_not":hepaa_not,"hepaa_total":hepaa_total,
+                "mcc_con":mcc_con,"mcc_not":mcc_not, "mcc_no":mcc_no,"mcc_total":mcc_total,
+                "typ_con":typ_con,"typ_not":typ_not, "typ_no":typ_no,"typ_total":typ_total,
+                "tdap_con":tdap_con,"tdap_not":tdap_not, "tdap_no":tdap_no,"tdap_total":tdap_total,
+                "hpv_con":hpv_con,"hpv_not":hpv_not, "hpv_no":hpv_no,"hpv_total":hpv_total,
+                "flu_con":flu_con,"flu_not":flu_not, "flu_no":flu_no,"flu_total":flu_total}
+ 
+
+    return render(request,'vaccinerecordapp/tool/report.html',data)
 
 @login_required(login_url='/')
 def update_staff(request):

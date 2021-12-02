@@ -58,7 +58,7 @@ class Doctor(models.Model):
     prefix = models.CharField(choices=PREFIX, max_length=3)
     title = models.CharField(choices=TITLE, max_length=2,blank=True)
     start_date = models.DateTimeField(auto_now_add=True)
-    end_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
     contact = models.CharField(max_length=100)
     type = models.CharField(choices=TYPE, max_length=2)
     can_register = models.BooleanField(default=False)
@@ -96,7 +96,7 @@ class PatientRecord(models.Model):
     doctor_assigned = ForeignKey(Doctor, on_delete=models.CASCADE, null=True)
     gender = models.CharField(choices=GENDER,max_length=11, null=True)
     bday = models.DateField(null=True)
-    age = models.IntegerField(null=True)
+    
     mobile = models.CharField(max_length=11, blank=True, null=True)
     landline = models.CharField(max_length=11, blank=True, null=True)
     email = models.EmailField(max_length=100,  blank=True, null=True) 

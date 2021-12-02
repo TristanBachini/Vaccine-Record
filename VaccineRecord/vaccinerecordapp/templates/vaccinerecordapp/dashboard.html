@@ -13,7 +13,7 @@
             <h1>No Appointment for Today!</h1>
         </div>
     {% else %}
-        <h1>Appointments</h1>
+        <h1>Unconfirmed Appointments</h1>
         <table class="table table-striped table-hover">
         <thead>
             <tr>
@@ -42,9 +42,54 @@
         </tr>
 
         {% endfor %}
+
+
+        
         </tbody>
         </table>
     {% endif %}
+
+    {% if count == 0 %}
+        <div id = "noAppointment">
+            <span><i class ="fas fa-calendar-check fa-3x"></i></span>
+            <h1>No Confirmed Appointments</h1>
+        </div>
+    {% else %}
+        <h1>Confirmed Appointments</h1>
+        <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Appointment No#</th>
+                <th scope="col">Patient username</th>
+                <th scope="col">Time of Appointment</th>
+                <th scope="col">Date of Appointment</th>
+                <th scope="col">Doctor Assigned</th>
+                <th scope="col">Type of Visit</th>
+                <th scope="col">Location</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cappointment in cappointments %}
+
+        <tr>
+            <td> <a>{{cappointment.id}}</a></td>
+            <td> <a>{{cappointment.patient_username}}</a></td>
+            <td> <a>{{cappointment.time}}</a></td>
+            <td> <a>{{cappointment.date}}</a></td>
+            <td> <a>{{cappointment.doctor}}</a></td>
+            <td> <a>{{cappointment.visit}}</a></td>
+            <td> <a>{{cappointment.location}}</a></td>
+            <td> <a href="#" >{{cappointment.stat}}</a></td>
+        </tr>
+
+        {% endfor %}
+
+
+        
+        </tbody>
+        </table>
+        {% endif %}
 </body>
 
 

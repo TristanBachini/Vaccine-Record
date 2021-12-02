@@ -2,7 +2,7 @@
 {% block content %} {% load static %}
 
 <p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
-  {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  |  {{years|upper}} Years {{months|upper}} Months {{days|upper}} Days | {{ record.gender|upper }} | {{ record.bday|upper }}
+  {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.nick_name|upper}})  | {% if years > 0 %} {{years|upper}} Y {% endif %} {{months|upper}} M  {{weeks|upper}} Wks | {{ record.gender|upper }} | {{ record.bday|upper }}
 </p>
 
 <div class="container-fluid">
@@ -49,7 +49,7 @@
                     <td class="table-warning">Date of Birth:</td>
                     <td class="table-light" colspan="3">{{ record.bday|date:"m/d/Y" }}</td>
                     <td class="table-warning">Age:</td>
-                    <td class="table-light" colspan="3">{{ record.age }}</td>
+                    <td class="table-light" colspan="3">{{ age|upper }}</td>
                   </tr>
                   <tr>
                     <td class="table-warning"><b>CONTACT #</b></td>
