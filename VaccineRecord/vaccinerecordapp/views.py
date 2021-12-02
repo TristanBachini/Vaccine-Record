@@ -2414,11 +2414,54 @@ def confirm_appointment(request,pk):
 @login_required(login_url='/')
 def reject_appointment(request,pk):
     appointment = Appointment.objects.get(id = pk)
+    email = appointment.user.email
+    username = appointment.user.username
+    subject = "Appointment update: "
+    message = "<h1>Hello " + username +", good day!</h1> <br><br>This is to inform you that your request for an appointment has been denied. Please contact your doctor to set a valid time, date, and location for your appointment. Thank you!"
+    from_email = settings.EMAIL_HOST_USER
+    recepient_list = [email]
+    # send_mail(subject, message, from_email, recepient_list)
+    email = EmailMessage(
+        subject,
+        message,
+        from_email,
+        recepient_list
+    )
+    email.content_subtype = 'html'
+    email.send()
     appointment.delete()
     appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
     count = appointments.count()
     data = {'appointments':appointments, 'count':count}
     return render(request,'vaccinerecordapp/confirm-appointment.html',data)
+
+@login_required(login_url='/')
+def reschedule_appointment(request,pk):
+    appointment = Appointment.objects.get(id = pk)
+    form = AppointmentForm(instance=appointment)
+    if(request.method == 'POST'):
+        record = PatientRecord.objects.get(user = appointment.user)
+        age = relativedelta(datetime.date.today(),record.bday)
+        days = age.days
+        months = age.months
+        weeks = age.weeks
+        years = age.years
+        form = AppointmentForm({ 'user':record.user, 
+            'patient_username': record.user.username,
+            'date': request.POST.get('date'),
+            'time': request.POST.get('time'),
+            'doctor': record.doctor_assigned,
+            'visit': request.POST.get('visit'),
+            'location': request.POST.get('location'),
+            'stat': 'UNCONFIRMED'},instance=appointment)
+        if(form.is_valid):
+            form.save()
+        appointments = Appointment.objects.filter(user = record.user)
+        count = appointments.count()
+        data = {'appointments':appointments,'count':count,'record':record,'form':form,'days':days,'months':months,'years':years, 'weeks':weeks}
+        return render(request, 'vaccinerecordapp/appointment.html',data)
+    data = {'form':form, 'pk':pk}
+    return render(request,'vaccinerecordapp/reschedule-appointment.html',data)
 
 # certificate tab
 

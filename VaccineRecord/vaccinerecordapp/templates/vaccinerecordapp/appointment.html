@@ -42,6 +42,7 @@
                             <th scope="col">Type of Visit</th>
                             <th scope="col">Location</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Request Reschedule</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,6 +57,10 @@
                         <td> <a>{{appointment.visit}}</a></td>
                         <td> <a>{{appointment.location}}</a></td>
                         <td> <a href="#" >{{appointment.stat}}</a></td>
+                        <td> <form action="{% url 'reschedule-appointment' appointment.id %}">
+                            {% csrf_token %}
+                            <button id="submit_button" type="submit" class="btn btn-primary">Reschedule</button>
+                        </form></td>
                     </tr>
 
                     {% endfor %}
