@@ -4381,6 +4381,35 @@ def update_staff_profile(request,pk):
     data = {"record":record,'form':form}
     return render(request, "vaccinerecordapp/tool/update-staff-profile.html",data)
 
+@login_required(login_url='/')
+def update_own_profile(request,pk):
+    doctor = Doctor.objects.get(id=pk).user
+    profile = Doctor.objects.get(user=doctor)
+    form = UpdateDoctorForm(instance = profile)
+    record = Doctor.objects.get(id=pk)
+    # print(profile.prefix)
+    if(request.method=="POST"):   
+        user = User.objects.get(username=doctor)
+        form = DoctorForm({ 'user':user, 'first_name':request.POST.get('first_name'), 'last_name':request.POST.get('last_name'),
+                            'prefix':request.POST.get('prefix'), 'type':request.POST.get('type'), 'title':request.POST.get('title'),
+                            'end_date':request.POST.get('end_date'),'contact':request.POST.get('contact')}, instance = profile)
+    print(form.errors)
+    if(form.is_valid()):
+            form.save()
+            print("valid")
+            profile = Doctor.objects.get(user=doctor)
+            data = {"record":record,'form':form}
+            return redirect('update-staff')
+    data = {"record":record,'form':form}
+    return render(request, "vaccinerecordapp/tool/update-own-profile.html",data)
+
+@login_required(login_url='/')
+def own_profile(request):
+    record = Doctor.objects.get(user=request.user.id)
+    # print(profile.prefix)
+    data = {"record":record,}
+    return render(request, "vaccinerecordapp/tool/own-profile.html",data)
+
 def update_profile(request,pk):
     patient = PatientRecord.objects.get(id = pk).user
     profile = PatientRecord.objects.get(user=patient)
@@ -4693,7 +4722,7 @@ def reminder(request):
         notExist = ""
 
     else:
-        due_vax_result =  PatientRecord.objects.none()
+        due_vax_result =  PatientRecord.objects.all()
         notExist = ""
 
     for patient in patients:
@@ -5825,4 +5854,4 @@ def send_email_reminder(request,pk):
     email.send()
     print("sent")    
     data = {'patient':patient}
-    return render(request,'vaccinerecordapp/tool/reminder.html',data)
+    return redirect('reminder')

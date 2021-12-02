@@ -1,0 +1,72 @@
+{% extends 'vaccinerecordapp/navbar.html' %} 
+{% block content %} {% load static %}
+
+<p style="background-color:hsla(198, 13%, 85%, 0.89); padding-left: 1%;">
+  {{ record.first_name|upper }} {{ record.last_name|upper }}  |  ({{record.title|upper}})  
+</p>
+<br>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Navbar -->
+    <div class="col-1">
+      {% include 'vaccinerecordapp/staff-navbar.html' %}
+    </div>
+
+  <!-- Profile -->
+    <div class="col-10">
+          <div class="card border-info" style="margin-left: 3%; margin-right: 2%">
+            <h5 class="card-header">My Profile</h5>
+            <div class="card-body">
+              <div>
+                <table class="table table-bordered">
+                  <tr>
+                    <td class="table-warning">Account Username:</td>
+                    <td class="table-warning">{{ record.user.username|upper }}</td>
+                    <td class="table-warning">Staff Record #:</td>
+                    <td class="table-warning">{{ record.id }}</td>
+                    <td class="table-warning" colspan="2"></td>
+                  </tr>
+                  <!-- <tr>
+                    <td class="table-warning"colspan="6"><b>NAME</b></td>
+                  </tr> -->
+                  <tr>
+                    <td class="table-warning">Prefix:</td>
+                    <td class="table-light">{{ record.prefix|default_if_none:'' }}</td>
+                    <td class="table-warning">First:</td>
+                    <td class="table-light" >{{ record.first_name|upper}}</td>
+                    <td class="table-warning">Last:</td>
+                    <td class="table-light">{{ record.last_name|upper }}</td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">Type:</td>
+                    <td class="table-light">{{ record.type|default_if_none:''|upper }}</td>
+                    <td class="table-warning">Title</td>
+                    <td class="table-light">{{ record.title|default_if_none:''|upper }}</td>
+                    <td class="table-warning" colspan="2"></td>
+                  </tr>
+                  <tr>
+                    <td class="table-warning">End date:</td>
+                    <td class="table-light">{{ record.end_date|date:"m/d/Y"|default_if_none:''|upper }}</td>
+                    <td class="table-warning">Contact No#:</td>
+                    <td class="table-light">{{ record.contact|default_if_none:'' }}</td>
+                    <td class="table-warning" colspan="2"></td>
+                  </tr>
+                </table>
+          <!--<a href="{% url 'update-patient-profile' record.pk %}">-->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <a href="{% url 'update-own-profile' record.pk %}">     
+                    <button class="btn btn-success" id="submit_button" type="submit">
+                      <i class="fas fa-save"></i>
+                      Update
+                      </button></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+          <br><br><br><br><br>
+</div>    
+</div>
+
+
+{% endblock %}
