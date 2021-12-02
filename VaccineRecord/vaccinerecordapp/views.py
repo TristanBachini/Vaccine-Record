@@ -4694,6 +4694,7 @@ def reminder(request):
 
     else:
         due_vax_result =  PatientRecord.objects.none()
+        notExist = ""
 
     for patient in patients:
         #for due vaccine part
@@ -5805,15 +5806,12 @@ def reminder_vaccines(request,pk):
     return render(request,'vaccinerecordapp/tool/reminder.html',data)
 
 def send_email_reminder(request,pk):
-    patient = PatientRecord.objects.get(id = pk).user
-    profile = PatientRecord.objects.get(user=patient)
-    form = UpdatePatientRecordForm(instance = profile)
-    record = PatientRecord.objects.get(id = pk)
-    email = patient.email
+    patient = PatientRecord.objects.get(id = pk)
+    email = patient.user.email
     first_name = patient.first_name
     last_name = patient.last_name
     subject = "Reminder for due vaccine: "
-    message = "<h1> Good day " + first_name + " " + last_name + "! We are writing to inform you that you have due vaccinations. blah balh"
+    message = "<h1> Good day " + first_name + " " + last_name + "! We are writing to inform you that you have due vaccinations."
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     email = EmailMessage(
@@ -5822,8 +5820,9 @@ def send_email_reminder(request,pk):
         from_email,
         recipient_list
     )
+   
     email.content_subtype = 'html'
     email.send()
     print("sent")    
-    
-    return render(request,'vaccinerecordapp/tool/reminder.html')
+    data = {'patient':patient}
+    return render(request,'vaccinerecordapp/tool/reminder.html',data)

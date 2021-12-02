@@ -37,13 +37,10 @@
             <td> <a>{{appointment.doctor}}</a></td>
             <td> <a>{{appointment.visit}}</a></td>
             <td> <a>{{appointment.location}}</a></td>
-            <td> <a href="#" >{{appointment.stat}}</a></td>
+            <td> <span style="color: red">{{appointment.stat}}</span></td>
         </tr>
 
         {% endfor %}
-
-
-        
         </tbody>
         </table>
     {% endif %}
@@ -79,13 +76,11 @@
             <td> <a>{{cappointment.doctor}}</a></td>
             <td> <a>{{cappointment.visit}}</a></td>
             <td> <a>{{cappointment.location}}</a></td>
-            <td> <a href="#" >{{cappointment.stat}}</a></td>
+            <td> <span style="color: green">{{cappointment.stat}}</span></td>
         </tr>
 
         {% endfor %}
 
-
-        
         </tbody>
         </table>
         {% endif %}
@@ -122,7 +117,7 @@
             <td> <a>{{appointment.doctor}}</a></td>
             <td> <a>{{appointment.visit}}</a></td>
             <td> <a>{{appointment.location}}</a></td>
-            <td> <a href="#" >{{appointment.stat}}</a></td>
+            <td><span style="color: green">{{appointment.stat}}</span> </td>
         </tr>
 
         {% endfor %}
