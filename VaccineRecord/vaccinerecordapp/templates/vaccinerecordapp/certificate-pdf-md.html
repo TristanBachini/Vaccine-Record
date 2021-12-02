@@ -155,7 +155,6 @@ footer {
 
 <body>
   <header class="clearfix">
-    <br> <br>
     <h1>Vaccine Certificate</h1>
     <div id="company" class="clearfix">
       <div>{{ date }}</div>
@@ -164,8 +163,8 @@ footer {
       <div>To whom this may concern, </div>
     <br>
         <div class="row" >
-            <div class="col" style="text-indent: 70px;"> This is to certify that {{ first_name }} {{ middle_name }} {{ last_name }}, 
-                {{ age }}, of {{ city }} City has completed the following vaccinations. 
+            <div class="col" style="text-indent: 70px;"> This is to certify that <span style="font-weight: bold ; color: black;">{{ first_name }} {{ middle_name|default_if_none:'' }} {{ last_name }}, 
+                {{ age }}, {{gender}}, of {{ city }} City</span> has completed the following vaccinations. 
             </div>
         </div>
     <br>
