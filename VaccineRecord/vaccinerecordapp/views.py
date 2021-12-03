@@ -4348,18 +4348,25 @@ def report(request):
 
 @login_required(login_url='/')
 def update_staff(request):
-    user = User.objects.get(username=request.user.username)
+    user = User.objects.get(username=request.user )
     
     staffs = Doctor.objects.all()
     notExist = ""
     myFilter = RecordFilter(request.GET, queryset=staffs)
     staffs = myFilter.qs
+    title =  request.GET.get('title')
+
     if staffs.count()==0:
         notExist = "The staff does not exist."
+    
+    if title is not None:
+        staffs = staffs.filter(title__icontains=title)
+        
     data = {"staffs":staffs, 'myFilter':myFilter,'notExist':notExist}  
     return render(request,'vaccinerecordapp/tool/update-staff.html',data)
-    
-   
+
+
+
 @login_required(login_url='/')
 def update_staff_profile(request,pk):
     doctor = Doctor.objects.get(id=pk).user
