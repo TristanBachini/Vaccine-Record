@@ -97,7 +97,9 @@ def create_record(request,username):
     patients = PatientRecord.objects.all()
     if(request.method == "POST"):  
         user = User.objects.get(username=username)
-        form = PatientRecordForm({'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
+        boolean = request.POST.get('null_boolean_field')
+        if(boolean == "on"):
+            form = PatientRecordForm({'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
                                         'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
                                         'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
                                         'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
@@ -106,9 +108,22 @@ def create_record(request,username):
                                         'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
                                         'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
                                         'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
-                                        'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
-                                        'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
-                                        'contact_e2':request.POST.get('contact_e2')})
+                                        'lname_e1':request.POST.get('lname_mom'),'fname_e1':request.POST.get('fname_mom'),'relation_e1':"mother",
+                                        'contact_e1':request.POST.get('contact_mom'),'lname_e2':request.POST.get('lname_dad'),'fname_e2':request.POST.get('fname_dad'),'relation_e2':"dad",
+                                        'contact_e2':request.POST.get('contact_dad')})
+        else:
+            form = PatientRecordForm({'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
+                                            'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
+                                            'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
+                                            'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                            'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
+                                            'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
+                                            'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
+                                            'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
+                                            'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
+                                            'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
+                                            'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
+                                            'contact_e2':request.POST.get('contact_e2')})
         if(form.is_valid()):
             print('is valid')
             form.save()
@@ -124,7 +139,7 @@ def create_record(request,username):
     return render(request, 'vaccinerecordapp/account-creation/create-patient-record.html',data)
 
 def update_patient_profile(request,pk):
-    patient = PatientRecord.objects.get(user = User.objects.get(username = request.user.username))
+    patient = PatientRecord.objects.get(id = pk)
     form = UpdatePatientRecordForm(instance = patient)
     record = PatientRecord.objects.get(id = pk)
     age = relativedelta(datetime.date.today(),record.bday)
@@ -134,19 +149,35 @@ def update_patient_profile(request,pk):
     months = age.months
     years = age.years
     if(request.method=="POST"):   
-        user = User.objects.get(username=request.user.username)
-        form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
-                                        'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
-                                        'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                        'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
-                                        'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
-                                        'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
-                                        'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
-                                        'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
-                                        'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
-                                        'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
-                                        'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
-                                        'contact_e2':request.POST.get('contact_e2')}, instance = patient)
+        user = patient.user
+        boolean = request.POST.get('null_boolean_field')
+        print("went here")
+        if(boolean == "on"):
+            form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
+                                            'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
+                                            'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
+                                            'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                            'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
+                                            'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
+                                            'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
+                                            'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
+                                            'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
+                                            'lname_e1':request.POST.get('lname_mom'),'fname_e1':request.POST.get('fname_mom'),'relation_e1':"mother",
+                                            'contact_e1':request.POST.get('contact_mom'),'lname_e2':request.POST.get('lname_dad'),'fname_e2':request.POST.get('fname_dad'),'relation_e2':"father",
+                                            'contact_e2':request.POST.get('contact_dad')}, instance = patient)
+        else:
+            form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
+                                            'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
+                                            'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
+                                            'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                            'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
+                                            'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
+                                            'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
+                                            'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
+                                            'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
+                                            'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
+                                            'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
+                                            'contact_e2':request.POST.get('contact_e2')}, instance = patient)
         if(form.is_valid()):
             form.save()
             record = PatientRecord.objects.get(id = pk)
@@ -156,30 +187,51 @@ def update_patient_profile(request,pk):
             weeks = age.weeks
             years = age.years
             data = {'record':record,'days':days,'months':months,'years':years,'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
-            return render(request, "vaccinerecordapp/patient-landing.html",data)
+            return render(request, "vaccinerecordapp/patient-profile.html",data)
     
     data = {'record':record,'days':days,'months':months,'years':years,'form':form, 'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
     return render(request, "vaccinerecordapp/update-patient-profile.html", data)
 
 def update_profile(request,pk):
-    patient = PatientRecord.objects.get(id = pk).user
-    profile = PatientRecord.objects.get(user=patient)
-    form = UpdatePatientRecordForm(instance = profile)
+    patient = PatientRecord.objects.get(id = pk)
+    form = UpdatePatientRecordForm(instance = patient)
     record = PatientRecord.objects.get(id = pk)
+    age = relativedelta(datetime.date.today(),record.bday)
+    days = age.days
+    weeks = age.weeks
+    # weeks = (days/7)
+    months = age.months
+    years = age.years
     if(request.method=="POST"):   
-        user = User.objects.get(username=patient)
-        form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
-                                        'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
-                                        'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                        'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
-                                        'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
-                                        'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
-                                        'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
-                                        'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
-                                        'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
-                                        'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
-                                        'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
-                                        'contact_e2':request.POST.get('contact_e2')}, instance = profile)
+        user = patient.user
+        boolean = request.POST.get('null_boolean_field')
+        print("went here")
+        if(boolean == "on"):
+            form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
+                                            'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
+                                            'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
+                                            'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                            'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
+                                            'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
+                                            'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
+                                            'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
+                                            'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
+                                            'lname_e1':request.POST.get('lname_mom'),'fname_e1':request.POST.get('fname_mom'),'relation_e1':"mother",
+                                            'contact_e1':request.POST.get('contact_mom'),'lname_e2':request.POST.get('lname_dad'),'fname_e2':request.POST.get('fname_dad'),'relation_e2':"father",
+                                            'contact_e2':request.POST.get('contact_dad')}, instance = patient)
+        else:
+            form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
+                                            'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
+                                            'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
+                                            'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
+                                            'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
+                                            'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
+                                            'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
+                                            'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
+                                            'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
+                                            'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
+                                            'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
+                                            'contact_e2':request.POST.get('contact_e2')}, instance = patient)
         if(form.is_valid()):
             form.save()
             record = PatientRecord.objects.get(id = pk)
@@ -188,16 +240,11 @@ def update_profile(request,pk):
             months = age.months
             weeks = age.weeks
             years = age.years
-            data = {'record':record,'days':days,'months':months,'years':years, 'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
-            return render(request, "vaccinerecordapp/search-patient.html",data)
-    record = PatientRecord.objects.get(id = pk)
-    age = relativedelta(datetime.date.today(),record.bday)
-    days = age.days
-    months = age.months
-    weeks = age.weeks
-    years = age.years
+            data = {'record':record,'days':days,'months':months,'years':years,'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
+            return render(request, "vaccinerecordapp/patient-profile.html",data)
+    
     data = {'record':record,'days':days,'months':months,'years':years,'form':form, 'weeks':weeks, 'age': f"{years} years, {months} months, {weeks} weeks",}
-    return render(request, "vaccinerecordapp/update-profile.html", data)
+    return render(request, "vaccinerecordapp/update-patient-profile.html", data)
 
 def create_patient(request):
     form1 = UserForm()
@@ -4417,42 +4464,6 @@ def own_profile(request):
     # print(profile.prefix)
     data = {"record":record,}
     return render(request, "vaccinerecordapp/tool/own-profile.html",data)
-
-def update_profile(request,pk):
-    patient = PatientRecord.objects.get(id = pk).user
-    profile = PatientRecord.objects.get(user=patient)
-    form = UpdatePatientRecordForm(instance = profile)
-    record = PatientRecord.objects.get(id = pk)
-    if(request.method=="POST"):   
-        user = User.objects.get(username=patient)
-        form = PatientRecordForm({ 'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'),
-                                        'middle_name':request.POST.get('middle_name'), 'suffix':request.POST.get('suffix'), 'nick_name':request.POST.get('nick_name'),
-                                        'doctor_assigned':request.POST.get('doctor_assigned'), 'gender':request.POST.get('gender'), 'bday':request.POST.get('bday'),
-                                        'age':request.POST.get('age'), 'mobile':request.POST.get('mobile'), 'landline':request.POST.get('landline'),
-                                        'email':request.POST.get('email'), 'home_no':request.POST.get('home_no'), 'brgy':request.POST.get('brgy'), 
-                                        'city':request.POST.get('city'),'province':request.POST.get('province'), 'region':request.POST.get('region'),
-                                        'zip_code':request.POST.get('zip_code'), 'lname_mom':request.POST.get('lname_mom'),'fname_mom':request.POST.get('fname_mom'),
-                                        'contact_mom':request.POST.get('contact_mom'),'email_mom':request.POST.get('email_mom'),'lname_dad':request.POST.get('lname_dad'),
-                                        'fname_dad':request.POST.get('fname_dad'),'contact_dad':request.POST.get('contact_dad'), 'email_dad':request.POST.get('email_dad'),
-                                        'lname_e1':request.POST.get('lname_e1'),'fname_e1':request.POST.get('fname_e1'),'relation_e1':request.POST.get('relation_e1'),
-                                        'contact_e1':request.POST.get('contact_e1'),'lname_e2':request.POST.get('lname_e2'),'fname_e2':request.POST.get('fname_e2'),'relation_e2':request.POST.get('relation_e2'),
-                                        'contact_e2':request.POST.get('contact_e2')}, instance = profile)
-        if(form.is_valid()):
-            form.save()
-            record = PatientRecord.objects.get(id = pk)
-            age = relativedelta(datetime.date.today(),record.bday)
-            days = age.days
-            months = age.months
-            years = age.years
-            data = {'record':record,'days':days,'months':months,'years':years}
-            return redirect('search-patient')
-    record = PatientRecord.objects.get(id = pk)
-    age = relativedelta(datetime.date.today(),record.bday)
-    days = age.days
-    months = age.months
-    years = age.years
-    data = {'record':record,'days':days,'months':months,'years':years,'form':form}
-    return render(request, "vaccinerecordapp/update-profile.html", data)
 
 
 @login_required(login_url='/')

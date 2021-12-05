@@ -106,6 +106,7 @@ class PatientRecord(models.Model):
     province = models.CharField(max_length=250, blank=True, null=True)
     region = models.CharField(max_length=250, blank=True, null=True)
     zip_code = models.CharField(max_length=4, blank=True, null=True)
+    null_boolean_field = models.BooleanField(blank=True,null=True)
     lname_mom = models.CharField(max_length=100, blank=True, null=True)
     fname_mom = models.CharField(max_length=100, blank=True, null=True)
     contact_mom = models.CharField(max_length=100, blank=True, null=True)

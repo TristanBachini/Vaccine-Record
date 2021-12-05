@@ -16,7 +16,7 @@
           <div class="card border-info" style="margin-left: 3%; margin-right: 2%">
             <h5 class="card-header">Patient Profile</h5>
             <div class="card-body">
-              <form action="{% url 'update-patient-profile' record.pk %}" method="POST">
+              <form action="{% url 'update-patient-profile' record.pk %}" method="post">
               {% csrf_token %}
               {{form.doctor_assigned}}
               {{form.user}}
@@ -100,10 +100,10 @@
                     <td class="table-warning" colspan="2"><b>EMERGENCY CONTACT</b></td>
                     <td class="table-warning" colspan="8">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                       <label class="form-check-label" for="flexCheckDefault">
                         Same as parent information
                       </label>
+                      {{form.null_boolean_field}}
                     </div>
                    </td>
                   </tr>
@@ -118,7 +118,7 @@
                   </tr>
                   <tr>
                     <td class="table-warning">Name:</td>
-                    <td class="table-light">{{ form.fname_e1 }}</td>
+                    <td class="table-light">{{ form.fname_e2 }}</td>
                     <td class="table-light" colspan="2">{{ form.lname_e2 }}</td>
                     <td class="table-warning">Relation:</td>
                     <td class="table-light" colspan="2">{{ form.relation_e2 }}</td>

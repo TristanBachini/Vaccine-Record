@@ -2,7 +2,7 @@ from django import forms
 from django.db import models
 from django.db.models import fields
 from django.db.models.query import QuerySet
-from django.forms import ModelForm, TextInput, PasswordInput, CharField, HiddenInput, NumberInput
+from django.forms import ModelForm, TextInput, PasswordInput, CharField, HiddenInput, NumberInput,CheckboxInput
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.forms import widgets, ModelForm
@@ -93,6 +93,7 @@ class UpdatePatientRecordForm(forms.ModelForm):
             model = PatientRecord
             fields = "__all__"
             widgets = {
+                'null_boolean_field': CheckboxInput({'required': False}),
                 'bday': DateInput({'class': 'form-control'}),
                 'gender': Select({'class': 'form-control'}),
                 'username': HiddenInput(attrs={'type': 'hidden'}),
@@ -135,6 +136,7 @@ class PatientRecordForm(forms.ModelForm):
             model = PatientRecord
             fields = "__all__"
             widgets = {
+                'null_boolean_field': CheckboxInput({'required': False}),
                 'bday': DateInput({'class': 'form-control'}),
                 'gender': Select({'class': 'form-control'}),
                 'username': HiddenInput(attrs={'type': 'hidden'}),

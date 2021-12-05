@@ -102,7 +102,7 @@
                       <div class="form-check">
                         <label class="form-check-label" for="flexCheckDefault">
                           Same as parent information</label>
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        {{form.null_boolean_field}}
                       </div>
                     </td>
                   </tr>
@@ -117,7 +117,7 @@
                   </tr>
                   <tr>
                     <td class="table-warning">Name:</td>
-                    <td class="table-light">{{ form.fname_e1 }}</td>
+                    <td class="table-light">{{ form.fname_e2 }}</td>
                     <td class="table-light" colspan="2">{{ form.lname_e2 }}</td>
                     <td class="table-warning">Relation:</td>
                     <td class="table-light" colspan="2">{{ form.relation_e2 }}</td>
