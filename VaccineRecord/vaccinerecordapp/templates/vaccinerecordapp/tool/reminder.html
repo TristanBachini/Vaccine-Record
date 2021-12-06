@@ -5,10 +5,12 @@
     Reminder of Due Vaccines
   </p>
 
+<div class="row">
 <div class="col-1">
     {% include 'vaccinerecordapp/staff-navbar.html' %}
   </div>
-<div class="container">
+<div class="col-11">
+<div class="container-lg">
     <div class="card border-info" style="margin-left: 3%; margin-right: 3%">
         <h5 class="card-header" style="font-size: xx-large; text-align: center;">Due Vaccines<br> </h5>
           <div class="card-body">
@@ -21,10 +23,13 @@
                         <div style="width: 70%; margin-left: 15%; margin-right: 15%">
                           <table class="table table-borderless table-md">
                               <tr>
-                                <td style="font-weight: bold; ">Enter Date  
-                                <input type="date" id="date" name="date">
+                                <td style="font-weight: bold; "> 
+                                <div class="input-group">
+                                <span class="input-group-text" style="font-weight: bold; ">Enter Date:</span>
+                                <input class="form-control" placeholder="mm/dd/yyyy" type="date" id="date" name="date">
+                                </div>
                                 </td>
-                                <td><button id="submit_button" type="submit" class="btn btn-outline-primary" style="width: 100%">Enter</button></td>
+                                <td><button id="submit_button" type="submit" class="btn btn-secondary" style="width: 100%">Enter</button></td>
                               </tr>
                             </table>
                             
@@ -34,8 +39,9 @@
                 </div>
             </form>
         
-        <div class="row">
-            <table  class="table table-striped table-hover" style="width: 80%; margin-left: auto; margin-right: auto;">
+        <div class="row g-0">
+            <div class="col-sm-6 col-md-8">
+            <table  class="table table-striped table-hover" style="width: 80%; margin-left: auto; margin-right: auto; ">
                         
                 <tr>
                     <th>Record #</th>
@@ -62,23 +68,31 @@
                 </tr>
                 {% endfor %}
             </table>
-            <br> <br>
-            <table class="table table-striped" style="width: 80%; margin-left: auto; margin-right: auto;">				
+            </div>
+
+            <!-- <br> <br> -->
+            <div class="col-6 col-md-4">
+            <div style="height: 300px; overflow: auto">
+            <table class="table table-striped table-sm" style="width: 80%; height: 100px; margin-left: auto; margin-right: auto; ">				
                 <tr>
                     <th>List of Due Vaccines</th>
                 </tr>
                 {% for vaccine in vaccines %}
                 
                 <tr>
-                    <td>{{vaccine | upper}}</td>
+                    <td>{{vaccine }}</td>
                 </tr>
                 {% endfor %}
             </table>
+            </div>
+            </div>
 
 
 
           </div>
     </div>
-</div>    
+</div>  
+</div> 
+</div>
 
 {% endblock %}

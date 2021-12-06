@@ -34,6 +34,7 @@ class UserForm(UserCreationForm):
 class DateInput(forms.DateInput):
     input_type = 'date'
     input_formats = settings.DATE_INPUT_FORMATS
+    attrs = {'class': 'form-control'}
 
 class DoctorForm(forms.ModelForm):
     class Meta:
