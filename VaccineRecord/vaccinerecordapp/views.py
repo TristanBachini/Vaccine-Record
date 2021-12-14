@@ -343,12 +343,16 @@ def create_staff(request):
         form1 = UserForm(request.POST)
         form2 = DoctorForm(request.POST)
         if(form1.is_valid()):
+            print("isvalid")
             form1.save()
             user = User.objects.get(username = form1.cleaned_data.get("username"))
             form2 = DoctorForm({'user':user, 'last_name':request.POST.get('last_name'), 'first_name':request.POST.get('first_name'), 'contact':request.POST.get('contact'),'prefix':request.POST.get('prefix'),
             'title':request.POST.get('title'),'type':request.POST.get('type'),'end_date':request.POST.get('end_date'),
             'can_register':request.POST.get('can_register')})
             print("yea this worked")
+        else:
+            data = {"form1":form1, "form2":form2}
+            return render(request, 'vaccinerecordapp/tool/staff.html',data)
         if(form2.is_valid()):
             form2.save()
             messages.success(request, "Account was created for " +
@@ -371,7 +375,7 @@ def create_staff(request):
             
             return render(request, 'vaccinerecordapp/dashboard.html',data)
         else:
-            print(form2.errors)
+            print(form1.errors)
     else:
         messages.error(request, "Something was wrong with the input, please try again and make sure every field is filled correctly.")
 
@@ -4480,6 +4484,7 @@ def reminder(request):
         notExist = ""
     
     else:
+        notExist = ""
         due_vax_result = PatientRecord.objects.none()
 
     for patient in patients:

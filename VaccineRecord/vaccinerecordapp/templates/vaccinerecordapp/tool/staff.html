@@ -55,10 +55,20 @@
                       </table>
                   </div>
               <div>
-                {% for message in messages %} {% if message.tags == 'success' %}
-                {% else %}
-                {{message | striptags}}
-                {% endif %} {% endfor %}
+                {% if form1.errors %} {% for key, value in form1.errors.items %}
+                <div
+                  class="alert alert-danger alert-dismissable fade show reg-error"
+                  role="alert"
+                >
+                  <strong>Error!</strong> {{value|striptags}}
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                {% endfor %} {% endif %}
               </div>
               <div class="modal-footer">
                 <a href="{% url 'update-staff' %}"><button type="button" class="btn btn-secondary">Cancel</button></a>

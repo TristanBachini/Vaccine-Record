@@ -5,9 +5,11 @@
     <li class="report">
       <a class="nav-link active" href="{% url 'tool' %}">Report</a>
     </li>
+    {% if request.user|has_group:"doctor"%}
     <li class="reminder">
       <a class="nav-link" href="{% url 'reminder' %}">Reminder</a>
     </li>
+    {% endif %}
     {% if request.user|has_group:"staff"%}
     <li class="staff">
       <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Staff</a>
