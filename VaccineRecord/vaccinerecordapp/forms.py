@@ -103,7 +103,7 @@ class UpdatePatientRecordForm(forms.ModelForm):
                 'middle_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Middle name', 'aria-label': 'Middle name', 'required': False}),
                 'suffix': TextInput(attrs={'class': 'form-control', 'placeholder': 'Suffix', 'aria-label': 'Suffix', 'required': False}),
                 'nick_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Nickname', 'aria-label': 'Nickname', 'required': False}),
-                'doctor_assigned': HiddenInput(attrs={'type': 'hidden'}),
+                'doctor_assigned': Select(attrs={'class': 'form-control'}),
                 'user': HiddenInput(attrs={'type': 'hidden'}),
                 'mobile': TextInput(attrs={'class': 'form-control', 'placeholder': 'Mobile', 'aria-label': 'Mobile', 'required': False}),
                 'landline': TextInput(attrs={'class': 'form-control', 'placeholder': 'Landline', 'aria-label': 'Landline', 'required': False}),
@@ -138,7 +138,7 @@ class PatientRecordForm(forms.ModelForm):
             fields = "__all__"
             widgets = {
                 'null_boolean_field': CheckboxInput({'required': False}),
-                'bday': DateInput({'class': 'form-control'}),
+                'bday': DateInput({'class': 'form-control', 'id':'dob'}),
                 'gender': Select({'class': 'form-control'}),
                 'username': HiddenInput(attrs={'type': 'hidden'}),
                 'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First name', 'aria-label': 'First name', 'required': True}),

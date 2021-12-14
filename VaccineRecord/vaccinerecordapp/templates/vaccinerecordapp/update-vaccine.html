@@ -23,6 +23,7 @@
             <div class='card-body'>
                 <form action="{% url 'update-vaccine' record.pk %}" method="post">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'display-vaccine' record.pk %}"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Cancel</button></a>
                     <button class="btn btn-success" id="submit_button" type="submit">
                         <i class="fas fa-save"></i>
                         Save</button>

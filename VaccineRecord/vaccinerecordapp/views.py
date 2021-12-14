@@ -87,6 +87,11 @@ def dashboard(request):
     else:
         appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
         cappointments = Appointment.objects.filter(stat = "CONFIRMED")
+        today = datetime.date.today()
+        for cap in cappointments:
+            if ((cap.date - today).days < 0):
+                    cap.delete()
+                    print("delete")
         count = appointments.count()
         ccount = cappointments.count()
         data = {"appointments":appointments,"cappointments":cappointments,"count":count,"ccount":ccount}
@@ -719,7 +724,7 @@ def tool(request):
     print(from_str)
     print(to_str)
 
-    
+         
 
     bcg_con = 0 
     bcg_not = 0
@@ -788,8 +793,8 @@ def tool(request):
         print("bcg")
 
         if(vaccine.bcg_date is None):
-                print("no appt")
                 if(Appointment.objects.filter(user = patient.user).count() == 0):
+                    print("no appt")
                     bcg_no += 1
                     print("+noo")  
                 else:
@@ -799,24 +804,29 @@ def tool(request):
                     print(appt)
                     for app in appt:
                         print("pumasok loop")
-                        curr_date = datetime.date.today()
-                        print(curr_date)
-                        print(app.date)
-                        print(app.stat)
-                        if ((app.date - curr_date).days > 0):
-                                    print("hi")
-                                    if (app.stat == "CONFIRMED"):
-                                        bcg_con += 1
-                                        print("+con")
-                                        continue
-                                    elif (app.stat == "UNCONFIRMED"):
-                                        bcg_not += 1
-                                        print("+not")
-                                        continue
-                                    else:
-                                        bcg_no += 1
-                                        print("+no")
-                                        continue
+                        today = datetime.date.today()
+                        if ((app.date - today).days < 0):
+                            app.delete()
+                            print("deleted")
+                        else:
+                            curr_date = datetime.date.today()
+                            print(curr_date)
+                            print(app.date)
+                            print(app.stat)
+                            if ((app.date - curr_date).days > 0):
+                                        print("hi")
+                                        if (app.stat == "CONFIRMED"):
+                                            bcg_con += 1
+                                            print("+con")
+                                            continue
+                                        elif (app.stat == "UNCONFIRMED"):
+                                            bcg_not += 1
+                                            print("+not")
+                                            continue
+                                        else:
+                                            bcg_no += 1
+                                            print("+no")
+                                            continue
             #dtap1
         print("dtap1")
         if((datetime.date.today()-patient.bday).days > 42):
@@ -833,24 +843,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            dtap_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            dtap_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            dtap_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                dtap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                dtap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                dtap_no += 1
+                                                print("+no")
+                                                continue
             #dtap2
         
         if(vaccine.dtap1_date is not None):
@@ -870,24 +885,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            dtap_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            dtap_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            dtap_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                dtap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                dtap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                dtap_no += 1
+                                                print("+no")
+                                                continue
             #dtap3
         if(vaccine.dtap2_date is not None):
             if(vaccine.dtap3_date is None):
@@ -906,24 +926,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            dtap_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            dtap_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            dtap_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                dtap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                dtap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                dtap_no += 1
+                                                print("+no")
+                                                continue
             #dtap booster 1
         if(vaccine.dtap3_date is not None):
             if(vaccine.dtap4_date is None):
@@ -941,24 +966,29 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                dtap_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                dtap_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                dtap_no += 1
-                                                print("+no")
-                                                continue
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    dtap_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    dtap_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    dtap_no += 1
+                                                    print("+no")
+                                                    continue
             #dtap booster 2
         if(vaccine.dtap4_date is not None):
             if(vaccine.dtap5_date is None):
@@ -976,27 +1006,31 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                dtap_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                dtap_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                dtap_no += 1
-                                                print("+no")
-                                                continue
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    dtap_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    dtap_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    dtap_no += 1
+                                                    print("+no")
+                                                    continue
                     
             #hepb1
-        
         if(vaccine.hepb1_date is None):
                     print("hepb1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1011,24 +1045,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            hepb_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            hepb_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            hepb_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hepb_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hepb_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hepb_no += 1
+                                                print("+no")
+                                                continue
             #hepb2
         if(vaccine.hepb1_date is not None):
             if(vaccine.hepb2_date is None):
@@ -1045,24 +1084,29 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hepb_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hepb_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hepb_no += 1
-                                                print("+no")
-                                                continue
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hepb_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hepb_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hepb_no += 1
+                                                    print("+no")
+                                                    continue
             #hepb3
         if(vaccine.hepb2_date is not None):
             if(vaccine.hepb3_date is None):
@@ -1079,24 +1123,29 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hepb_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hepb_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hepb_no += 1
-                                                print("+no")
-                                                continue
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hepb_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hepb_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hepb_no += 1
+                                                    print("+no")
+                                                    continue
             #hib1
         if((datetime.date.today()-patient.bday).days > 42):
                     print("hib1")
@@ -1111,24 +1160,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            hib_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            hib_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            hib_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hib_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hib_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hib_no += 1
+                                                print("+no")
+                                                continue
                     
             #hib2
         if(vaccine.hib1_date is not None):
@@ -1146,24 +1200,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    hib_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    hib_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    hib_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                        curr_date = datetime.date.today()
+                                        print(curr_date)
+                                        print(app.date)
+                                        print(app.stat)
+                                        if ((app.date - curr_date).days > 0):
+                                                    print("hi")
+                                                    if (app.stat == "CONFIRMED"):
+                                                        hib_con += 1
+                                                        print("+con")
+                                                        continue
+                                                    elif (app.stat == "UNCONFIRMED"):
+                                                        hib_not += 1
+                                                        print("+not")
+                                                        continue
+                                                    else:
+                                                        hib_no += 1
+                                                        print("+no")
+                                                        continue
                 #hib3
         if(vaccine.hib2_date is not None):   
             if(vaccine.hib3_date is None):     
@@ -1180,24 +1239,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    hib_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    hib_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    hib_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            hib_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            hib_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            hib_no += 1
+                                                            print("+no")
+                                                            continue
                 #hib booster1
         if(vaccine.hib3_date is not None):
             if(vaccine.hib4_date is None):
@@ -1214,24 +1278,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    hib_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    hib_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    hib_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            hib_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            hib_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            hib_no += 1
+                                                            print("+no")
+                                                            continue
             #hpv11
         if(8<years<15):
             if(vaccine.hpv11_date is None):
@@ -1247,24 +1316,29 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hpv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hpv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hpv_no += 1
-                                                print("+no")
-                                                continue
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
         #hpv12
         if(vaccine.hpv11_date is not None):
             if(vaccine.hpv12_date is None):
@@ -1282,24 +1356,29 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hpv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hpv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hpv_no += 1
-                                                print("+no")
-                                                continue
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
         #hpv21
         if(years>=15):
             if(vaccine.hpv11_date is None):
@@ -1316,24 +1395,29 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hpv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hpv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hpv_no += 1
-                                                print("+no")
-                                                continue
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
         #hpv22
         if(vaccine.hpv21_date is not None):
             if(vaccine.hpv22_date is None):
@@ -1351,24 +1435,29 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hpv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hpv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hpv_no += 1
-                                                print("+no")
-                                                continue
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
         #hpv3
         if(vaccine.hpv22_date is not None):
             if(vaccine.hpv23_date is None):
@@ -1386,24 +1475,29 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                hpv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                hpv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                hpv_no += 1
-                                                print("+no")
-                                                continue
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    hpv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    hpv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    hpv_no += 1
+                                                    print("+no")
+                                                    continue
  
             #inactivehepa1
         if((datetime.date.today()-patient.bday).days > 360):
@@ -1419,24 +1513,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            hepaa_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            hepaa_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            hepaa_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                hepaa_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                hepaa_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                hepaa_no += 1
+                                                print("+no")
+                                                continue
             #inactivehepa2
         if(vaccine.hepa1_date is not None):
             if(vaccine.hepa2_date is None):
@@ -1453,24 +1552,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    hepaa_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    hepaa_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    hepaa_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            hepaa_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            hepaa_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            hepaa_no += 1
+                                                            print("+no")
+                                                            continue
             #inf1
         if((datetime.date.today()-patient.bday).days > 180):
                     print("inf1")
@@ -1485,24 +1589,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            inf_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            inf_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            inf_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                inf_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                inf_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                inf_no += 1
+                                                print("+no")
+                                                continue
             #inf2
         if(vaccine.inf1_date is not None):
             if(vaccine.inf2_date is None):
@@ -1519,24 +1628,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    inf_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    inf_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    inf_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            inf_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            inf_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            inf_no += 1
+                                                            print("+no")
+                                                            continue
             #annual flu
         if(vaccine.anf_date is None):
                 if((datetime.date.today()-patient.bday).days > 360):
@@ -1552,24 +1666,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            flu_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            flu_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            flu_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                flu_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                flu_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                flu_no += 1
+                                                print("+no")
+                                                continue
         if(vaccine.anf_date is not None):        
                 if((datetime.date.today()-vaccine.anf_date).days > 360):
                     date = (datetime.date.today()-vaccine.anf_date).days
@@ -1585,24 +1704,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            flu_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            flu_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            flu_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                flu_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                flu_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                flu_no += 1
+                                                print("+no")
+                                                continue
             #ipv/opv1
         if((datetime.date.today()-patient.bday).days > 42):
                     print("opv1")
@@ -1617,24 +1741,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            opv_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            opv_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            opv_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                opv_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                opv_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                opv_no += 1
+                                                print("+no")
+                                                continue
             #ipv/opv2
         if(vaccine.ipv1_date is not None):
             if(vaccine.ipv2_date is None):
@@ -1651,24 +1780,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    opv_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    opv_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    opv_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            opv_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            opv_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            opv_no += 1
+                                                            print("+no")
+                                                            continue
                 #ipv/opv3
         if(vaccine.ipv2_date is not None):
             if(vaccine.ipv3_date is None):
@@ -1685,6 +1819,50 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            opv_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            opv_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            opv_no += 1
+                                                            print("+no")
+                                                            continue
+            #ipv/opv booster 1
+        if(vaccine.ipv3_date is not None):
+            if(vaccine.ipv4_date is None):
+                if((datetime.date.today()-patient.bday).days > 360):
+                        print("ipv boost1")
+                        if(Appointment.objects.filter(user = patient.user).count() == 0):
+                            print("no appt")
+                            opv_no += 1
+                            print("+noo")
+                        else:
+                            print("yes appt")
+                            appt = Appointment.objects.filter(user=patient.user)
+                            print("pumasok filter")
+                            print(appt)
+                            for app in appt:
+                                print("pumasok loop")
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
                                     curr_date = datetime.date.today()
                                     print(curr_date)
                                     print(app.date)
@@ -1703,40 +1881,6 @@ def tool(request):
                                                     opv_no += 1
                                                     print("+no")
                                                     continue
-            #ipv/opv booster 1
-        if(vaccine.ipv3_date is not None):
-            if(vaccine.ipv4_date is None):
-                if((datetime.date.today()-patient.bday).days > 360):
-                        print("ipv boost1")
-                        if(Appointment.objects.filter(user = patient.user).count() == 0):
-                            print("no appt")
-                            opv_no += 1
-                            print("+noo")
-                        else:
-                            print("yes appt")
-                            appt = Appointment.objects.filter(user=patient.user)
-                            print("pumasok filter")
-                            print(appt)
-                            for app in appt:
-                                print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                opv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                opv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                opv_no += 1
-                                                print("+no")
-                                                continue
             #ipv/opv booster 2
         if(vaccine.ipv4_date is not None):
             if(vaccine.ipv5_date is None):
@@ -1753,25 +1897,30 @@ def tool(request):
                             print(appt)
                             for app in appt:
                                 print("pumasok loop")
-                                curr_date = datetime.date.today()
-                                print(curr_date)
-                                print(app.date)
-                                print(app.stat)
-                                if ((app.date - curr_date).days > 0):
-                                            print("hi")
-                                            if (app.stat == "CONFIRMED"):
-                                                opv_con += 1
-                                                print("+con")
-                                                continue
-                                            elif (app.stat == "UNCONFIRMED"):
-                                                opv_not += 1
-                                                print("+not")
-                                                continue
-                                            else:
-                                                opv_no += 1
-                                                print("+no")
-                                                continue
-            #japencb1
+                                today = datetime.date.today()
+                                if ((app.date - today).days < 0):
+                                    app.delete()
+                                    print("deleted")
+                                else:
+                                    curr_date = datetime.date.today()
+                                    print(curr_date)
+                                    print(app.date)
+                                    print(app.stat)
+                                    if ((app.date - curr_date).days > 0):
+                                                print("hi")
+                                                if (app.stat == "CONFIRMED"):
+                                                    opv_con += 1
+                                                    print("+con")
+                                                    continue
+                                                elif (app.stat == "UNCONFIRMED"):
+                                                    opv_not += 1
+                                                    print("+not")
+                                                    continue
+                                                else:
+                                                    opv_no += 1
+                                                    print("+no")
+                                                    continue
+                #japencb1
         if((datetime.date.today()-patient.bday).days > 270):
                     print("jap1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
@@ -1785,24 +1934,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            jap_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            jap_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            jap_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                jap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                jap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                jap_no += 1
+                                                print("+no")
+                                                continue
             #japencb2
         if(vaccine.japb1_date is not None):
             if(vaccine.japb2_date is None):
@@ -1819,24 +1973,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    jap_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    jap_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    jap_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            jap_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            jap_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            jap_no += 1
+                                                            print("+no")
+                                                            continue
             #msl
                 #note: sakop two cases either way ; needs fixing
         if(((datetime.date.today()-patient.bday).days > 180) | 
@@ -1853,24 +2012,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            msl_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            msl_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            msl_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                msl_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                msl_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                msl_no += 1
+                                                print("+no")
+                                                continue
             #meninggo vax
         if(1<years<56):
             if(vaccine.men_date is None):
@@ -1887,24 +2051,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            mcc_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            mcc_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            msl_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                mcc_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                mcc_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                msl_no += 1
+                                                print("+no")
+                                                continue
 
             #mmr1
         if((datetime.date.today()-patient.bday).days > 360):
@@ -1920,24 +2089,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            mmr_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            mmr_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            mmr_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                mmr_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                mmr_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                mmr_no += 1
+                                                print("+no")
+                                                continue
             #mmr2
         if(vaccine.mmr1_date is not None):
             if(vaccine.mmr2_date is None):
@@ -1955,24 +2129,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    mmr_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    mmr_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    mmr_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            mmr_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            mmr_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            mmr_no += 1
+                                                            print("+no")
+                                                            continue
             #pcv1
         if(1440 < (datetime.date.today()-patient.bday).days > 42):
                     print("pcv1")
@@ -1987,24 +2166,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            pcv_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            pcv_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            pcv_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                pcv_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                pcv_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                pcv_no += 1
+                                                print("+no")
+                                                continue
             #pcv2
         if(vaccine.pcv1_date is not None):
             if(vaccine.pcv2_date is None):
@@ -2021,24 +2205,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    pcv_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    pcv_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    pcv_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            pcv_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            pcv_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            pcv_no += 1
+                                                            print("+no")
+                                                            continue
                 #pcv3
         if(vaccine.pcv2_date is not None):
             if(vaccine.pcv3_date is None):        
@@ -2055,24 +2244,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    pcv_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    pcv_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    pcv_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            pcv_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            pcv_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            pcv_no += 1
+                                                            print("+no")
+                                                            continue
                 #pcv booster1
         if(vaccine.pcv3_date is not None):
             if(vaccine.pcv4_date is None):
@@ -2089,24 +2283,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    pcv_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    pcv_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    pcv_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            pcv_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            pcv_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            pcv_no += 1
+                                                            print("+no")
+                                                            continue
             #rota1
         if((datetime.date.today()-patient.bday).days > 42):
                     print("rota1")
@@ -2121,24 +2320,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            rota_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            rota_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            rota_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                rota_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                rota_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                rota_no += 1
+                                                print("+no")
+                                                continue
             #rota2
         if(vaccine.rota1_date is not None):
             if(vaccine.rota2_date is None):
@@ -2155,24 +2359,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    rota_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    rota_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    rota_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            rota_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            rota_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            rota_no += 1
+                                                            print("+no")
+                                                            continue
                 #rota3
         if(vaccine.rota2_date is not None):      
             if(vaccine.rota3_date is None):  
@@ -2189,24 +2398,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    rota_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    rota_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    rota_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            rota_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            rota_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            rota_no += 1
+                                                            print("+no")
+                                                            continue
             #td
         if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
                     print("td")
@@ -2221,24 +2435,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            tdap_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            tdap_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            tdap_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                tdap_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                tdap_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                tdap_no += 1
+                                                print("+no")
+                                                continue
             #typ
         if(vaccine.typ_date is None):
                 if((datetime.date.today()-patient.bday).days > 720):
@@ -2254,24 +2473,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            typ_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            typ_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            typ_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                typ_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                typ_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                typ_no += 1
+                                                print("+no")
+                                                continue
                                             
         if(vaccine.typ_date is not None):                                    
                 if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
@@ -2289,24 +2513,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            typ_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            typ_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            typ_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                typ_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                typ_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                typ_no += 1
+                                                print("+no")
+                                                continue
             #var1
         if((datetime.date.today()-patient.bday).days > 360):
                     print("var1")
@@ -2321,24 +2550,29 @@ def tool(request):
                         print(appt)
                         for app in appt:
                             print("pumasok loop")
-                            curr_date = datetime.date.today()
-                            print(curr_date)
-                            print(app.date)
-                            print(app.stat)
-                            if ((app.date - curr_date).days > 0):
-                                        print("hi")
-                                        if (app.stat == "CONFIRMED"):
-                                            var_con += 1
-                                            print("+con")
-                                            continue
-                                        elif (app.stat == "UNCONFIRMED"):
-                                            var_not += 1
-                                            print("+not")
-                                            continue
-                                        else:
-                                            var_no += 1
-                                            print("+no")
-                                            continue
+                            today = datetime.date.today()
+                            if ((app.date - today).days < 0):
+                                app.delete()
+                                print("deleted")
+                            else:
+                                curr_date = datetime.date.today()
+                                print(curr_date)
+                                print(app.date)
+                                print(app.stat)
+                                if ((app.date - curr_date).days > 0):
+                                            print("hi")
+                                            if (app.stat == "CONFIRMED"):
+                                                var_con += 1
+                                                print("+con")
+                                                continue
+                                            elif (app.stat == "UNCONFIRMED"):
+                                                var_not += 1
+                                                print("+not")
+                                                continue
+                                            else:
+                                                var_no += 1
+                                                print("+no")
+                                                continue
             #var2
         if(vaccine.var1_date is not None):
             if(vaccine.var2_date is None):
@@ -2356,24 +2590,29 @@ def tool(request):
                                 print(appt)
                                 for app in appt:
                                     print("pumasok loop")
-                                    curr_date = datetime.date.today()
-                                    print(curr_date)
-                                    print(app.date)
-                                    print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
-                                                print("hi")
-                                                if (app.stat == "CONFIRMED"):
-                                                    var_con += 1
-                                                    print("+con")
-                                                    continue
-                                                elif (app.stat == "UNCONFIRMED"):
-                                                    var_not += 1
-                                                    print("+not")
-                                                    continue
-                                                else:
-                                                    var_no += 1
-                                                    print("+no")
-                                                    continue
+                                    today = datetime.date.today()
+                                    if ((app.date - today).days < 0):
+                                        app.delete()
+                                        print("deleted")
+                                    else:
+                                            curr_date = datetime.date.today()
+                                            print(curr_date)
+                                            print(app.date)
+                                            print(app.stat)
+                                            if ((app.date - curr_date).days > 0):
+                                                        print("hi")
+                                                        if (app.stat == "CONFIRMED"):
+                                                            var_con += 1
+                                                            print("+con")
+                                                            continue
+                                                        elif (app.stat == "UNCONFIRMED"):
+                                                            var_not += 1
+                                                            print("+not")
+                                                            continue
+                                                        else:
+                                                            var_no += 1
+                                                            print("+no")
+                                                            continue
         
     bcg_total = bcg_no + bcg_con + bcg_not
     hepb_total = hepb_no + hepb_con + hepb_not
@@ -2483,7 +2722,7 @@ def reject_appointment(request,pk):
     email = appointment.user.email
     username = appointment.user.username
     subject = "Appointment update: "
-    message = "<h1>Hello " + username +", good day!</h1> <br><br>This is to inform you that your request for an appointment has been denied. Please contact your doctor to set a valid time, date, and location for your appointment. Thank you!"
+    message = "Hello " + username +", good day!<br><br>This is to inform you that your request for an appointment has been denied. Please contact your doctor to set a valid time, date, and location for your appointment. Thank you!"
     from_email = settings.EMAIL_HOST_USER
     recepient_list = [email]
     # send_mail(subject, message, from_email, recepient_list)
@@ -2740,7 +2979,7 @@ def report(request):
                             print(curr_date)
                             print(app.date)
                             print(app.stat)
-                            if ((app.date - curr_date).days > 0):
+                            if ((app.date - to_date).days >= 0):
                                         print("hi")
                                         if (app.stat == "CONFIRMED"):
                                             bcg_con += 1
@@ -2754,9 +2993,10 @@ def report(request):
                                             bcg_no += 1
                                             print("+no")
                                             continue
+                        
             #dtap1
         print("dtap1")
-        if((datetime.date.today()-patient.bday).days > 42):
+        if((to_date-patient.bday).days >= 42):
                     print("check vacc")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -2775,7 +3015,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 dtap_con += 1
@@ -2789,12 +3029,13 @@ def report(request):
                                                 dtap_no += 1
                                                 print("+no")
                                                 continue
+                            continue
             #dtap2
         
         if(vaccine.dtap1_date is not None):
             if(vaccine.dtap2_date is None):
                 print("dtap2")
-                if((datetime.date.today()-vaccine.dtap1_date).days > 28): 
+                if((to_date - vaccine.dtap1_date).days >= 28): 
                     print("check vacc")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -2813,7 +3054,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 dtap_con += 1
@@ -2831,7 +3072,7 @@ def report(request):
         if(vaccine.dtap2_date is not None):
             if(vaccine.dtap3_date is None):
                 print("dtap3")
-                if((datetime.date.today()-vaccine.dtap2_date).days > 28): 
+                if((to_date - vaccine.dtap2_date).days >= 28): 
                     print("check vacc")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -2850,7 +3091,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 dtap_con += 1
@@ -2867,7 +3108,7 @@ def report(request):
             #dtap booster 1
         if(vaccine.dtap3_date is not None):
             if(vaccine.dtap4_date is None):
-                if((datetime.date.today()-patient.bday).days > 350):
+                if((to_date-patient.bday).days >= 350):
                     print("dtapboost1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -2886,7 +3127,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 dtap_con += 1
@@ -2903,7 +3144,7 @@ def report(request):
             #dtap booster 2
         if(vaccine.dtap4_date is not None):
             if(vaccine.dtap5_date is None):
-                if((datetime.date.today()-patient.bday).days > 1400):
+                if((to_date - patient.bday).days >= 1400):
                         print("dtapboost2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
@@ -2922,7 +3163,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     dtap_con += 1
@@ -2958,7 +3199,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 hepb_con += 1
@@ -2972,10 +3213,11 @@ def report(request):
                                                 hepb_no += 1
                                                 print("+no")
                                                 continue
+                        
             #hepb2
         if(vaccine.hepb1_date is not None):
             if(vaccine.hepb2_date is None):
-                if((datetime.date.today()-patient.bday).days > 30):
+                if((to_date-patient.bday).days >= 30):
                         print("hepb2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
@@ -2993,7 +3235,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     hepb_con += 1
@@ -3010,7 +3252,7 @@ def report(request):
             #hepb3
         if(vaccine.hepb2_date is not None):
             if(vaccine.hepb3_date is None):
-                if((datetime.date.today()-patient.bday).days > 180):
+                if((to_date-patient.bday).days >= 180):
                         print("hepb3")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
@@ -3028,7 +3270,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     hepb_con += 1
@@ -3043,7 +3285,7 @@ def report(request):
                                                     print("+no")
                                                     continue
             #hib1
-        if((datetime.date.today()-patient.bday).days > 42):
+        if((to_date-patient.bday).days >= 42):
                     print("hib1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3061,7 +3303,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 hib_con += 1
@@ -3079,7 +3321,7 @@ def report(request):
             #hib2
         if(vaccine.hib1_date is not None):
             if(vaccine.hib2_date is None):
-                if((datetime.date.today()-vaccine.hib1_date).days > 28):
+                if((to_date-vaccine.hib1_date).days >= 28):
                             print("hib2")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3097,7 +3339,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         hib_con += 1
@@ -3114,7 +3356,7 @@ def report(request):
                 #hib3
         if(vaccine.hib2_date is not None):
             if(vaccine.hib3_date is None):        
-                if((datetime.date.today()-vaccine.hib2_date).days > 28):
+                if((to_date-vaccine.hib2_date).days >= 28):
                             print("hib3")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3132,7 +3374,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         hib_con += 1
@@ -3149,7 +3391,7 @@ def report(request):
                 #hib booster1
         if(vaccine.hib3_date is not None):
             if(vaccine.hib4_date is None):
-                if((datetime.date.today()-vaccine.hib3_date).days > 180):
+                if((to_date-vaccine.hib3_date).days >= 180):
                             print("hib4")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3167,7 +3409,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         hib_con += 1
@@ -3201,7 +3443,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     hpv_con += 1
@@ -3219,7 +3461,7 @@ def report(request):
         if(vaccine.hpv11_date is not None):
             if(vaccine.hpv12_date is None):
                 if(9<years<15):
-                    if ((datetime.date.today()-vaccine.hpv11_date).days > 180):
+                    if ((to_date-vaccine.hpv11_date).days >= 180):
                         print("hpv12")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
@@ -3237,7 +3479,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     hpv_con += 1
@@ -3272,7 +3514,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     hpv_con += 1
@@ -3290,7 +3532,7 @@ def report(request):
         if(vaccine.hpv21_date is not None):
             if(vaccine.hpv22_date is None):
                 if(years>=15):
-                    if ((datetime.date.today()-vaccine.hpv21_date).days > 120):
+                    if ((to_date-vaccine.hpv21_date).days >= 120):
                         print("hpv22")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
@@ -3308,7 +3550,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     hpv_con += 1
@@ -3326,7 +3568,7 @@ def report(request):
         if(vaccine.hpv22_date is not None):
             if(vaccine.hpv23_date is None):
                 if(years>=15):
-                    if ((datetime.date.today()-vaccine.hpv22_date).days > 180):
+                    if ((to_date-vaccine.hpv22_date).days >= 180):
                         print("hpv23")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
@@ -3344,7 +3586,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     hpv_con += 1
@@ -3360,7 +3602,7 @@ def report(request):
                                                     continue
  
             #inactivehepa1
-        if((datetime.date.today()-patient.bday).days > 360):
+        if((to_date-patient.bday).days >= 360):
                     print("hepaa1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3378,7 +3620,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 hepaa_con += 1
@@ -3395,7 +3637,7 @@ def report(request):
             #inactivehepa2
         if(vaccine.hepa1_date is not None):
             if(vaccine.hepa2_date is None):
-                if((datetime.date.today()-vaccine.hepa1_date).days > 180):
+                if((to_date-vaccine.hepa1_date).days >= 180):
                             print("hepaa2")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3413,7 +3655,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         hepaa_con += 1
@@ -3428,7 +3670,7 @@ def report(request):
                                                         print("+no")
                                                         continue
             #inf1
-        if((datetime.date.today()-patient.bday).days > 180):
+        if((to_date-patient.bday).days >= 180):
                     print("inf1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3446,7 +3688,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 inf_con += 1
@@ -3463,7 +3705,7 @@ def report(request):
             #inf2
         if(vaccine.inf1_date is not None):
             if(vaccine.inf2_date is None):
-                if((datetime.date.today()-vaccine.inf1_date).days > 28):
+                if((to_date-vaccine.inf1_date).days >= 28):
                             print("inf2")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3481,7 +3723,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         inf_con += 1
@@ -3497,7 +3739,7 @@ def report(request):
                                                         continue
             #annual flu
         if(vaccine.anf_date is None):
-                if((datetime.date.today()-patient.bday).days > 360):
+                if((to_date-patient.bday).days >= 360):
                     print("flu")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3515,7 +3757,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 flu_con += 1
@@ -3530,8 +3772,8 @@ def report(request):
                                                 print("+no")
                                                 continue
         if(vaccine.anf_date is not None):        
-                if((datetime.date.today()-vaccine.anf_date).days > 360):
-                    date = (datetime.date.today()-vaccine.anf_date).days
+                if((to_date-vaccine.anf_date).days >= 360):
+                    date = (to_date-vaccine.anf_date).days
                     print("flu")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3549,7 +3791,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 flu_con += 1
@@ -3564,7 +3806,7 @@ def report(request):
                                                 print("+no")
                                                 continue
             #ipv/opv1
-        if((datetime.date.today()-patient.bday).days > 42):
+        if((to_date-patient.bday).days >= 42):
                     print("opv1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3582,7 +3824,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 opv_con += 1
@@ -3599,7 +3841,7 @@ def report(request):
             #ipv/opv2
         if(vaccine.ipv1_date is not None):
             if(vaccine.ipv2_date is None):
-                if((datetime.date.today()-patient.ipv1_date).days > 28):
+                if((to_date-patient.ipv1_date).days >= 28):
                             print("ipv2")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3617,7 +3859,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         opv_con += 1
@@ -3634,7 +3876,7 @@ def report(request):
                 #ipv/opv3
         if(vaccine.ipv2_date is not None):
             if(vaccine.ipv3_date is None):
-                if((datetime.date.today()-patient.ipv2_date).days > 28):
+                if((to_date-patient.ipv2_date).days >= 28):
                             print("ipbv3")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3652,7 +3894,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         opv_con += 1
@@ -3669,7 +3911,7 @@ def report(request):
             #ipv/opv booster 1
         if(vaccine.ipv3_date is not None):
             if(vaccine.ipv4_date is None):
-                if((datetime.date.today()-patient.bday).days > 360):
+                if((to_date-patient.bday).days >= 360):
                         print("ipv boost1")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
@@ -3687,7 +3929,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     opv_con += 1
@@ -3704,7 +3946,7 @@ def report(request):
             #ipv/opv booster 2
         if(vaccine.ipv4_date is not None):
             if(vaccine.ipv5_date is None):
-                if((datetime.date.today()-patient.bday).days > 1440):
+                if((to_date-patient.bday).days >= 1440):
                         print("hepaa boost 2")
                         if(Appointment.objects.filter(user = patient.user).count() == 0):
                             print("no appt")
@@ -3722,7 +3964,7 @@ def report(request):
                                     print(curr_date)
                                     print(app.date)
                                     print(app.stat)
-                                    if ((app.date - curr_date).days > 0):
+                                    if ((app.date - to_date).days >= 0):
                                                 print("hi")
                                                 if (app.stat == "CONFIRMED"):
                                                     opv_con += 1
@@ -3737,7 +3979,7 @@ def report(request):
                                                     print("+no")
                                                     continue
             #japencb1
-        if((datetime.date.today()-patient.bday).days > 270):
+        if((to_date-patient.bday).days >= 270):
                     print("jap1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3755,7 +3997,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 jap_con += 1
@@ -3772,7 +4014,7 @@ def report(request):
             #japencb2
         if(vaccine.japb1_date is not None):
             if(vaccine.japb2_date is None):
-                if(360 < (datetime.date.today()-vaccine.japb1_date).days <= 720):
+                if(360 < (to_date-vaccine.japb1_date).days <= 720):
                             print("jap2")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3790,7 +4032,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         jap_con += 1
@@ -3806,8 +4048,8 @@ def report(request):
                                                         continue
             #msl
                 #note: sakop two cases either way ; needs fixing
-        if(((datetime.date.today()-patient.bday).days > 180) | 
-                ((datetime.date.today()-patient.bday).days > 270)):
+        if(((to_date-patient.bday).days >= 180) | 
+                ((to_date-patient.bday).days >= 270)):
                     print("msl1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3825,7 +4067,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 msl_con += 1
@@ -3842,7 +4084,7 @@ def report(request):
             #meninggo vax
         if(1<years<56):
             if(vaccine.men_date is None):
-                 if(((datetime.date.today()-patient.bday).days > 720) and ((datetime.date.today()-patient.bday).days < 19800)):
+                 if(((to_date-patient.bday).days >= 720) and ((to_date-patient.bday).days <= 19800)):
                     print("mcc1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3860,7 +4102,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 mcc_con += 1
@@ -3876,7 +4118,7 @@ def report(request):
                                                 continue
 
             #mmr1
-        if((datetime.date.today()-patient.bday).days > 360):
+        if((to_date-patient.bday).days >= 360):
                     print("mmr1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3894,7 +4136,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 mmr_con += 1
@@ -3911,8 +4153,8 @@ def report(request):
             #mmr2
         if(vaccine.mmr1_date is not None):
             if(vaccine.mmr2_date is None):
-                if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |
-                        ((datetime.date.today()-vaccine.mmr1_date).days > 28)):
+                if((1440 < (to_date-patient.bday).days <= 2160) |
+                        ((to_date-vaccine.mmr1_date).days >= 28)):
                             print("mmr2")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3930,7 +4172,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         mmr_con += 1
@@ -3945,7 +4187,7 @@ def report(request):
                                                         print("+no")
                                                         continue
             #pcv1
-        if(1440 < (datetime.date.today()-patient.bday).days > 42):
+        if((to_date-patient.bday).days >= 42):
                     print("pcv1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -3963,7 +4205,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 pcv_con += 1
@@ -3980,7 +4222,7 @@ def report(request):
             #pcv2
         if(vaccine.pcv1_date is not None):
             if(vaccine.pcv2_date is None):
-                if((datetime.date.today()-vaccine.pcv1_date).days > 28):
+                if((to_date-vaccine.pcv1_date).days >= 28):
                             print("pcv2")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -3998,7 +4240,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         pcv_con += 1
@@ -4015,7 +4257,7 @@ def report(request):
                 #pcv3
         if(vaccine.pcv2_date is not None):
             if(vaccine.pcv3_date is None):        
-                if((datetime.date.today()-vaccine.pcv2_date).days > 28):
+                if((to_date-vaccine.pcv2_date).days >= 28):
                             print("pcv3")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -4033,7 +4275,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         pcv_con += 1
@@ -4050,7 +4292,7 @@ def report(request):
                 #pcv booster1
         if(vaccine.pcv3_date is not None):
             if(vaccine.pcv4_date is None):
-                if((datetime.date.today()-patient.pcv3_date).days > 180):
+                if((to_date-patient.pcv3_date).days >= 180):
                             print("pcvboost")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -4068,7 +4310,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         pcv_con += 1
@@ -4083,7 +4325,7 @@ def report(request):
                                                         print("+no")
                                                         continue
             #rota1
-        if((datetime.date.today()-patient.bday).days > 42):
+        if((to_date-patient.bday).days >= 42):
                     print("rota1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -4101,7 +4343,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 rota_con += 1
@@ -4118,7 +4360,7 @@ def report(request):
             #rota2
         if(vaccine.rota1_date is not None):
             if(vaccine.rota2_date is None):
-                if((datetime.date.today()-vaccine.rota1_date).days > 28):
+                if((to_date-vaccine.rota1_date).days >= 28):
                             print("rota2")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -4136,7 +4378,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         rota_con += 1
@@ -4153,7 +4395,7 @@ def report(request):
                 #rota3
         if(vaccine.rota2_date is not None):
             if(vaccine.rota3_date is None):        
-                if((datetime.date.today()-vaccine.rota2_date).days > 28):
+                if((to_date-vaccine.rota2_date).days >= 28):
                             print("rota3")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -4171,7 +4413,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         rota_con += 1
@@ -4186,7 +4428,7 @@ def report(request):
                                                         print("+no")
                                                         continue
             #td
-        if(3240 < (datetime.date.today()-patient.bday).days <= 5400):
+        if(3240 < (to_date-patient.bday).days <= 5400):
                     print("td")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -4204,7 +4446,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 tdap_con += 1
@@ -4220,7 +4462,7 @@ def report(request):
                                                 continue
             #typ
         if(vaccine.typ_date is None):
-                if((datetime.date.today()-patient.bday).days > 720):
+                if((to_date-patient.bday).days >= 720):
                     print("typ1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -4238,7 +4480,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 typ_con += 1
@@ -4254,9 +4496,9 @@ def report(request):
                                                 continue
                                             
         if(vaccine.typ_date is not None):                                    
-                if(720 < (datetime.date.today()-vaccine.typ_date).days <= 1080):
-                    date = (datetime.date.today()-vaccine.typ_date).days
-                    vaccine.typ_date = date
+                if(720 < (to_date-vaccine.typ_date).days <= 1080):
+                    date = (to_date-vaccine.typ_date).days
+                    # vaccine.typ_date = date
                     print("typ2")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -4274,7 +4516,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 typ_con += 1
@@ -4289,7 +4531,7 @@ def report(request):
                                                 print("+no")
                                                 continue
             #var1
-        if((datetime.date.today()-patient.bday).days > 360):
+        if((to_date-patient.bday).days >= 360):
                     print("var1")
                     if(Appointment.objects.filter(user = patient.user).count() == 0):
                         print("no appt")
@@ -4307,7 +4549,7 @@ def report(request):
                                 print(curr_date)
                                 print(app.date)
                                 print(app.stat)
-                                if ((app.date - curr_date).days > 0):
+                                if ((app.date - to_date).days >= 0):
                                             print("hi")
                                             if (app.stat == "CONFIRMED"):
                                                 var_con += 1
@@ -4324,8 +4566,8 @@ def report(request):
             #var2
         if(vaccine.var1_date is not None):
             if(vaccine.var2_date is None):
-                if((1440 < (datetime.date.today()-patient.bday).days <= 2160) |    
-                        ((datetime.date.today()-vaccine.var1_date).days > 90)):
+                if((1440 < (to_date-patient.bday).days <= 2160) |    
+                        ((to_date-vaccine.var1_date).days > 90)):
                             print("var2")
                             if(Appointment.objects.filter(user = patient.user).count() == 0):
                                 print("no appt")
@@ -4343,7 +4585,7 @@ def report(request):
                                         print(curr_date)
                                         print(app.date)
                                         print(app.stat)
-                                        if ((app.date - curr_date).days > 0):
+                                        if ((app.date - to_date).days >= 0):
                                                     print("hi")
                                                     if (app.stat == "CONFIRMED"):
                                                         var_con += 1
@@ -4460,7 +4702,7 @@ def update_own_profile(request,pk):
             print("valid")
             profile = Doctor.objects.get(user=doctor)
             data = {"record":record,'form':form}
-            return redirect('update-staff')
+            return redirect('own-profile')
     data = {"record":record,'form':form}
     return render(request, "vaccinerecordapp/tool/update-own-profile.html",data)
 
@@ -5814,11 +6056,19 @@ def reminder_vaccines(request,pk):
 
 def send_email_reminder(request,pk):
     patient = PatientRecord.objects.get(id = pk)
+    pat = PatientRecord.objects.get(id = pk).user
     email = patient.user.email
     first_name = patient.first_name
     last_name = patient.last_name
+    doc = str(patient.doctor_assigned)
+    appts = Appointment.objects.filter(user=pat)
+    for app in appts:
+        app_date = app.date.strftime("%b %d %Y")
+        loc = str(app.location)
+        time = str(app.time)
+        break
     subject = "Reminder for due vaccine: "
-    message = "<h1> Good day " + first_name + " " + last_name + "! We are writing to inform you that you have due vaccinations."
+    message = "Hi parents/guardians of " + first_name +" "+ last_name +"! This is from " + doc + " of Childcare Clinic at " + loc + " reminding you of your child's vaccination schedule this "+ app_date + " at " + time + ". Please reply CONFIRM to finalize your booking appointment. If you need to reschedule, message [contact number]."
     from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     email = EmailMessage(

@@ -164,7 +164,7 @@ footer {
     <br>
         <div class="row" >
             <div class="col" style="text-indent: 70px;"> This is to certify that <span style="font-weight: bold ; color: black;">{{ first_name }} {{ middle_name|default_if_none:'' }} {{ last_name }}, 
-                {{ age }}, {{gender}}, of {{ city }} City</span> has completed the following vaccinations. 
+                {{ age }}, {{gender}}, {% if city != 'NONE' %} of {{ city }} City{% endif %} </span> has completed the following vaccinations. 
             </div>
         </div>
     <br>
