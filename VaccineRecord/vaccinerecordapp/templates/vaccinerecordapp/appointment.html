@@ -36,8 +36,8 @@
                         <tr>
                             <th scope="col">Appointment No#</th>
                             <th scope="col">Patient</th>
-                            <th scope="col">Time</th>
                             <th scope="col">Date</th>
+                            <th scope="col">Time</th>
                             <th scope="col">Doctor </th>
                             <th scope="col">Visit</th>
                             <th scope="col">Location</th>
@@ -51,12 +51,16 @@
                     <tr>
                         <td> <a>{{appointment.id}}</a></td>
                         <td> <a>{{appointment.patient_username}}</a></td>
-                        <td> <a>{{appointment.time}}</a></td>
                         <td> <a>{{appointment.date|date:"m/d/Y"}}</a></td>
+                        <td> <a>{{appointment.time}}</a></td>
                         <td> <a>{{appointment.doctor}}</a></td>
                         <td> <a>{{appointment.visit}}</a></td>
                         <td> <a>{{appointment.location}}</a></td>
-                        <td> <a href="#" >{{appointment.stat}}</a></td>
+                        {% if appointment.stat == 'CONFIRMED' %}
+                        <td> <span style="color: green">{{appointment.stat}}</a></td>
+                        {% else %}
+                        <td> <span style="color: red">{{appointment.stat}}</a></td>
+                        {% endif %}
                         <td> <form action="{% url 'reschedule-appointment' appointment.id %}">
                             {% csrf_token %}
                             <button id="submit_button" type="submit" class="btn btn-primary">Reschedule</button>
