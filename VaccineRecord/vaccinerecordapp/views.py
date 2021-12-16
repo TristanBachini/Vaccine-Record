@@ -88,8 +88,15 @@ def dashboard(request):
         appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
         cappointments = Appointment.objects.filter(stat = "CONFIRMED")
         today = datetime.date.today()
+        for ap in appointments:
+            print(ap.date)
+            if ((ap.date - today).days < 0):
+                    appointments.exclude(ap)
+                    ap.delete()
+                    print("delete")
         for cap in cappointments:
             if ((cap.date - today).days < 0):
+                    cappointments.exclude(cap)
                     cap.delete()
                     print("delete")
         count = appointments.count()
