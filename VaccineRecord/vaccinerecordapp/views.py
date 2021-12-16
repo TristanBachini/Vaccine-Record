@@ -26,6 +26,8 @@ from .filters import RecordFilter
 from django.views.generic import View
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+
+import operator
 # Create your views here.
 
 def home(request):
@@ -85,20 +87,19 @@ def dashboard(request):
             'count': count}
         return render(request,'vaccinerecordapp/dashboard.html', data)
     else:
-        appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
-        cappointments = Appointment.objects.filter(stat = "CONFIRMED")
+        appointments = Appointment.objects.filter(stat = "UNCONFIRMED").order_by('date', 'doctor')
+        cappointments = Appointment.objects.filter(stat = "CONFIRMED").order_by('date', 'doctor')
         today = datetime.date.today()
         for ap in appointments:
-            print(ap.date)
             if ((ap.date - today).days < 0):
-                    appointments.exclude(ap)
+                    # appointments.exclude(ap)
                     ap.delete()
-                    print("delete")
+                    # print("delete")
         for cap in cappointments:
             if ((cap.date - today).days < 0):
-                    cappointments.exclude(cap)
+                    # cappointments.exclude(cap)
                     cap.delete()
-                    print("delete")
+                    # print("delete")
         count = appointments.count()
         ccount = cappointments.count()
         data = {"appointments":appointments,"cappointments":cappointments,"count":count,"ccount":ccount}
