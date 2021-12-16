@@ -639,7 +639,7 @@ def appointment(request,pk):
     years = age.years
     form = AppointmentForm(request.POST)
     user = User.objects.get(username=request.user.username)
-    appointments = Appointment.objects.filter(user = record.user)
+    appointments = Appointment.objects.filter(user = record.user).order_by('date','doctor')
     count = appointments.count()
     if(request.method == "POST"):
         if user.groups.filter(name='patient').exists():
