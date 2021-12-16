@@ -4727,7 +4727,7 @@ def reminder(request):
     
     else:
         notExist = ""
-        due_vax_result = PatientRecord.objects.none()
+        due_vax_result = PatientRecord.objects.all()
 
     for patient in patients:
         #for due vaccine part
@@ -5609,6 +5609,9 @@ def reminder_vaccines(request,pk):
     if user.groups.filter(name="Doctor"):
         doc = Doctor.objects.get(user = user)
         due_vax_result = PatientRecord.objects.filter(doctor_assigned = doc)
+        notExist = ""
+    else:
+        due_vax_result = PatientRecord.objects.all()
         notExist = ""
     
     for patient in patients:
