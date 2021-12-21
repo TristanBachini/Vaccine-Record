@@ -64,7 +64,7 @@ class Doctor(models.Model):
     can_register = models.BooleanField(default=False)
 
     def __str__(self):
-        return "Dr. "+ self.user.first_name + " " + self.user.last_name
+        return  self.user.first_name + " " + self.user.last_name
 
 class Patient(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -93,7 +93,7 @@ class PatientRecord(models.Model):
     middle_name = models.CharField(max_length=100, blank=True, null=True)
     suffix = models.CharField(max_length=100, blank=True, null=True)
     nick_name = models.CharField(max_length=100,  blank=True, null=True)
-    doctor_assigned = ForeignKey(Doctor, on_delete=models.CASCADE, null=True)
+    doctor_assigned = models.ForeignKey(Doctor, on_delete=models.CASCADE, null=True)
     gender = models.CharField(choices=GENDER,max_length=11, null=True)
     bday = models.DateField(null=True)
     
@@ -126,6 +126,7 @@ class PatientRecord(models.Model):
 
     def __str__(self):
         return self.last_name + "," + self.first_name
+    
     
 class Vaccine(models.Model):
 

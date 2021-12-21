@@ -42,7 +42,11 @@
                   {% if request.user|has_group:"staff" or request.user|has_group:"doctor" %}
                   <a class = "nav-link active" href="{% url 'own-profile'  %}">
                     <i class="fas fa-user-circle"></i>
-                    {{ user.username }}
+                    {% if request.user|has_group:"doctor" %}
+                      Dr. {{ user.username }}
+                    {% else %}
+                      {{ user.username }}
+                    {% endif %}
                   </a>
                   {% else %}
                   <a class = "nav-link active" href="#">

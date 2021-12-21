@@ -49,8 +49,9 @@ def home(request):
                     data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"count":count}
                     return render(request, 'vaccinerecordapp/dashboard.html',data)
                 if user.groups.filter(name="Staff"):
-                    appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
-                    cappointments = Appointment.objects.filter(stat = "CONFIRMED")
+                    appointments = Appointment.objects.filter(stat = "UNCONFIRMED").order_by("date")
+                    cappointments = Appointment.objects.filter(stat = "CONFIRMED").order_by("date")
+                    # appointments = appointments.order_by("-date")
                     count = appointments.count()
                     ccount = cappointments.count()
                     data = {"form1":form1, "form2":form2, "patients":patients,"appointments":appointments,"cappointments":cappointments,"count":count,"ccount":ccount}
@@ -61,11 +62,13 @@ def home(request):
             else:
                 record = PatientRecord.objects.get(user = request.user)
                 age = relativedelta(datetime.date.today(),record.bday)
+                appt = Appointment.objects.filter(user=request.user).order_by('date')[0]
+            
                 days = age.days
                 months = age.months
                 weeks = age.weeks
                 years = age.years
-                data = {'record':record,'days':days,'months':months,'years':years, 'weeks':weeks}
+                data = {'record':record,'days':days,'months':months,'years':years, 'weeks':weeks, 'appt':appt}
                 return render(request, 'vaccinerecordapp/patient-landing.html',data)
         else:
             messages.error(request,"Invalid Email or Password")
@@ -683,7 +686,7 @@ def appointment(request,pk):
                 data = {"record":record,'days':days,'months':months,'years':years, 'weeks':weeks}
                 return render(request, 'vaccinerecordapp/patient-landing.html', data)
         
-        appointments = Appointment.objects.filter(user = record.user)
+        appointments = Appointment.objects.filter(user = record.user).order_by("date")
         count = appointments.count()
         data = {'appointments':appointments,'count':count,'record':record,'form':form,'days':days,'months':months,'years':years, 'weeks':weeks}
         return render(request, 'vaccinerecordapp/appointment.html',data)
@@ -2673,7 +2676,7 @@ def staff(request):
 def patient_landing(request, pk):
     patients = PatientRecord.objects.all()
     record = PatientRecord.objects.get(id = pk)
-    appt = Appointment.objects.get(user=patient.user)
+    appt = Appointment.objects.filter(user=request.user).order_by('date')[0]
     data = {'patients':patients, "record":record, "appt":appt}
     return render(request, 'vaccinerecordapp/patient-landing.html',data)
     
@@ -2709,7 +2712,7 @@ def passwordReset(request):
 
 @login_required(login_url='/')
 def confirm_appointments(request):
-    appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+    appointments = Appointment.objects.filter(stat = "UNCONFIRMED").order_by("date")
     count = appointments.count()
     data = {'appointments':appointments, 'count':count}
     return render(request,'vaccinerecordapp/confirm-appointment.html',data)
@@ -2719,7 +2722,7 @@ def confirm_appointment(request,pk):
     appointment = Appointment.objects.get(id = pk)
     appointment.stat = "CONFIRMED"
     appointment.save()
-    appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+    appointments = Appointment.objects.filter(stat = "UNCONFIRMED").order_by("date")
     count = appointments.count()
     data = {'appointments':appointments, 'count':count}
     return render(request,'vaccinerecordapp/confirm-appointment.html',data)
@@ -2743,7 +2746,7 @@ def reject_appointment(request,pk):
     email.content_subtype = 'html'
     email.send()
     appointment.delete()
-    appointments = Appointment.objects.filter(stat = "UNCONFIRMED")
+    appointments = Appointment.objects.filter(stat = "UNCONFIRMED").order_by("-date")
     count = appointments.count()
     data = {'appointments':appointments, 'count':count}
     return render(request,'vaccinerecordapp/confirm-appointment.html',data)
@@ -2769,7 +2772,7 @@ def reschedule_appointment(request,pk):
             'stat': 'UNCONFIRMED'},instance=appointment)
         if(form.is_valid):
             form.save()
-        appointments = Appointment.objects.filter(user = record.user)
+        appointments = Appointment.objects.filter(user = record.user).order_by("-date")
         count = appointments.count()
         data = {'appointments':appointments,'count':count,'record':record,'form':form,'days':days,'months':months,'years':years, 'weeks':weeks}
         return render(request, 'vaccinerecordapp/appointment.html',data)
@@ -4653,17 +4656,23 @@ def report(request):
 def update_staff(request):
     user = User.objects.get(username=request.user )
     
+    
     staffs = Doctor.objects.all()
     notExist = ""
     myFilter = RecordFilter(request.GET, queryset=staffs)
     staffs = myFilter.qs
     title =  request.GET.get('title')
+    uname =  request.GET.get('username')
+    scount = staffs.count()
 
-    if staffs.count()==0:
+    if scount==0:
         notExist = "The staff does not exist."
     
     if title is not None:
         staffs = staffs.filter(title__icontains=title)
+    
+    # if uname is not None:
+    #     staffs = staffs.filter(user__icontains=uname)
         
     data = {"staffs":staffs, 'myFilter':myFilter,'notExist':notExist}  
     return render(request,'vaccinerecordapp/tool/update-staff.html',data)

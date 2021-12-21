@@ -22,6 +22,9 @@
 			<h3 class="card-title"><center><i class="fas fa-user-md fa-lg"></i> Search Staff</center></h3>
 			<br />
 			<form method="get">
+				<!-- <div class="mb-3"><label for="floatingInput1">Username:</label>
+				<input class="form-control form-control-sm" id="floatingInput1" type="text" placeholder="Username" aria-label=".form-control-sm example" name="username">
+				</div> -->
 				<div class="mb-3"><label for="floatingInput1">First Name:</label>
 				<input class="form-control form-control-sm" id="floatingInput1" type="text" placeholder="First Name" aria-label=".form-control-sm example" name="first_name">
 				</div>
@@ -52,13 +55,15 @@
 			<table class="table table-secondary table-striped table-bordered table-sm table-hover ">
 				
 					<tr class=" align-middle">
-						<th>Title</a></th>
+						<th>Title</th>
 						<th>First Name</th>
 						<th>Last Name</th>
+						<!-- <th>Username</th> -->
 					</tr>
-					<!-- {% if notExist != "" %}
-					<h3>{{notExist}}</h3>
-					{% endif %} -->
+
+					{% if notExist != "" %}
+					<td colspan="3">{{notExist}} </td>
+					{% endif %}
 			
 					{% for staff in staffs %}
 					
@@ -66,6 +71,7 @@
 						<td><a href="{% url 'staff-profile' staff.id %}">{{staff.title}}</a></td>
 						<td><a href="{% url 'staff-profile' staff.id %}" >{{staff.first_name}}</a></td>
 						<td><a href="{% url 'staff-profile' staff.id %}" >{{staff.last_name}}</a></td>
+						<!-- <td><a href="{% url 'staff-profile' staff.id %}" >{{staff.user}}</a></td> -->
 					</tr>
 					{% endfor %}
 
